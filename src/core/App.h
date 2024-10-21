@@ -4,11 +4,14 @@
 
 namespace hnd
 {
-	class App
+	namespace core
 	{
-	public:
+		class App
+		{
+		public:
 
-	private:
+		private:
 
-	};
+		};
+	}
 }

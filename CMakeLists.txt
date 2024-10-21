@@ -94,6 +94,9 @@ src/utility/Log.cpp
 
 src/core/App.h
 src/core/App.cpp
+src/core/Config.h
+src/core/Config.cpp
+src/core/ConfigStructs.h
 
 )
 
