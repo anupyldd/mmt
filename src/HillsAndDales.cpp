@@ -1,14 +1,11 @@
 ﻿// HillsAndDales.cpp : Defines the entry point for the application.
 //
 
-#include <iostream>
-
-#include "../vendor/imgui/rlImGui.h"
-
-using namespace std;
+#include "utility/Log.h"
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+	using namespace hnd;
+
 	return 0;
 }
