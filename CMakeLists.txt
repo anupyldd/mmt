@@ -93,6 +93,7 @@ src/utility/Defines.h
 src/utility/Log.h
 src/utility/Log.cpp 
 src/utility/StateMachine.h
+src/utility/StringHash.h
 
 src/core/App.h
 src/core/App.cpp
@@ -102,6 +103,11 @@ src/core/ConfigStructs.h
 
 src/core/atlas/Map.h
 src/core/atlas/Map.cpp
+src/core/atlas/Layer.h
+src/core/atlas/Layer.cpp
+src/core/atlas/MapObject.h
+src/core/atlas/MapObject.cpp
+src/core/atlas/MapObjectGroup.h
 
 src/gui/GuiObject.h
 src/gui/Gui.h
