@@ -9,6 +9,9 @@ namespace hnd
 		class App
 		{
 		public:
+			void Init();
+			void Update();
+			void Draw();
 
 		private:
 
