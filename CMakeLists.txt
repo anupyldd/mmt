@@ -46,7 +46,7 @@ message("Fetching Dear ImGui...")
 FetchContent_Declare(
   imgui
   GIT_REPOSITORY https://github.com/ocornut/imgui.git
-  GIT_TAG 99109c0b3b052cffa154a9295440f68868a39f74
+  GIT_TAG c71e4e8c7cb9b42b460bbaedfa4bc443f885b05b
 )
 FetchContent_MakeAvailable(imgui)
 
@@ -99,6 +99,9 @@ src/core/App.cpp
 src/core/Config.h
 src/core/Config.cpp
 src/core/ConfigStructs.h
+
+src/core/atlas/Map.h
+src/core/atlas/Map.cpp
 
 src/gui/GuiObject.h
 src/gui/Gui.h
