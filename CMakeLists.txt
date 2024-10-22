@@ -69,6 +69,7 @@ file(COPY ${rlimgui_SOURCE_DIR}/rlImGui.cpp DESTINATION ${IMGUI_DIR})
 message("Copying imgui files...")
 file(COPY ${imgui_SOURCE_DIR}/backends DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/misc DESTINATION ${IMGUI_DIR})
+file(COPY ${imgui_SOURCE_DIR}/imconfig.h DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/imgui.cpp DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/imgui.h DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/imgui_demo.cpp DESTINATION ${IMGUI_DIR})
@@ -99,14 +100,24 @@ src/core/Config.h
 src/core/Config.cpp
 src/core/ConfigStructs.h
 
+####################################################
+
+vendor/imgui/imgui.cpp
+vendor/imgui/imgui_demo.cpp
+vendor/imgui/imgui_draw.cpp
+vendor/imgui/imgui_tables.cpp
+vendor/imgui/imgui_widgets.cpp
+vendor/imgui/rlImGui.cpp
+
+####################################################
+
 )
 
 ####################################################
 ####################################################
 ####################################################
 
-# Add source to this project's executable.
-add_executable ("${PROJECT_NAME}" ${SRCS})
+add_executable("${PROJECT_NAME}" ${SRCS})
 
 message("Linking libraries...")
 target_link_libraries(
@@ -118,12 +129,13 @@ target_link_libraries(
 message("Including directories...")
 target_include_directories(
 	"${PROJECT_NAME}" 
-	PRIVATE 
+	PUBLIC 
 	${raylib_SOURCE_DIR}/src 
 	${raylib_SOURCE_DIR}/src/external 
 	${raylib_SOURCE_DIR}/src/external/glfw/include 
 	${picojson_SOURCE_DIR}
 	${IMGUI_DIR}
+	${VENDOR_DIR}
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
