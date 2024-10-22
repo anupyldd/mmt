@@ -22,7 +22,7 @@ namespace hnd
             void ConsoleError(const std::string& msg);
 
         private:
-            std::mutex m_mtx;
+            std::mutex mtx;
         };
     }
     

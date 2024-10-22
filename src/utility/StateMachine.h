@@ -34,44 +34,44 @@ namespace hnd
 
         public:
             StateMachine(std::shared_ptr<OwnerType> owner)
-                : m_pOwner(owner) { }
+                : owner(owner) { }
 
-            void SetCurrentState(StatePtr newState) { m_pCurrentState = newState; }
-            void SetPreviousState(StatePtr newState) { m_pPreviousState = newState; }
-            void SetGlobalState(StatePtr newState) { m_pGlobalState = newState; }
+            void SetCurrentState(StatePtr newState) { currentState = newState; }
+            void SetPreviousState(StatePtr newState) { previousState = newState; }
+            void SetGlobalState(StatePtr newState) { globalState = newState; }
 
             void Update()
             {
-                if (m_pGlobalState) m_pGlobalState->Execute(m_pOwner);
-                if (m_pCurrentState) m_pCurrentState->Execute(m_pOwner);
+                if (globalState) globalState->Execute(owner);
+                if (currentState) currentState->Execute(owner);
             }
 
             void ChangeState(StatePtr newState)
             {
                 if (!newState) INVALID_STATE_CHANGE_EXCEPTION_THROW(*this);
 
-                m_pPreviousState = m_pCurrentState;
-                m_pCurrentState->Exit(m_pOwner);
-                m_pCurrentState = pNewState;
-                m_pCurrentState->Enter(m_pOwner);
+                previousState = currentState;
+                currentState->Exit(owner);
+                currentState = pNewState;
+                currentState->Enter(owner);
             }
 
             void RevertToPreviousState()
             {
-                ChangeState(m_pPreviousState);
+                ChangeState(previousState);
             }
 
-            StatePtr GetCurrentState() const { return m_pCurrentState; }
-            StatePtr GetGlobalState() const { return m_pGlobalState; }
-            StatePtr GetPreviousState() const { return m_pPreviousState; }
+            StatePtr GetCurrentState() const { return currentState; }
+            StatePtr GetGlobalState() const { return globalState; }
+            StatePtr GetPreviousState() const { return previousState; }
 
-            bool IsInState(const State<OwnerType>& state) { return *m_pCurrentState == state; }
+            bool IsInState(const State<OwnerType>& state) { return *currentState == state; }
 
         private:
-            std::shared_ptr<OwnerType> m_pOwner;
-            StatePtr m_pCurrentState;
-            StatePtr m_pPreviousState;
-            StatePtr m_pGlobalState;
+            std::shared_ptr<OwnerType> owner;
+            StatePtr currentState;
+            StatePtr previousState;
+            StatePtr globalState;
         };
     }
 }
@@ -80,6 +80,6 @@ namespace hnd
 std::stringstream msg;                                                  \
 msg << '[' << typeid(fsm).name() << ']' <<                              \
 " Attempting to change to an invalid state.\n Last valid state: " <<    \
-fsm.m_pCurrentState;                                                    \
+fsm.currentState;                                                       \
 throw std::runtime_error(msg.str());                                    \
 }
