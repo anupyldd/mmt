@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required (VERSION 3.8)
 
-# Enable Hot Reload for MSVC compilers if supported.
+# some default VS stuff
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
@@ -46,7 +46,7 @@ message("Fetching Dear ImGui...")
 FetchContent_Declare(
   imgui
   GIT_REPOSITORY https://github.com/ocornut/imgui.git
-  GIT_TAG 99109c0b3b052cffa154a9295440f68868a39f74
+  GIT_TAG c71e4e8c7cb9b42b460bbaedfa4bc443f885b05b
 )
 FetchContent_MakeAvailable(imgui)
 
@@ -69,6 +69,7 @@ file(COPY ${rlimgui_SOURCE_DIR}/rlImGui.cpp DESTINATION ${IMGUI_DIR})
 message("Copying imgui files...")
 file(COPY ${imgui_SOURCE_DIR}/backends DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/misc DESTINATION ${IMGUI_DIR})
+file(COPY ${imgui_SOURCE_DIR}/imconfig.h DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/imgui.cpp DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/imgui.h DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/imgui_demo.cpp DESTINATION ${IMGUI_DIR})
@@ -92,6 +93,7 @@ src/utility/Defines.h
 src/utility/Log.h
 src/utility/Log.cpp 
 src/utility/StateMachine.h
+src/utility/StringHash.h
 
 src/core/App.h
 src/core/App.cpp
@@ -99,14 +101,36 @@ src/core/Config.h
 src/core/Config.cpp
 src/core/ConfigStructs.h
 
+src/core/atlas/Map.h
+src/core/atlas/Map.cpp
+src/core/atlas/Layer.h
+src/core/atlas/Layer.cpp
+src/core/atlas/MapObject.h
+src/core/atlas/MapObject.cpp
+src/core/atlas/MapObjectGroup.h
+
+src/gui/GuiObject.h
+src/gui/Gui.h
+src/gui/Gui.cpp
+
+####################################################
+
+vendor/imgui/imgui.cpp
+vendor/imgui/imgui_demo.cpp
+vendor/imgui/imgui_draw.cpp
+vendor/imgui/imgui_tables.cpp
+vendor/imgui/imgui_widgets.cpp
+vendor/imgui/rlImGui.cpp
+
+####################################################
+
 )
 
 ####################################################
 ####################################################
 ####################################################
 
-# Add source to this project's executable.
-add_executable ("${PROJECT_NAME}" ${SRCS})
+add_executable("${PROJECT_NAME}" ${SRCS})
 
 message("Linking libraries...")
 target_link_libraries(
@@ -118,12 +142,13 @@ target_link_libraries(
 message("Including directories...")
 target_include_directories(
 	"${PROJECT_NAME}" 
-	PRIVATE 
+	PUBLIC 
 	${raylib_SOURCE_DIR}/src 
 	${raylib_SOURCE_DIR}/src/external 
 	${raylib_SOURCE_DIR}/src/external/glfw/include 
 	${picojson_SOURCE_DIR}
 	${IMGUI_DIR}
+	${VENDOR_DIR}
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
