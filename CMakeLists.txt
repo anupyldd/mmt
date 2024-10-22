@@ -91,6 +91,7 @@ src/HillsAndDales.cpp
 src/utility/Defines.h
 src/utility/Log.h
 src/utility/Log.cpp 
+src/utility/StateMachine.h
 
 src/core/App.h
 src/core/App.cpp

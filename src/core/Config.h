@@ -29,9 +29,9 @@ namespace hnd
             void Save(const std::filesystem::path& relPath);
 
         public:
-            std::unique_ptr<AppConfig>      app;
-            std::unique_ptr <GuiConfig>     gui;
-            std::unique_ptr <MetaConfig>    meta;
+            std::unique_ptr<AppConfig>     pApp;
+            std::unique_ptr<GuiConfig>     pGui;
+            std::unique_ptr<MetaConfig>    pMeta;
 
         private:
             void LoadAppConfig(const picojson::value::object& obj);
