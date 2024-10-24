@@ -6,6 +6,10 @@ namespace hnd
     {
         bool Config::Load(const std::filesystem::path& relPath)
         {
+            app = std::make_unique<AppConfig>();
+            gui = std::make_unique<GuiConfig>();
+            meta = std::make_unique<MetaConfig>();
+
             try
             {
                 auto cwd = std::filesystem::current_path();

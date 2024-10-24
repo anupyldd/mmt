@@ -25,7 +25,7 @@ namespace hnd
             SINGLETON(Config);
 
         public:
-            bool Load(const std::filesystem::path& relPath);    // loads values from config file
+            bool Load(const std::filesystem::path& relPath);
             void Save(const std::filesystem::path& relPath);
 
         public:

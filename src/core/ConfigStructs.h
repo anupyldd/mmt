@@ -21,7 +21,6 @@ namespace hnd
             std::string title = "Hills and Dales",
                         version = "0.0",
                         language = "en";
-
         };
 
         struct GuiConfig
