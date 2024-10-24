@@ -4,6 +4,7 @@
 
 #include "../gui/Gui.h"
 #include "Config.h"
+#include "atlas/Map.h"
 
 #include <exception>
 

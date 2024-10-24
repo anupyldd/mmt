@@ -7,6 +7,7 @@ namespace hnd
 		QuadtreeNode::QuadtreeNode(const Rectangle& bound)
 			: boundary(bound)
 		{
+			objects.reserve(QuadtreeNodeCapacity);
 		}
 		bool QuadtreeNode::InsertObject(MapObject obj)
 		{
@@ -14,7 +15,8 @@ namespace hnd
 
 			if (objects.size() < QuadtreeNodeCapacity)
 			{
-				objects.at(objects.size()) = std::make_shared<MapObject>(obj.id, obj.pos, obj.scale, obj.angle);
+				objects.push_back(std::make_shared<MapObject>(obj.id, obj.pos, obj.scale, obj.angle));
+				LOG_DEBUG("Inserted object");
 				return true;
 			}
 			else
@@ -30,7 +32,7 @@ namespace hnd
 
 			for (const auto& obj : objects)
 			{
-				if (CheckCollisionPointRec(obj->pos, rect)) 
+				if (obj && CheckCollisionPointRec(obj->pos, rect)) 
 					found.push_back(obj);
 			}
 			if (divided)

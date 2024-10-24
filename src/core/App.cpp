@@ -33,8 +33,20 @@ namespace hnd
 		{
 			while (!WindowShouldClose())
 			{
+				BeginDrawing();
+				ClearBackground(GREEN);
+
 				gui::Gui::GetInstance().UpdateDraw();
 				UpdateConfig();
+
+				/*********************************************/
+				Map map({ 100,100 });
+				map.AddLayer("l");
+				map.Update();
+				map.Draw();
+				/*********************************************/
+
+				EndDrawing();
 			}
 
 			Config::GetInstance().Save("data/config.json");
