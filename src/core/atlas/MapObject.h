@@ -11,6 +11,7 @@
 
 #include "../../utility/StringHash.h"
 #include "../../utility/Defines.h"
+#include "MapObjectGroup.h"
 
 namespace hnd
 {
@@ -24,18 +25,11 @@ namespace hnd
 
 			void Draw();
 
-			//Texture2D	img;
-			uint64_t	id;	// id by which texture to draw is found
-			Vector2		pos;
-			float		scale = 1.0f;
-			float		angle = 0.0f;
-		};
-
-		// object draw group
-		struct MapObjGroup
-		{
-			bool visible = true;
-			std::vector<MapObject> objects;
+			std::shared_ptr<MapObjGroup>	group;
+			uint64_t						id;	// id by which texture to draw is found
+			Vector2							pos;
+			float							scale = 1.0f;
+			float							angle = 0.0f;
 		};
 	}
 }

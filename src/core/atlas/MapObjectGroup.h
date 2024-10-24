@@ -1,18 +1,35 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <memory>
+#include <map>
 
-#include "MapObject.h"
+#include "../../utility/Defines.h"
 
 namespace hnd
 {
 	namespace core
 	{
-		struct MapObjectGroup
+		class MapObjectGroupManager
 		{
-			std::string name;
-			std::vector<MapObject> objects;
+			SINGLETON(MapObjectGroupManager)
+
+		public:
+			struct MapObjectGroup
+			{
+				std::string name;
+				bool visible = true;
+			};
+
+			std::shared_ptr<MapObjectGroup> GetGroupPtr(const std::string& name) const;
+			bool GroupExists(const std::string& name) const;
+			bool AddGroup(const std::string& name);
+
+		private:
+			std::map<std::string, std::shared_ptr<MapObjectGroup>> groups;
 		};
+
+		//-------------
+		using MapObjGroup = MapObjectGroupManager::MapObjectGroup;
 	}
 }

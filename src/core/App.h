@@ -2,6 +2,11 @@
 
 #include "raylib.h"
 
+#include "../gui/Gui.h"
+#include "Config.h"
+
+#include <exception>
+
 namespace hnd
 {
 	namespace core
@@ -10,11 +15,10 @@ namespace hnd
 		{
 		public:
 			void Init();
-			void Update();
-			void Draw();
+			void Run();
 
 		private:
-
+			void UpdateConfig() const;
 		};
 	}
 }

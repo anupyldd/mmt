@@ -21,14 +21,14 @@ namespace hnd
             std::string title = "Hills and Dales",
                         version = "0.0",
                         language = "en";
-
         };
 
         struct GuiConfig
         {
+            std::string font,
+                        theme;
             int         fontSize = 24;
             float       scale = 1.0f;
-            Font        font;
         };
 
         struct MetaConfig

@@ -7,7 +7,7 @@ namespace hnd
         void Gui::UpdateDraw()
         {
 			BeginDrawing();
-			ClearBackground(DARKGRAY);
+			ClearBackground(GREEN);
 			rlImGuiBegin();
 
             for (auto& obj : objects)

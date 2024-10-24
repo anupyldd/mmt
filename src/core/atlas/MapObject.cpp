@@ -33,5 +33,12 @@ namespace hnd
 		// -----------------------------------
 		
 
+		void MapObject::Draw()
+		{
+			if (!group->visible) return;
+
+			/* DRAW STUFF */
+		}
+
 	}
 }

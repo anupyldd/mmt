@@ -108,6 +108,9 @@ src/core/atlas/Layer.cpp
 src/core/atlas/MapObject.h
 src/core/atlas/MapObject.cpp
 src/core/atlas/MapObjectGroup.h
+src/core/atlas/MapObjectGroup.cpp
+src/core/atlas/Quadtree.h
+src/core/atlas/Quadtree.cpp
 
 src/gui/GuiObject.h
 src/gui/Gui.h

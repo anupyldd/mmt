@@ -1,0 +1,25 @@
+{
+  "app": {
+    "flags": [ "FLAG_WINDOW_RESIZABLE" ],
+    "fps": 60,
+    "height": 400,
+    "posX": 100,
+    "posY": 100,
+    "title": "Hills and Dales",
+    "width": 600,
+    "version": "0.0",
+    "language": "en"
+  },
+  "meta": {
+    "available_languages": [
+      "en",
+      "ru"
+    ]
+  },
+  "gui": {
+    "fontSize": 32,
+    "font": "FiraCode",
+    "theme": "default",
+    "scale": 1.0
+  }
+}

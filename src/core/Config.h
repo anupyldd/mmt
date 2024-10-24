@@ -25,13 +25,13 @@ namespace hnd
             SINGLETON(Config);
 
         public:
-            bool Load(const std::filesystem::path& relPath);    // loads values from config file
+            bool Load(const std::filesystem::path& relPath);
             void Save(const std::filesystem::path& relPath);
 
         public:
-            std::unique_ptr<AppConfig>     pApp;
-            std::unique_ptr<GuiConfig>     pGui;
-            std::unique_ptr<MetaConfig>    pMeta;
+            std::unique_ptr<AppConfig>     app;
+            std::unique_ptr<GuiConfig>     gui;
+            std::unique_ptr<MetaConfig>    meta;
 
         private:
             void LoadAppConfig(const picojson::value::object& obj);

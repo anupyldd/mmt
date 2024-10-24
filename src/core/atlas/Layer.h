@@ -3,6 +3,8 @@
 #include "raylib.h"
 
 #include "MapObject.h"
+#include "Quadtree.h"
+#include "../../utility/Log.h"
 
 #include <vector>
 #include <unordered_map>
@@ -14,10 +16,14 @@ namespace hnd
 		class Layer
 		{
 		public:
+			Layer() = default;
+			Layer(const Rectangle& rect);
+
+			void AddObject(const MapObject& obj);
 
 
 		private:
-			
+			QuadtreeNode	objectTree;
 
 			RenderTexture2D	canvas;
 			Image			mask;
