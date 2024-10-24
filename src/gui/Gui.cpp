@@ -6,8 +6,6 @@ namespace hnd
     {
         void Gui::UpdateDraw()
         {
-			BeginDrawing();
-			ClearBackground(GREEN);
 			rlImGuiBegin();
 
             for (auto& obj : objects)
@@ -16,7 +14,6 @@ namespace hnd
             }
 
 			rlImGuiEnd();
-			EndDrawing();
         }
         void Gui::Add(GuiObjPtr obj)
         {

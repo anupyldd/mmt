@@ -37,6 +37,7 @@ namespace hnd
 		{
 			if (group && !group->visible) return;
 
+			DrawCircle(pos.x, pos.y, 0.1, RED);
 			LOG_DEBUG("IMPLEMENT DRAWING THE OBJECT");
 		}
 

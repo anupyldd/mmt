@@ -31,7 +31,7 @@ namespace hnd
 			Rectangle	boundary;
 			bool		divided = false;
 
-			std::array<MapObjShrPtr, QuadtreeNodeCapacity> objects;
+			std::vector<MapObjShrPtr>		objects;
 
 			std::unique_ptr<QuadtreeNode>	northWest,
 											northEast,
