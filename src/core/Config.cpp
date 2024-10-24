@@ -75,29 +75,29 @@ namespace hnd
         {
             try
             {
-                const auto& ap = obj.at("pApp").get<picojson::object>();
+                const auto& ap = obj.at("app").get<picojson::object>();
 
-                pApp->width = static_cast<int>(ap.at("width").get<double>());
-                pApp->height = static_cast<int>(ap.at("height").get<double>());
-                pApp->posX = static_cast<int>(ap.at("posX").get<double>());
-                pApp->posY = static_cast<int>(ap.at("posY").get<double>());
-                pApp->fps = static_cast<int>(ap.at("fps").get<double>());
-                pApp->title = ap.at("title").get<std::string>();
+                app->width = static_cast<int>(ap.at("width").get<double>());
+                app->height = static_cast<int>(ap.at("height").get<double>());
+                app->posX = static_cast<int>(ap.at("posX").get<double>());
+                app->posY = static_cast<int>(ap.at("posY").get<double>());
+                app->fps = static_cast<int>(ap.at("fps").get<double>());
+                app->title = ap.at("title").get<std::string>();
 
                 const auto& flags = ap.at("flags").get<picojson::array>();
                 for (const auto& f : flags)
                 {
-                    pApp->flags |= WindowFlagFromStr(f.get<std::string>());
+                    app->flags |= WindowFlagFromStr(f.get<std::string>());
                 }
 
-                pApp->language = ap.at("language").get<std::string>();
-                pApp->version = ap.at("version").get<std::string>();
+                app->language = ap.at("language").get<std::string>();
+                app->version = ap.at("version").get<std::string>();
 
-                LOG_DEBUG("Loaded pApp config");
+                LOG_DEBUG("Loaded app config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load pApp config: " + std::string(e.what()));
+                LOG_ERROR("Failed to load app config: " + std::string(e.what()));
             }
         }
 
@@ -105,42 +105,44 @@ namespace hnd
         {
             picojson::value::object appObj;
 
-            appObj["width"] = picojson::value(static_cast<double>(pApp->width));
-            appObj["height"] = picojson::value(static_cast<double>(pApp->height));
-            appObj["posX"] = picojson::value(static_cast<double>(pApp->posX));
-            appObj["posY"] = picojson::value(static_cast<double>(pApp->posY));
-            appObj["fps"] = picojson::value(static_cast<double>(pApp->fps));
-            appObj["title"] = picojson::value(pApp->title);
+            appObj["width"] = picojson::value(static_cast<double>(app->width));
+            appObj["height"] = picojson::value(static_cast<double>(app->height));
+            appObj["posX"] = picojson::value(static_cast<double>(app->posX));
+            appObj["posY"] = picojson::value(static_cast<double>(app->posY));
+            appObj["fps"] = picojson::value(static_cast<double>(app->fps));
+            appObj["title"] = picojson::value(app->title);
 
             picojson::value::array flags;
-            auto strFlags = WindowFlagsToVec(pApp->flags);
+            auto strFlags = WindowFlagsToVec(app->flags);
             for (const auto& f : strFlags)
             {
                 flags.emplace_back(picojson::value(f));
             }
             appObj["flags"] = picojson::value(flags);
 
-            appObj["language"] = picojson::value(pApp->language);
-            appObj["version"] = picojson::value(pApp->version);
+            appObj["language"] = picojson::value(app->language);
+            appObj["version"] = picojson::value(app->version);
 
             picojson::value val(appObj);
-            obj["pApp"] = val;
+            obj["app"] = val;
         }
 
         void Config::LoadGuiConfig(const picojson::value::object& obj)
         {
             try
             {
-                const auto& ui = obj.at("pGui").get<picojson::object>();
+                const auto& ui = obj.at("gui").get<picojson::object>();
 
-                pGui->fontSize = static_cast<int>(ui.at("fontSize").get<double>());
-                pGui->scale = static_cast<float>(ui.at("scale").get<double>());
+                gui->fontSize = static_cast<int>(ui.at("fontSize").get<double>());
+                gui->scale = static_cast<float>(ui.at("scale").get<double>());
+                gui->font = ui.at("font").get<std::string>();
+                gui->theme = ui.at("theme").get<std::string>();
 
-                LOG_DEBUG("Loaded pGui config");
+                LOG_DEBUG("Loaded gui config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load pGui config: " + std::string(e.what()));
+                LOG_ERROR("Failed to load gui config: " + std::string(e.what()));
             }
         }
 
@@ -148,30 +150,32 @@ namespace hnd
         {
             picojson::value::object uiObj;
 
-            uiObj["fontSize"] = picojson::value(static_cast<double>(pGui->fontSize));
-            uiObj["scale"] = picojson::value(static_cast<double>(pGui->scale));
+            uiObj["fontSize"] = picojson::value(static_cast<double>(gui->fontSize));
+            uiObj["scale"] = picojson::value(static_cast<double>(gui->scale));
+            uiObj["font"] = picojson::value(gui->font);
+            uiObj["theme"] = picojson::value(gui->theme);
 
             picojson::value val(uiObj);
-            obj["pGui"] = val;
+            obj["gui"] = val;
         }
 
         void Config::LoadMetaConfig(const picojson::value::object& obj)
         {
             try
             {
-                const auto& mt = obj.at("pMeta").get<picojson::object>();
+                const auto& mt = obj.at("meta").get<picojson::object>();
 
                 const auto& langs = mt.at("available_languages").get<picojson::array>();
                 for (const auto& l : langs)
                 {
-                    pMeta->languages.push_back(l.get<std::string>());
+                    meta->languages.push_back(l.get<std::string>());
                 }
 
-                LOG_DEBUG("Loaded pMeta config: " + std::to_string(pMeta->languages.size()));
+                LOG_DEBUG("Loaded meta config: " + std::to_string(meta->languages.size()));
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load pMeta config: " + std::string(e.what()));
+                LOG_ERROR("Failed to load meta config: " + std::string(e.what()));
             }
         }
 
@@ -180,14 +184,14 @@ namespace hnd
             picojson::value::object metaObj;
 
             picojson::value::array langs;
-            for (const auto& l : pMeta->languages)
+            for (const auto& l : meta->languages)
             {
                 langs.emplace_back(picojson::value(l));
             }
             metaObj["available_languages"] = picojson::value(langs);
 
             picojson::value val(metaObj);
-            obj["pMeta"] = val;
+            obj["meta"] = val;
         }
 
         // ------------------

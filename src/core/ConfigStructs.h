@@ -26,9 +26,10 @@ namespace hnd
 
         struct GuiConfig
         {
+            std::string font,
+                        theme;
             int         fontSize = 24;
             float       scale = 1.0f;
-            Font        font;
         };
 
         struct MetaConfig
