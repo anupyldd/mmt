@@ -19,8 +19,11 @@ namespace hnd
 			Layer() = default;
 			Layer(const Rectangle& rect);
 
-			void AddObject(const MapObject& obj);
+			void Update();
+			void Draw(const Rectangle& viewport);
 
+			void AddObjectMouse();
+			void AddObject(const MapObject& obj);
 
 		private:
 			QuadtreeNode	objectTree;

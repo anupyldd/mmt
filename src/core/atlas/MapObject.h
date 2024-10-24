@@ -11,6 +11,7 @@
 
 #include "../../utility/StringHash.h"
 #include "../../utility/Defines.h"
+#include "../../utility/Log.h"
 #include "MapObjectGroup.h"
 
 namespace hnd
@@ -24,6 +25,7 @@ namespace hnd
 				: id(id), pos(pos), scale(scale), angle(angle) { }
 
 			void Draw();
+			void SetGroup(const std::string& name);
 
 			std::shared_ptr<MapObjGroup>	group;
 			uint64_t						id;	// id by which texture to draw is found

@@ -1,4 +1,8 @@
-#pragma one
+#pragma once
+
+#include <list>
+
+#include "Layer.h"
 
 namespace hnd
 {
@@ -6,7 +10,14 @@ namespace hnd
 	{
 		class Map
 		{
+		public:
+			Map() = default;
 
+			void Update();
+			void Draw();
+
+		private:
+			std::list<Layer> layers;
 		};
 	}
 }

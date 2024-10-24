@@ -35,9 +35,14 @@ namespace hnd
 
 		void MapObject::Draw()
 		{
-			if (!group->visible) return;
+			if (group && !group->visible) return;
 
-			/* DRAW STUFF */
+			LOG_DEBUG("IMPLEMENT DRAWING THE OBJECT");
+		}
+
+		void MapObject::SetGroup(const std::string& name)
+		{
+			group = MapObjectGroupManager::GetInstance().GetGroupPtr(name);
 		}
 
 	}
