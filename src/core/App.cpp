@@ -4,6 +4,11 @@ namespace hnd
 {
 	namespace core
 	{
+
+
+		/********************************************************/
+		Map map({ 400,400 });
+		/********************************************************/
 		void App::Init()
 		{
 			if (IsWindowReady()) throw std::runtime_error("Attempting to open window twice");
@@ -13,6 +18,7 @@ namespace hnd
 				LOG_ERROR("Error loading config, falling back to default values");
 
 			SetConfigFlags(conf.app->flags);
+			SetTraceLogLevel(LOG_WARNING);
 
 			std::string title = conf.app->title;
 			title += " - " + conf.app->version;
@@ -28,6 +34,9 @@ namespace hnd
 			SetWindowPosition(conf.app->posX, conf.app->posY);
 			SetTargetFPS(conf.app->fps);
 			rlImGuiSetup(true);
+			/***********************************/
+			map.AddLayer("l");
+			/***********************************/
 		}
 		void App::Run()
 		{
@@ -40,8 +49,7 @@ namespace hnd
 				UpdateConfig();
 
 				/*********************************************/
-				Map map({ 100,100 });
-				map.AddLayer("l");
+				
 				map.Update();
 				map.Draw();
 				/*********************************************/

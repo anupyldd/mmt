@@ -17,8 +17,10 @@ namespace hnd
 		}
 		void Map::Draw()
 		{
+			/**************************************************************/
 			Rectangle viewport{ 0,0,static_cast<float>(GetScreenWidth()),
 						static_cast<float>(GetScreenHeight()) };
+			/**************************************************************/
 			for (auto& l : layers)
 			{
 				l.Draw(viewport);
