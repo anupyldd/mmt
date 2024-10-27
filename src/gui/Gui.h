@@ -18,6 +18,10 @@ namespace hnd
     namespace gui
     {
         class MainMenu;
+        enum class GuiState
+        {
+            MainMenu, Editor
+        };
 
         class Gui
         {
@@ -25,7 +29,7 @@ namespace hnd
             using GuiObjPtr = std::unique_ptr<GuiObject>;
 
         public:
-            void UpdateDraw();
+            void UpdateDraw(GuiState state);
 
             void Add(GuiObjPtr obj);
             void Remove(GuiObjPtr obj);

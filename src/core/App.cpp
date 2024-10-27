@@ -99,7 +99,7 @@ namespace hnd
 				BeginDrawing();
 				ClearBackground(BLUE);
 
-				owner->appGui.UpdateDraw();
+				owner->appGui.UpdateDraw(GuiState::MainMenu);
 				owner->UpdateConfig();
 
 				EndDrawing();
@@ -123,7 +123,7 @@ namespace hnd
 				BeginDrawing();
 				ClearBackground(GREEN);
 
-				owner->appGui.UpdateDraw();
+				owner->appGui.UpdateDraw(GuiState::Editor);
 				owner->UpdateConfig();
 
 				/*********************************************/
