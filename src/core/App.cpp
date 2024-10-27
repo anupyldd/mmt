@@ -62,34 +62,45 @@ namespace hnd
 
 			SetWindowPosition(conf.app->posX, conf.app->posY);
 			SetTargetFPS(conf.app->fps);
+			SetExitKey(KEY_NULL);
 			rlImGuiSetup(true);
 
 			owner->fsm.ChangeState(&owner->mainMenuState);
-			//LOG_DEBUG(std::to_string((uint64_t) & owner->mainMenuState));
-			//LOG_DEBUG(std::to_string((uint64_t) & owner->initLoadState));
-
-			LOG_DEBUG("Switched to main menu");
 		}
 		//-----------------------------------
 		void App::MainMenu::Enter(App* owner)
 		{
+			menuOpen = true;
 			LOG_DEBUG("Main menu is now open");
 		}
 		void App::MainMenu::Execute(App* owner)
 		{
-			owner->fsm.ChangeState(&owner->mapEditState);
+			while (!WindowShouldClose() && menuOpen)
+			{
+				BeginDrawing();
+				ClearBackground(BLUE);
+
+				owner->UpdateConfig();
+
+				EndDrawing();
+
+				if (IsKeyPressed(KEY_ENTER)) owner->fsm.ChangeState(&owner->mapEditState);
+			}
 		}
 		void App::MainMenu::Exit(App* owner)
 		{
+			menuOpen = false;
+			LOG_DEBUG("Exiting main menu");
 		}
 		//-------------------------------------
 		void App::MapEdit::Enter(App* owner)
 		{
+			editOpen = true;
 			LOG_DEBUG("Map edit is now open");
 		}
 		void App::MapEdit::Execute(App* owner)
 		{
-			while (!WindowShouldClose())
+			while (!WindowShouldClose() && editOpen)
 			{
 				BeginDrawing();
 				ClearBackground(GREEN);
@@ -99,6 +110,11 @@ namespace hnd
 
 				/*********************************************/
 				if (IsKeyPressed(KEY_SPACE)) map.AddLayer("test");
+				if (IsKeyPressed(KEY_ESCAPE))
+				{
+					LOG_DEBUG("Going back to menu");
+					owner->fsm.ChangeState(&owner->mainMenuState);
+				}
 				map.Update();
 				map.Draw();
 				/*********************************************/
@@ -106,10 +122,12 @@ namespace hnd
 				EndDrawing();
 			}
 
-			owner->fsm.ChangeState(&owner->closeState);
+			if(WindowShouldClose()) owner->fsm.ChangeState(&owner->closeState);
 		}
 		void App::MapEdit::Exit(App* owner)
 		{
+			editOpen = false;
+			LOG_DEBUG("Exiting map editing");
 		}
 		//-------------------------------------
 		void App::Close::Execute(App* owner)

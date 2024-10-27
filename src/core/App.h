@@ -53,6 +53,8 @@ namespace hnd
 				virtual void Enter(App* owner) override final;
 				virtual void Execute(App* owner) override final;
 				virtual void Exit(App* owner) override final;
+
+				bool menuOpen = false;
 			};
 			MainMenu mainMenuState;
 
@@ -61,6 +63,8 @@ namespace hnd
 				virtual void Enter(App* owner) override final;
 				virtual void Execute(App* owner) override final;
 				virtual void Exit(App* owner) override final;
+
+				bool editOpen = false;
 			};
 			MapEdit mapEditState;
 
