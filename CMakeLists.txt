@@ -97,6 +97,8 @@ src/utility/StringHash.h
 
 src/core/App.h
 src/core/App.cpp
+src/core/AppStates.h
+src/core/AppStates.cpp
 src/core/Config.h
 src/core/Config.cpp
 src/core/ConfigStructs.h
@@ -115,6 +117,7 @@ src/core/atlas/Quadtree.cpp
 src/gui/GuiObject.h
 src/gui/Gui.h
 src/gui/Gui.cpp
+src/gui/GuiStates.h
 
 ####################################################
 

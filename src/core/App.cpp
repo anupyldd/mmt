@@ -11,29 +11,9 @@ namespace hnd
 		/********************************************************/
 		void App::Init()
 		{
-			if (IsWindowReady()) throw std::runtime_error("Attempting to open window twice");
-
-			auto& conf = Config::GetInstance();
-			if (!conf.Load("data/config.json"))
-				LOG_ERROR("Error loading config, falling back to default values");
-
-			SetConfigFlags(conf.app->flags);
-			SetTraceLogLevel(LOG_WARNING);
-
-			std::string title = conf.app->title;
-			title += " - " + conf.app->version;
-
-		#if _DEBUG
-			title += " [DEBUG]";
-			InitWindow(conf.app->width, conf.app->height, title.c_str());
-		#else
-			InitWindow(conf.app->width, conf.app->height, title.c_str());
-		#endif
 			
-			
-			SetWindowPosition(conf.app->posX, conf.app->posY);
-			SetTargetFPS(conf.app->fps);
-			rlImGuiSetup(true);
+
+
 			/***********************************/
 			map.AddLayer("l");
 			/***********************************/
@@ -45,7 +25,7 @@ namespace hnd
 				BeginDrawing();
 				ClearBackground(GREEN);
 
-				gui::Gui::GetInstance().UpdateDraw();
+				appGui.UpdateDraw();
 				UpdateConfig();
 
 				/*********************************************/
@@ -69,6 +49,38 @@ namespace hnd
 			conf.app->height = GetScreenHeight();
 			conf.app->posX = GetWindowPosition().x;
 			conf.app->posY = GetWindowPosition().y;
+		}
+
+		/************************************************/
+		/********************STATES**********************/
+		/************************************************/
+
+		void App::InitLoad::Enter(std::shared_ptr<App> owner)
+		{
+			if (IsWindowReady()) throw std::runtime_error("Attempting to open window twice");
+
+			auto& conf = Config::GetInstance();
+			if (!conf.Load("data/config.json"))
+				LOG_ERROR("Error loading config, falling back to default values");
+
+			SetConfigFlags(conf.app->flags);
+			SetTraceLogLevel(LOG_WARNING);
+
+			std::string title = conf.app->title;
+			title += " - " + conf.app->version;
+
+		#if _DEBUG
+			title += " [DEBUG]";
+			InitWindow(conf.app->width, conf.app->height, title.c_str());
+		#else
+			InitWindow(conf.app->width, conf.app->height, title.c_str());
+		#endif
+
+			SetWindowPosition(conf.app->posX, conf.app->posY);
+			SetTargetFPS(conf.app->fps);
+			rlImGuiSetup(true);
+
+			owner->fsm.ChangeState(&owner->mainMenuState);
 		}
 	}
 }

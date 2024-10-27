@@ -36,13 +36,11 @@ namespace hnd
 		}
 		void Layer::Draw(const Rectangle& viewport)
 		{
-			DrawTexture(canvas.texture, 0, 0, WHITE);
+			DrawTexture(canvas.texture, 0, 0, Color{ 0,0,0,0 });
 			objectTree.DrawCells();
 
 			std::vector<MapObjShrPtr> objInView;
 			objectTree.Query(viewport, objInView);
-			//objInView = objectTree.Query(viewport, objInView);
-			LOG_DEBUG(std::to_string(objInView.size()));
 
 			DrawRectangleLines(viewport.x, viewport.y, viewport.width, viewport.height, MAGENTA);
 
