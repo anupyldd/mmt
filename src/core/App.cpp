@@ -117,6 +117,7 @@ namespace hnd
 			Config::GetInstance().Save("data/config.json");
 			rlImGuiShutdown();
 			CloseWindow();
+			exit(0);
 		}
 }
 }
