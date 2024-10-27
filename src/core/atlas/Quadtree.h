@@ -22,7 +22,10 @@ namespace hnd
 			QuadtreeNode(const Rectangle& bound);
 
 			bool InsertObject(MapObject obj);
-			std::vector<MapObjShrPtr> Query(const Rectangle& rect, std::vector<MapObjShrPtr> found) const;
+			std::vector<MapObjShrPtr> Query(const Rectangle& rect, std::vector<MapObjShrPtr>& found) const;
+
+			void DrawCells() const;	// should only be used in debug
+			bool IsDivided() const;
 
 		private:
 			void Subdivide();

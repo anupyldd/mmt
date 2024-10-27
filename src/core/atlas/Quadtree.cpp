@@ -26,7 +26,7 @@ namespace hnd
 						 southWest->InsertObject(obj) || southEast->InsertObject(obj) );
 			}
 		}
-		std::vector<MapObjShrPtr> QuadtreeNode::Query(const Rectangle& rect, std::vector<MapObjShrPtr> found) const
+		std::vector<MapObjShrPtr> QuadtreeNode::Query(const Rectangle& rect, std::vector<MapObjShrPtr>& found) const
 		{
 			if (!CheckCollisionRecs(boundary, rect)) return found;
 
@@ -44,6 +44,24 @@ namespace hnd
 			}
 
 			return found;
+		}
+		void QuadtreeNode::DrawCells() const
+		{
+		#if _DEBUG
+			DrawRectangleLines(boundary.x, boundary.y, boundary.width, boundary.height, RED);
+			
+			if (divided)
+			{
+				northWest->DrawCells();
+				northEast->DrawCells();
+				southWest->DrawCells();
+				southEast->DrawCells();
+			}
+		#endif
+		}
+		bool QuadtreeNode::IsDivided() const
+		{
+			return divided;
 		}
 		void QuadtreeNode::Subdivide()
 		{
@@ -63,6 +81,8 @@ namespace hnd
 			southEast = std::make_unique<QuadtreeNode>(se);
 
 			divided = true;
+
+			LOG_DEBUG("Subdivided quadtree node");
 		}
 	}
 }

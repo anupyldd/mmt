@@ -11,6 +11,7 @@
 #include "GuiObject.h"
 #include "../utility/Defines.h"
 #include "../utility/Log.h"
+#include "../utility/StateMachine.h"
 
 namespace hnd
 {
@@ -18,7 +19,6 @@ namespace hnd
     {
         class Gui
         {
-            SINGLETON(Gui);
             using GuiObjPtr = std::unique_ptr<GuiObject>;
 
         public:

@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <map>
 #include <iterator>
+#include <format>
 
 #include "raylib.h"
 
@@ -21,8 +22,7 @@ namespace hnd
 		// things like stamps, icons, etc.
 		struct MapObject
 		{
-			MapObject(uint64_t id, const Vector2& pos, float scale, float angle)
-				: id(id), pos(pos), scale(scale), angle(angle) { }
+			MapObject(uint64_t id, const Vector2& pos, float scale, float angle);
 
 			void Draw();
 			void SetGroup(const std::string& name);

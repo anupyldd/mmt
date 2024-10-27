@@ -115,6 +115,7 @@ src/core/atlas/Quadtree.cpp
 src/gui/GuiObject.h
 src/gui/Gui.h
 src/gui/Gui.cpp
+src/gui/GuiStates.h
 
 ####################################################
 

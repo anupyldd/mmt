@@ -33,12 +33,18 @@ namespace hnd
 		// -----------------------------------
 		
 
+		MapObject::MapObject(uint64_t id, const Vector2& pos, float scale, float angle)
+			: id(id), pos(pos), scale(scale), angle(angle)
+		{
+			LOG_DEBUG(std::format("Created map object (id:{},x:{},y:{})", id, pos.x, pos.y));
+		}
+
 		void MapObject::Draw()
 		{
 			if (group && !group->visible) return;
 
-			DrawCircle(pos.x, pos.y, 0.1, RED);
-			LOG_DEBUG("IMPLEMENT DRAWING THE OBJECT");
+			DrawCircle(pos.x, pos.y, 5, RED);
+			//LOG_DEBUG("IMPLEMENT DRAWING THE OBJECT");
 		}
 
 		void MapObject::SetGroup(const std::string& name)
