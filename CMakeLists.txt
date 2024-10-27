@@ -101,6 +101,8 @@ src/core/App.cpp
 src/core/Config.h
 src/core/Config.cpp
 src/core/ConfigStructs.h
+src/core/Localization.h
+src/core/Localization.cpp
 
 src/core/atlas/Map.h
 src/core/atlas/Map.cpp
