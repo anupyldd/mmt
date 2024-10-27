@@ -1,12 +1,18 @@
 #pragma once
 
+#include "../utility/Observer.h"
+
 namespace hnd
 {
     namespace gui
     {
-        class GuiObject
+        using namespace util;
+
+        class GuiObject : public Subject
         {
         public:
+            virtual ~GuiObject() = default;
+
             virtual void Update() = 0;
             bool IsVisible() const { return visible; }
 

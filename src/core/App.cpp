@@ -20,7 +20,9 @@ namespace hnd
 		}
 		void App::Run()
 		{
-			LOG_DEBUG("App is now running");
+			LOG_DBG("App is now running");
+
+			appGui.mainMenu.AddObserver(this);
 			fsm.SetCurrentState(&initLoadState);
 
 			while(true) fsm.Update();
@@ -33,6 +35,23 @@ namespace hnd
 			conf.app->height = GetScreenHeight();
 			conf.app->posX = GetWindowPosition().x;
 			conf.app->posY = GetWindowPosition().y;
+		}
+
+		void App::OnNotify(const Event& evt)
+		{
+			using namespace util;
+
+			switch (evt.type)
+			{
+			case EventType::GUI_FROM_MAIN_TO_EDIT:
+			{
+				LOG_DBG("handling notification");
+				if(fsm.IsInState(&mainMenuState)) fsm.ChangeState(&mapEditState);
+			}
+			break;
+
+			default: break;
+			}
 		}
 
 		/************************************************/
@@ -71,7 +90,7 @@ namespace hnd
 		void App::MainMenu::Enter(App* owner)
 		{
 			menuOpen = true;
-			LOG_DEBUG("Main menu is now open");
+			LOG_DBG("Main menu is now open");
 		}
 		void App::MainMenu::Execute(App* owner)
 		{
@@ -80,23 +99,22 @@ namespace hnd
 				BeginDrawing();
 				ClearBackground(BLUE);
 
+				owner->appGui.UpdateDraw();
 				owner->UpdateConfig();
 
 				EndDrawing();
-
-				if (IsKeyPressed(KEY_ENTER)) owner->fsm.ChangeState(&owner->mapEditState);
 			}
 		}
 		void App::MainMenu::Exit(App* owner)
 		{
 			menuOpen = false;
-			LOG_DEBUG("Exiting main menu");
+			LOG_DBG("Exiting main menu");
 		}
 		//-------------------------------------
 		void App::MapEdit::Enter(App* owner)
 		{
 			editOpen = true;
-			LOG_DEBUG("Map edit is now open");
+			LOG_DBG("Map edit is now open");
 		}
 		void App::MapEdit::Execute(App* owner)
 		{
@@ -112,7 +130,7 @@ namespace hnd
 				if (IsKeyPressed(KEY_SPACE)) map.AddLayer("test");
 				if (IsKeyPressed(KEY_ESCAPE))
 				{
-					LOG_DEBUG("Going back to menu");
+					LOG_DBG("Going back to menu");
 					owner->fsm.ChangeState(&owner->mainMenuState);
 				}
 				map.Update();
@@ -127,7 +145,7 @@ namespace hnd
 		void App::MapEdit::Exit(App* owner)
 		{
 			editOpen = false;
-			LOG_DEBUG("Exiting map editing");
+			LOG_DBG("Exiting map editing");
 		}
 		//-------------------------------------
 		void App::Close::Execute(App* owner)

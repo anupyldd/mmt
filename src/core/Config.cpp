@@ -23,7 +23,7 @@ namespace hnd
                 std::string err = picojson::parse(val, strCont);
                 if (!err.empty()) throw std::runtime_error("Failed to parse config file: " + err);
 
-                LOG_DEBUG("Parsed config file");
+                LOG_DBG("Parsed config file");
 
                 if (!val.is<picojson::object>()) throw std::runtime_error("Config json is not an object");
                 const picojson::value::object& obj = val.get<picojson::object>();
@@ -65,7 +65,7 @@ namespace hnd
                 std::string str = mainVal.serialize(true);
                 file << str;
 
-                LOG_DEBUG("Saved config");
+                LOG_DBG("Saved config");
             }
             catch (const std::exception& e)
             {
@@ -97,7 +97,7 @@ namespace hnd
                 app->language = ap.at("language").get<std::string>();
                 app->version = ap.at("version").get<std::string>();
 
-                LOG_DEBUG("Loaded app config");
+                LOG_DBG("Loaded app config");
             }
             catch (const std::exception& e)
             {
@@ -142,7 +142,7 @@ namespace hnd
                 gui->font = ui.at("font").get<std::string>();
                 gui->theme = ui.at("theme").get<std::string>();
 
-                LOG_DEBUG("Loaded gui config");
+                LOG_DBG("Loaded gui config");
             }
             catch (const std::exception& e)
             {
@@ -175,7 +175,7 @@ namespace hnd
                     meta->languages.push_back(l.get<std::string>());
                 }
 
-                LOG_DEBUG("Loaded meta config: " + std::to_string(meta->languages.size()));
+                LOG_DBG("Loaded meta config: " + std::to_string(meta->languages.size()));
             }
             catch (const std::exception& e)
             {

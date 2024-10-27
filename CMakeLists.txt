@@ -94,6 +94,7 @@ src/utility/Log.h
 src/utility/Log.cpp 
 src/utility/StateMachine.h
 src/utility/StringHash.h
+src/utility/Observer.h
 
 src/core/App.h
 src/core/App.cpp
@@ -112,10 +113,12 @@ src/core/atlas/MapObjectGroup.cpp
 src/core/atlas/Quadtree.h
 src/core/atlas/Quadtree.cpp
 
-src/gui/GuiObject.h
 src/gui/Gui.h
 src/gui/Gui.cpp
+src/gui/GuiObject.h
 src/gui/GuiStates.h
+src/gui/MainMenu.h
+src/gui/MainMenu.cpp
 
 ####################################################
 

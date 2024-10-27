@@ -21,6 +21,8 @@ namespace hnd
         struct State
         {
             State() = default;
+            virtual ~State() = default;
+
             virtual void Enter(OwnerType* owner) = 0;
             virtual void Execute(OwnerType* owner) = 0;
             virtual void Exit(OwnerType* owner) = 0;
@@ -72,7 +74,7 @@ namespace hnd
             State<OwnerType>* GetGlobalState() const { return globalState; }
             State<OwnerType>* GetPreviousState() const { return previousState; }
 
-            bool IsInState(const State<OwnerType>& state) { return *currentState == state; }
+            bool IsInState(State<OwnerType>* state) { return currentState == state; }
 
         private:
             OwnerType* owner = nullptr;
