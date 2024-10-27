@@ -27,7 +27,7 @@ namespace hnd
     }
     
     #define LOG util::Log::GetInstance()
-    #define LOG_DEBUG(msg) util::Log::GetInstance().ConsoleDebug(msg)
+    #define LOG_DBG(msg) util::Log::GetInstance().ConsoleDebug(msg)
     #define LOG_INFO(msg) util::Log::GetInstance().ConsoleInfo(msg)
     #define LOG_ERROR(msg) util::Log::GetInstance().ConsoleError(msg)
 }

@@ -2,10 +2,11 @@
 
 #include "raylib.h"
 
-#include "../gui/Gui.h"
-#include "../utility/StateMachine.h"
 #include "Config.h"
+#include "../gui/Gui.h"
 #include "atlas/Map.h"
+#include "../utility/StateMachine.h"
+#include "../utility/Observer.h"
 
 #include <exception>
 
@@ -14,6 +15,8 @@ namespace hnd
 	namespace core
 	{
 		class App;
+		using namespace util;
+		using namespace gui;
 
 		class AppState : public util::State<App>
 		{
@@ -24,8 +27,10 @@ namespace hnd
 
 		//-------------------------------------
 
-		class App
+		class App : public Observer
 		{
+			friend class Gui;
+
 		public:
 			App();
 
@@ -34,6 +39,7 @@ namespace hnd
 
 		private:
 			void UpdateConfig() const;
+			virtual void OnNotify(const Event& evt) override final;
 
 		private:
 			gui::Gui appGui;
@@ -53,6 +59,8 @@ namespace hnd
 				virtual void Enter(App* owner) override final;
 				virtual void Execute(App* owner) override final;
 				virtual void Exit(App* owner) override final;
+
+				bool menuOpen = false;
 			};
 			MainMenu mainMenuState;
 
@@ -61,6 +69,8 @@ namespace hnd
 				virtual void Enter(App* owner) override final;
 				virtual void Execute(App* owner) override final;
 				virtual void Exit(App* owner) override final;
+
+				bool editOpen = false;
 			};
 			MapEdit mapEditState;
 

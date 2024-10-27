@@ -8,7 +8,7 @@
 #include "raylib.h"
 #include "rlImGui.h"
 
-#include "GuiObject.h"
+#include "MainMenu.h"
 #include "../utility/Defines.h"
 #include "../utility/Log.h"
 #include "../utility/StateMachine.h"
@@ -17,8 +17,11 @@ namespace hnd
 {
     namespace gui
     {
+        class MainMenu;
+
         class Gui
         {
+            friend class App;
             using GuiObjPtr = std::unique_ptr<GuiObject>;
 
         public:
@@ -27,8 +30,8 @@ namespace hnd
             void Add(GuiObjPtr obj);
             void Remove(GuiObjPtr obj);
 
-        private:
-            std::vector<GuiObjPtr> objects;
+        public:
+            MainMenu mainMenu;
         };
     }
 }

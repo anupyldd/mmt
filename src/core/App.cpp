@@ -20,7 +20,9 @@ namespace hnd
 		}
 		void App::Run()
 		{
-			LOG_DEBUG("App is now running");
+			LOG_DBG("App is now running");
+
+			appGui.mainMenu.AddObserver(this);
 			fsm.SetCurrentState(&initLoadState);
 
 			while(true) fsm.Update();
@@ -33,6 +35,23 @@ namespace hnd
 			conf.app->height = GetScreenHeight();
 			conf.app->posX = GetWindowPosition().x;
 			conf.app->posY = GetWindowPosition().y;
+		}
+
+		void App::OnNotify(const Event& evt)
+		{
+			using namespace util;
+
+			switch (evt.type)
+			{
+			case EventType::GUI_FROM_MAIN_TO_EDIT:
+			{
+				LOG_DBG("handling notification");
+				if(fsm.IsInState(&mainMenuState)) fsm.ChangeState(&mapEditState);
+			}
+			break;
+
+			default: break;
+			}
 		}
 
 		/************************************************/
@@ -62,34 +81,44 @@ namespace hnd
 
 			SetWindowPosition(conf.app->posX, conf.app->posY);
 			SetTargetFPS(conf.app->fps);
+			SetExitKey(KEY_NULL);
 			rlImGuiSetup(true);
 
 			owner->fsm.ChangeState(&owner->mainMenuState);
-			//LOG_DEBUG(std::to_string((uint64_t) & owner->mainMenuState));
-			//LOG_DEBUG(std::to_string((uint64_t) & owner->initLoadState));
-
-			LOG_DEBUG("Switched to main menu");
 		}
 		//-----------------------------------
 		void App::MainMenu::Enter(App* owner)
 		{
-			LOG_DEBUG("Main menu is now open");
+			menuOpen = true;
+			LOG_DBG("Main menu is now open");
 		}
 		void App::MainMenu::Execute(App* owner)
 		{
-			owner->fsm.ChangeState(&owner->mapEditState);
+			while (!WindowShouldClose() && menuOpen)
+			{
+				BeginDrawing();
+				ClearBackground(BLUE);
+
+				owner->appGui.UpdateDraw();
+				owner->UpdateConfig();
+
+				EndDrawing();
+			}
 		}
 		void App::MainMenu::Exit(App* owner)
 		{
+			menuOpen = false;
+			LOG_DBG("Exiting main menu");
 		}
 		//-------------------------------------
 		void App::MapEdit::Enter(App* owner)
 		{
-			LOG_DEBUG("Map edit is now open");
+			editOpen = true;
+			LOG_DBG("Map edit is now open");
 		}
 		void App::MapEdit::Execute(App* owner)
 		{
-			while (!WindowShouldClose())
+			while (!WindowShouldClose() && editOpen)
 			{
 				BeginDrawing();
 				ClearBackground(GREEN);
@@ -99,6 +128,11 @@ namespace hnd
 
 				/*********************************************/
 				if (IsKeyPressed(KEY_SPACE)) map.AddLayer("test");
+				if (IsKeyPressed(KEY_ESCAPE))
+				{
+					LOG_DBG("Going back to menu");
+					owner->fsm.ChangeState(&owner->mainMenuState);
+				}
 				map.Update();
 				map.Draw();
 				/*********************************************/
@@ -106,10 +140,12 @@ namespace hnd
 				EndDrawing();
 			}
 
-			owner->fsm.ChangeState(&owner->closeState);
+			if(WindowShouldClose()) owner->fsm.ChangeState(&owner->closeState);
 		}
 		void App::MapEdit::Exit(App* owner)
 		{
+			editOpen = false;
+			LOG_DBG("Exiting map editing");
 		}
 		//-------------------------------------
 		void App::Close::Execute(App* owner)
@@ -117,6 +153,7 @@ namespace hnd
 			Config::GetInstance().Save("data/config.json");
 			rlImGuiShutdown();
 			CloseWindow();
+			exit(0);
 		}
 }
 }

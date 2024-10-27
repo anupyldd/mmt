@@ -16,7 +16,7 @@ namespace hnd
 			if (objects.size() < QuadtreeNodeCapacity)
 			{
 				objects.push_back(std::make_shared<MapObject>(obj.id, obj.pos, obj.scale, obj.angle));
-				LOG_DEBUG("Inserted object");
+				LOG_DBG("Inserted object");
 				return true;
 			}
 			else
@@ -82,7 +82,7 @@ namespace hnd
 
 			divided = true;
 
-			LOG_DEBUG("Subdivided quadtree node");
+			LOG_DBG("Subdivided quadtree node");
 		}
 	}
 }
