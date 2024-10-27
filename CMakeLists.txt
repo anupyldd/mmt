@@ -97,8 +97,6 @@ src/utility/StringHash.h
 
 src/core/App.h
 src/core/App.cpp
-src/core/AppStates.h
-src/core/AppStates.cpp
 src/core/Config.h
 src/core/Config.cpp
 src/core/ConfigStructs.h

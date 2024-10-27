@@ -4,6 +4,14 @@
 #include <exception>
 #include <string>
 
+#define INVALID_STATE_CHANGE_EXCEPTION_THROW(fsm) {                     \
+std::stringstream msg;                                                  \
+msg << '[' << typeid(fsm).name() << ']' <<                              \
+" Attempting to change to an invalid state.\n Last valid state: " <<    \
+(fsm).currentState;                                                       \
+throw std::runtime_error(msg.str());                                    \
+}
+
 namespace hnd
 {
     namespace util
@@ -12,8 +20,9 @@ namespace hnd
         template<class OwnerType>
         struct State
         {
+            State() = default;
             virtual void Enter(OwnerType* owner) = 0;
-            virtual void Execute(OwnerType*s owner) = 0;
+            virtual void Execute(OwnerType* owner) = 0;
             virtual void Exit(OwnerType* owner) = 0;
         };
 
@@ -66,18 +75,11 @@ namespace hnd
             bool IsInState(const State<OwnerType>& state) { return *currentState == state; }
 
         private:
-            OwnerType* owner;
-            State<OwnerType>* currentState;
-            State<OwnerType>* previousState;
-            State<OwnerType>* globalState;
+            OwnerType* owner = nullptr;
+            State<OwnerType>* currentState = nullptr;
+            State<OwnerType>* previousState = nullptr;
+            State<OwnerType>* globalState = nullptr;
         };
     }
 }
 
-#define INVALID_STATE_CHANGE_EXCEPTION_THROW(fsm) {                     \
-std::stringstream msg;                                                  \
-msg << '[' << typeid(fsm).name() << ']' <<                              \
-" Attempting to change to an invalid state.\n Last valid state: " <<    \
-fsm.currentState;                                                       \
-throw std::runtime_error(msg.str());                                    \
-}

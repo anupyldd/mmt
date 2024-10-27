@@ -9,6 +9,5 @@ int main()
 	using namespace hnd;
 
 	core::App app;
-	app.Init();
 	app.Run();
 }

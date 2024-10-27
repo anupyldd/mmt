@@ -9,37 +9,21 @@ namespace hnd
 		/********************************************************/
 		Map map({ 400,400 });
 		/********************************************************/
+
+		App::App()
+			: fsm(this)
+		{
+		}
 		void App::Init()
 		{
 			
-
-
-			/***********************************/
-			map.AddLayer("l");
-			/***********************************/
 		}
 		void App::Run()
 		{
-			while (!WindowShouldClose())
-			{
-				BeginDrawing();
-				ClearBackground(GREEN);
+			LOG_DEBUG("App is now running");
+			fsm.SetCurrentState(&initLoadState);
 
-				appGui.UpdateDraw();
-				UpdateConfig();
-
-				/*********************************************/
-				
-				map.Update();
-				map.Draw();
-				/*********************************************/
-
-				EndDrawing();
-			}
-
-			Config::GetInstance().Save("data/config.json");
-			rlImGuiShutdown();
-			CloseWindow();
+			while(true) fsm.Update();
 		}
 		void App::UpdateConfig() const
 		{
@@ -55,7 +39,7 @@ namespace hnd
 		/********************STATES**********************/
 		/************************************************/
 
-		void App::InitLoad::Enter(std::shared_ptr<App> owner)
+		void App::InitLoad::Execute(App* owner)
 		{
 			if (IsWindowReady()) throw std::runtime_error("Attempting to open window twice");
 
@@ -81,6 +65,58 @@ namespace hnd
 			rlImGuiSetup(true);
 
 			owner->fsm.ChangeState(&owner->mainMenuState);
+			//LOG_DEBUG(std::to_string((uint64_t) & owner->mainMenuState));
+			//LOG_DEBUG(std::to_string((uint64_t) & owner->initLoadState));
+
+			LOG_DEBUG("Switched to main menu");
 		}
-	}
+		//-----------------------------------
+		void App::MainMenu::Enter(App* owner)
+		{
+			LOG_DEBUG("Main menu is now open");
+		}
+		void App::MainMenu::Execute(App* owner)
+		{
+			owner->fsm.ChangeState(&owner->mapEditState);
+		}
+		void App::MainMenu::Exit(App* owner)
+		{
+		}
+		//-------------------------------------
+		void App::MapEdit::Enter(App* owner)
+		{
+			LOG_DEBUG("Map edit is now open");
+		}
+		void App::MapEdit::Execute(App* owner)
+		{
+			while (!WindowShouldClose())
+			{
+				BeginDrawing();
+				ClearBackground(GREEN);
+
+				owner->appGui.UpdateDraw();
+				owner->UpdateConfig();
+
+				/*********************************************/
+				if (IsKeyPressed(KEY_SPACE)) map.AddLayer("test");
+				map.Update();
+				map.Draw();
+				/*********************************************/
+
+				EndDrawing();
+			}
+
+			owner->fsm.ChangeState(&owner->closeState);
+		}
+		void App::MapEdit::Exit(App* owner)
+		{
+		}
+		//-------------------------------------
+		void App::Close::Execute(App* owner)
+		{
+			Config::GetInstance().Save("data/config.json");
+			rlImGuiShutdown();
+			CloseWindow();
+		}
+}
 }
