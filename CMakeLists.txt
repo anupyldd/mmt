@@ -115,6 +115,9 @@ src/core/atlas/MapObjectGroup.cpp
 src/core/atlas/Quadtree.h
 src/core/atlas/Quadtree.cpp
 
+src/core/ecs/ECS.h
+src/core/ecs/ECS.cpp
+
 src/gui/Gui.h
 src/gui/Gui.cpp
 src/gui/GuiObject.h
