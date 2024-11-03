@@ -119,9 +119,11 @@ src/core/ecs/Types.h
 src/core/ecs/EntityManager.h
 src/core/ecs/EntityManager.cpp
 src/core/ecs/ComponentArray.h
-src/core/ecs/ComponentArray.cpp
 src/core/ecs/ComponentManager.h
-src/core/ecs/ComponentManager.cpp
+src/core/ecs/System.h
+src/core/ecs/SystemManager.h
+src/core/ecs/EcsManager.h
+src/core/ecs/EcsManager.cpp
 
 src/gui/Gui.h
 src/gui/Gui.cpp
