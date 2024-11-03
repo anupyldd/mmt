@@ -1,0 +1,30 @@
+{
+  "atlas": {
+    "en": "Atlas",
+    "ru": "Атлас"
+  },
+  "map": {
+    "en": "Map",
+    "ru": "Карта"
+  },
+  "new_atlas": {
+    "en": "New atlas",
+    "ru": "Новый атлас"
+  },
+  "new_map": {
+    "en": "New map",
+    "ru": "Новая карта"
+  },
+  "open_atlas": {
+    "en": "Open atlas",
+    "ru": "Открыть атлас"
+  },
+  "open_map": {
+    "en": "Open map",
+    "ru": "Открыть карту"
+  },
+  "recent_projects": {
+    "en": "Recent projects",
+    "ru": "Недавние проекты"
+  }
+}

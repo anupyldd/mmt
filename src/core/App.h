@@ -3,6 +3,7 @@
 #include "raylib.h"
 
 #include "Config.h"
+#include "Localization.h"
 #include "../gui/Gui.h"
 #include "atlas/Map.h"
 #include "../utility/StateMachine.h"

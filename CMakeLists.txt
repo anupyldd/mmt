@@ -101,6 +101,8 @@ src/core/App.cpp
 src/core/Config.h
 src/core/Config.cpp
 src/core/ConfigStructs.h
+src/core/Localization.h
+src/core/Localization.cpp
 
 src/core/atlas/Map.h
 src/core/atlas/Map.cpp
@@ -112,6 +114,9 @@ src/core/atlas/MapObjectGroup.h
 src/core/atlas/MapObjectGroup.cpp
 src/core/atlas/Quadtree.h
 src/core/atlas/Quadtree.cpp
+
+src/core/ecs/ECS.h
+src/core/ecs/ECS.cpp
 
 src/gui/Gui.h
 src/gui/Gui.cpp

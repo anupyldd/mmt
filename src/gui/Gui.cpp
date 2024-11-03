@@ -4,11 +4,20 @@ namespace hnd
 {
     namespace gui
     {
-        void Gui::UpdateDraw()
+        void Gui::UpdateDraw(GuiState state)
         {
 			rlImGuiBegin();
 
-            mainMenu.Update();
+            switch (state)
+            {
+            case GuiState::MainMenu:
+                mainMenu.Update();
+                break;
+            case GuiState::Editor:
+                break;
+            default:
+                break;
+            }
 
 			rlImGuiEnd();
         }

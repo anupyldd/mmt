@@ -66,6 +66,8 @@ namespace hnd
 			if (!conf.Load("data/config.json"))
 				LOG_ERROR("Error loading config, falling back to default values");
 
+			Localization::GetInstance().Load("data/loc.json");
+
 			SetConfigFlags(conf.app->flags);
 			SetTraceLogLevel(LOG_WARNING);
 
@@ -99,11 +101,13 @@ namespace hnd
 				BeginDrawing();
 				ClearBackground(BLUE);
 
-				owner->appGui.UpdateDraw();
+				owner->appGui.UpdateDraw(GuiState::MainMenu);
 				owner->UpdateConfig();
 
 				EndDrawing();
 			}
+
+			if (WindowShouldClose()) owner->fsm.ChangeState(&owner->closeState);
 		}
 		void App::MainMenu::Exit(App* owner)
 		{
@@ -123,7 +127,7 @@ namespace hnd
 				BeginDrawing();
 				ClearBackground(GREEN);
 
-				owner->appGui.UpdateDraw();
+				owner->appGui.UpdateDraw(GuiState::Editor);
 				owner->UpdateConfig();
 
 				/*********************************************/

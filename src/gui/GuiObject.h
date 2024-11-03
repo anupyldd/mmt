@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../utility/Observer.h"
+#include "../core/Localization.h"
 
 namespace hnd
 {

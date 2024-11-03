@@ -10,12 +10,13 @@ namespace hnd
 		void MainMenu::Update()
 		{
 			using namespace util;
+			using namespace core;
 
 			if (!visible) return;
 
 			ImGui::Begin("Main Menu", 0, 0);
 
-			if (ImGui::Button("Go to map editing"))
+			if (ImGui::Button(LocC("new_map")))
 			{
 				LOG_DBG("Pressed button");
 				Notify({ .type = EventType::GUI_FROM_MAIN_TO_EDIT });
