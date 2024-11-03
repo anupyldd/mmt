@@ -27,7 +27,7 @@ namespace hnd
 		public:
 			void AddComponent(Entity entity, T component);
 			void RemoveComponent(Entity entity);
-			T& GetData(Entity entity);
+			T& GetComponent(Entity entity);
 			virtual void EntityDestroyed(Entity entity) override final;
 			
 		private:
@@ -78,7 +78,7 @@ namespace hnd
 			--size;
 		}
 		template<class T>
-		inline T& ComponentArray<T>::GetData(Entity entity)
+		inline T& ComponentArray<T>::GetComponent(Entity entity)
 		{
 			return componentArray.at(entityToIndex.at(entity));
 		}

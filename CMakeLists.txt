@@ -120,6 +120,8 @@ src/core/ecs/EntityManager.h
 src/core/ecs/EntityManager.cpp
 src/core/ecs/ComponentArray.h
 src/core/ecs/ComponentArray.cpp
+src/core/ecs/ComponentManager.h
+src/core/ecs/ComponentManager.cpp
 
 src/gui/Gui.h
 src/gui/Gui.cpp
