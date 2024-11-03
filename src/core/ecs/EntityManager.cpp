@@ -1,4 +1,4 @@
-#include "ECS.h"
+#include "EntityManager.h"
 
 namespace hnd
 {
@@ -11,13 +11,10 @@ namespace hnd
 				availableEntities.push(ent);
 			}
 		}
-		std::optional<Entity> EntityManager::CreateEntity()
+		Entity EntityManager::CreateEntity()
 		{
 			if (livingEntityCount >= MAX_ENTITIES)
-			{
-				LOG_ERROR(std::format("Too many entities. Max: {}", MAX_ENTITIES));
-				return std::nullopt;
-			}
+				throw std::runtime_error(std::format("Too many entities. Max: {}", MAX_ENTITIES));
 
 			Entity id = availableEntities.front();
 			availableEntities.pop();
