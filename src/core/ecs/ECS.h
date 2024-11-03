@@ -4,7 +4,7 @@
 #include <bitset>
 #include <queue>
 #include <array>
-#include <optional>
+#include <exception>
 
 #include "../../utility/Log.h"
 
@@ -28,7 +28,7 @@ namespace hnd
 		public:
 			EntityManager();
 			
-			std::optional<Entity> CreateEntity();
+			Entity CreateEntity();
 			void DestroyEntity(Entity entity);
 			void SetSignature(Entity entity, Signature signature);
 			Signature GetSignature(Entity entity);
