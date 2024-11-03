@@ -16,7 +16,7 @@ namespace hnd
 			if (livingEntityCount >= MAX_ENTITIES)
 			{
 				LOG_ERROR(std::format("Too many entities. Max: {}", MAX_ENTITIES));
-				return;
+				return std::nullopt;
 			}
 
 			Entity id = availableEntities.front();
