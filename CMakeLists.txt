@@ -123,6 +123,7 @@ src/core/ecs/ComponentManager.h
 src/core/ecs/System.h
 src/core/ecs/SystemManager.h
 src/core/ecs/EcsManager.h
+src/core/ecs/Components.h
 
 src/gui/Gui.h
 src/gui/Gui.cpp
