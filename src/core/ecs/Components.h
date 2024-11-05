@@ -18,6 +18,18 @@ namespace hnd
 				float	rotation = 0;
 			};
 
+			struct SizeI
+			{
+				int width = 0,
+					height = 0;
+			};
+
+			struct SizeF
+			{
+				float	width = 0,
+						height = 0;
+			};
+
 			struct Sprite
 			{
 				uint64_t handle = 0;
@@ -38,31 +50,34 @@ namespace hnd
 				uint64_t group = 0;
 			};
 
-			struct Visible
-			{
-				bool visible = true;
-			};
-
-			struct PathNode
-			{
-				bool isPathNode = true;
-			};
-
 			struct Layer
 			{
-				int layer = 0;
-				float opacity = 1;
+				int		layer = 0;
+				float	opacity = 1;
 			};
 
-			struct SelectedObject	// actual object that is already placed on the map
+			struct Mask
 			{
-				
+				Texture2D mask;
+			};
+
+			struct Canvas
+			{
+				RenderTexture2D texture;
 			};
 
 			struct MapLink
 			{
 				uint64_t id;	// id of a map to which this entity links
 			};
+
+			// Flag components ---------------
+
+			struct SelectedObject {};	// actual object that is already placed on the map
+			
+			struct Visible {};
+
+			struct PathNode {};
 		}
 	}
 }

@@ -4,6 +4,10 @@ namespace hnd
 {
 	namespace core
 	{
+		void Atlas::UpdateActiveMap()
+		{
+			activeMap->Update();
+		}
 		void Atlas::SortMaps(MapSort by)
 		{
 			currentSort = by;

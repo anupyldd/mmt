@@ -21,5 +21,10 @@
     "font": "FiraCode",
     "theme": "default",
     "scale": 1.0
+  },
+  "map": {
+    "previewQuality": 0.5,
+    "lastWidth": 500,
+    "lastHeight": 300
   }
 }

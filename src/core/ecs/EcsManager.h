@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+ * Huge thanks to Austin Morlan for a great ECS tutorial
+ * which this code is mostly based on
+ * https://austinmorlan.com/posts/entity_component_system/
+ */
+
 #include <memory>
 
 #include "EntityManager.h"
