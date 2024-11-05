@@ -32,6 +32,7 @@ namespace hnd
             std::unique_ptr<AppConfig>     app;
             std::unique_ptr<GuiConfig>     gui;
             std::unique_ptr<MetaConfig>    meta;
+            std::unique_ptr<MapConfig>     map;
 
         private:
             void LoadAppConfig(const picojson::value::object& obj);
@@ -42,6 +43,9 @@ namespace hnd
 
             void LoadGuiConfig(const picojson::value::object& obj);
             void SaveGuiConfig(picojson::value::object& obj);
+
+            void LoadMapConfig(const picojson::value::object& obj);
+            void SaveMapConfig(picojson::value::object& obj);
 
         private:
             unsigned int WindowFlagFromStr(const std::string& str) const;

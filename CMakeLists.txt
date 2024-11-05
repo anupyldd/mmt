@@ -104,16 +104,16 @@ src/core/ConfigStructs.h
 src/core/Localization.h
 src/core/Localization.cpp
 
-src/core/atlas/Map.h
-src/core/atlas/Map.cpp
-src/core/atlas/Layer.h
-src/core/atlas/Layer.cpp
-src/core/atlas/MapObject.h
-src/core/atlas/MapObject.cpp
-src/core/atlas/MapObjectGroup.h
-src/core/atlas/MapObjectGroup.cpp
-src/core/atlas/Quadtree.h
-src/core/atlas/Quadtree.cpp
+#src/core/atlas/Map.h
+#src/core/atlas/Map.cpp
+#src/core/atlas/Layer.h
+#src/core/atlas/Layer.cpp
+#src/core/atlas/MapObject.h
+#src/core/atlas/MapObject.cpp
+#src/core/atlas/MapObjectGroup.h
+#src/core/atlas/MapObjectGroup.cpp
+#src/core/atlas/Quadtree.h
+#src/core/atlas/Quadtree.cpp
 
 src/core/map/Atlas.h
 src/core/map/Atlas.cpp
@@ -129,6 +129,9 @@ src/core/ecs/System.h
 src/core/ecs/SystemManager.h
 src/core/ecs/EcsManager.h
 src/core/ecs/Components.h
+
+src/core/ecs/systems/LayerSystem.h
+src/core/ecs/systems/VisibilitySystem.h
 
 src/gui/Gui.h
 src/gui/Gui.cpp
