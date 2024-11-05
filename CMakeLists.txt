@@ -130,6 +130,9 @@ src/core/ecs/SystemManager.h
 src/core/ecs/EcsManager.h
 src/core/ecs/Components.h
 
+src/core/ecs/systems/LayerSystem.h
+src/core/ecs/systems/VisibilitySystem.h
+
 src/gui/Gui.h
 src/gui/Gui.cpp
 src/gui/GuiObject.h

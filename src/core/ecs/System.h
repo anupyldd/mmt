@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types.h"
+#include "EcsManager.h"
 
 #include <set>
 

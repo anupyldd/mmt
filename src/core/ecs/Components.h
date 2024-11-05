@@ -71,12 +71,14 @@ namespace hnd
 				uint64_t id;	// id of a map to which this entity links
 			};
 
-			// Flag components ---------------
+			struct Visible 
+			{
+				bool justChanged = false;
+			};
+
+			// Tag components ---------------
 
 			struct SelectedObject {};	// actual object that is already placed on the map
-			
-			struct Visible {};
-
 			struct PathNode {};
 		}
 	}
