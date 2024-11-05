@@ -6,6 +6,8 @@
 #include "ComponentManager.h"
 #include "SystemManager.h"
 
+#include "../../utility/Log.h"
+
 namespace hnd
 {
 	namespace core
@@ -16,6 +18,7 @@ namespace hnd
 			EcsManager() = default;
 
 			void Init();
+			void RegisterCommon();	// registeres common systems and components
 
 			Entity CreateEntity();
 			void DestroyEntity(Entity entity);
@@ -99,6 +102,11 @@ namespace hnd
 		inline void EcsManager::SetSystemSignature(Signature signature)
 		{
 			systemManager->SetSignature<T>(signature);
+		}
+		inline void EcsManager::RegisterCommon()
+		{
+			// TODO
+			LOG_DBG("TODO: IMPLEMENT EcsManager::RegisterCommon()");
 		}
 	}
 }

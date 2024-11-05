@@ -9,15 +9,28 @@
 #include <sstream>
 #include <format>
 
+#include "raylib.h"
+
+#include "../ecs/EcsManager.h"
+#include "../../utility/Log.h"
+#include "../../utility/StringHash.h"
+
 namespace hnd
 {
 	namespace core
 	{
+		struct MapParams;
+
 		class Map
 		{
 		public:
+			Map() = default;
+
+			void Create(MapParams par);
 
 		private:
+			EcsManager ecs;
+			MapParams params;
 		};
 
 		//------------------------------------
@@ -56,6 +69,12 @@ namespace hnd
 				ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X");
 				return ss.str();
 			}
+		};
+
+		struct MapParams
+		{
+			int width = 0, height = 0,
+				density = 0;
 		};
 	}
 }
