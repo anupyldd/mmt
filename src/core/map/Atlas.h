@@ -43,7 +43,7 @@ namespace hnd
 			bool DeleteMap(const std::string& name);
 			bool OpenMap(const std::string& name);
 
-			bool SortMaps(MapSort by);
+			void SortMaps(MapSort by);
 			bool RenameMap(const std::string& name, const std::string& newName);
 
 		private:
@@ -51,7 +51,7 @@ namespace hnd
 			std::optional<MapData&> GetMapByName(const std::string& name);
 
 		private:
-			MapSort currentSort = MapSort::LastEditDesc;
+			MapSort currentSort = MapSort::LastEditDesc;	// need for re-sorting on creation/deletion
 			std::vector<MapData> maps;
 		};
 	}

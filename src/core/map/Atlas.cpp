@@ -4,6 +4,52 @@ namespace hnd
 {
 	namespace core
 	{
+		void Atlas::SortMaps(MapSort by)
+		{
+			currentSort = by;
+
+			switch (by)
+			{
+			case MapSort::CreatedAsc:
+			{
+				std::ranges::sort(maps, [](const MapData& a, const MapData& b)
+					{ return a.creationTime < b.creationTime; });
+				break;
+			} 
+			case MapSort::CreatedDesc:
+			{
+				std::ranges::sort(maps, [](const MapData& a, const MapData& b)
+					{ return a.creationTime > b.creationTime; });
+				break;
+			}
+			case MapSort::LastEditAsc:
+			{
+				std::ranges::sort(maps, [](const MapData& a, const MapData& b)
+					{ return a.lastEditTime < b.lastEditTime; });
+				break;
+			}
+			case MapSort::LastEditDesc:
+			{
+				std::ranges::sort(maps, [](const MapData& a, const MapData& b)
+					{ return a.lastEditTime > b.lastEditTime; });
+				break;
+			}
+			case MapSort::AlphaAsc:
+			{
+				std::ranges::sort(maps, [](const MapData& a, const MapData& b)
+					{ return a.name < b.name; });
+				break;
+			}
+			case MapSort::AlphaDesc:
+			{
+				std::ranges::sort(maps, [](const MapData& a, const MapData& b)
+					{ return a.name > b.name; });
+				break;
+			}
+			default:
+				break;
+			}
+		}
 		bool Atlas::RenameMap(const std::string& name, const std::string& newName)
 		{
 			try

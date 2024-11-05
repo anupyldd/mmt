@@ -18,7 +18,6 @@ namespace hnd
 		public:
 
 		private:
-			std::string name;
 		};
 
 		//------------------------------------
