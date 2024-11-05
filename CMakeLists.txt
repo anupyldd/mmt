@@ -115,6 +115,11 @@ src/core/atlas/MapObjectGroup.cpp
 src/core/atlas/Quadtree.h
 src/core/atlas/Quadtree.cpp
 
+src/core/map/Atlas.h
+src/core/map/Atlas.cpp
+src/core/map/Map.h
+src/core/map/Map.cpp
+
 src/core/ecs/Types.h
 src/core/ecs/EntityManager.h
 src/core/ecs/EntityManager.cpp

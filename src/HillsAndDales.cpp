@@ -3,6 +3,7 @@
 
 #include "utility/Log.h"
 #include "core/App.h"
+#include "core/ecs/EcsManager.h"
 
 int main()
 {
