@@ -35,5 +35,14 @@ namespace hnd
         {
             std::vector<std::string> languages;
         };
+
+        struct MapConfig
+        {
+            float previewQuality = 0.5; // 0...1, quality multiplier
+
+            // remembers last values used in map creation for convenience
+            int lastWidth = 1920,
+                lastHeight = 1080;
+        };
 	}
 }

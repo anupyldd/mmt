@@ -9,6 +9,7 @@ namespace hnd
             app = std::make_unique<AppConfig>();
             gui = std::make_unique<GuiConfig>();
             meta = std::make_unique<MetaConfig>();
+            map = std::make_unique<MapConfig>();
 
             try
             {
@@ -161,6 +162,36 @@ namespace hnd
 
             picojson::value val(uiObj);
             obj["gui"] = val;
+        }
+
+        void Config::LoadMapConfig(const picojson::value::object& obj)
+        {
+            try
+            {
+                const auto& mp = obj.at("map").get<picojson::object>();
+
+                map->previewQuality = static_cast<float>(mp.at("previewQuality").get<double>());
+                map->lastWidth = static_cast<int>(mp.at("lastWidth").get<double>());
+                map->lastHeight = static_cast<int>(mp.at("lastHeight").get<double>());
+
+                LOG_DBG("Loaded map config");
+            }
+            catch (const std::exception& e)
+            {
+                LOG_ERROR("Failed to load map config: " + std::string(e.what()));
+            }
+        }
+
+        void Config::SaveMapConfig(picojson::value::object& obj)
+        {
+            picojson::value::object mpObj;
+
+            mpObj["previewQuality"] = picojson::value(static_cast<double>(map->previewQuality));
+            mpObj["lastWidth"] = picojson::value(static_cast<double>(map->lastWidth));
+            mpObj["lastHeight"] = picojson::value(static_cast<double>(map->lastHeight));
+
+            picojson::value val(mpObj);
+            obj["map"] = val;
         }
 
         void Config::LoadMetaConfig(const picojson::value::object& obj)
