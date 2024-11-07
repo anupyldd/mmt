@@ -11,19 +11,21 @@ namespace hnd
 	{
 		void EcsManager::Init(EntityDensity mapSize)
 		{
+			auto& conf = Config::GetInstance().map;
+
 			switch (mapSize)
 			{
-			case EntityDensity::Small:
-				ecs = ecs_new(MAX_ENTITY_COUNT_LOW_DENSITY, NULL);
+			case EntityDensity::Low:
+				ecs = ecs_new(conf->maxEntityNumberLow, NULL);
 				break;
 			case EntityDensity::Medium:
-				ecs = ecs_new(MAX_ENTITY_COUNT_MEDIUM_DENSITY, NULL);
+				ecs = ecs_new(conf->maxEntityNumberMedium, NULL);
 				break;
-			case EntityDensity::Large:
-				ecs = ecs_new(MAX_ENTITY_COUNT_HIGH_DENSITY, NULL);
+			case EntityDensity::High:
+				ecs = ecs_new(conf->maxEntityNumberHigh, NULL);
 				break;
 			default: 
-				ecs = ecs_new(MAX_ENTITY_COUNT_MEDIUM_DENSITY, NULL);
+				ecs = ecs_new(conf->maxEntityNumberMedium, NULL);
 				break;
 			}
 

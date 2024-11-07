@@ -43,6 +43,11 @@ namespace hnd
             // remembers last values used in map creation for convenience
             int lastWidth = 1920,
                 lastHeight = 1080;
+
+            // user can select different max number on map creation, each map has its own number associated with it, these are defaults
+            int maxEntityNumberLow = 2000,
+                maxEntityNumberMedium = 5000,
+                maxEntityNumberHigh = 1000;
         };
 	}
 }

@@ -108,6 +108,7 @@ src/utility/Log.cpp
 src/utility/StateMachine.h
 src/utility/StringHash.h
 src/utility/Observer.h
+src/utility/Serialization.h
 
 src/core/App.h
 src/core/App.cpp

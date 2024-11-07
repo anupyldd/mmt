@@ -2,10 +2,15 @@
 
 #include <string>
 #include <type_traits>
+#include <format>
+#include <typeinfo>
 
 #include "pico/pico_ecs.h"
+#include "raylib.h"
 
 #include "../../utility/StringHash.h"
+#include "../../utility/Defines.h"
+#include "../../utility/Serialization.h"
 
 namespace hnd
 {
@@ -15,28 +20,47 @@ namespace hnd
 		{
 			using ComponentId = ecs_id_t;
 
-			template<class CompType>
-			inline constexpr uint32_t GenerateComponentId()
-			{
-				return util::HashString32(typeid(CompType).name());
-			}
+			// COMPONENT ID'S TO BE STORED IN EACH ECS INSTANCE SEPARATELY IN A MAP
 
-			struct Serializeable
+			struct ComponentBase
 			{
 				virtual std::string Serialize() = 0;
+				virtual void Deserialize(const std::string& str) = 0;
+				virtual ~ComponentBase() = default;
 			};
 			template<class CompType>
-			struct Component : Serializeable
+			struct Component : ComponentBase
 			{
-				Component() { id = GenerateComponentId<CompType>(); }
-
-				virtual std::string Serialize() override final
+				virtual std::string Serialize() override
 				{
-					// TODO
+					return static_cast<CompType*>(this)->Serialize();
 				}
 
-				static ComponentId id;
+				virtual void Deserialize(const std::string& str) override
+				{
+					static_cast<CompType*>(this)->Deserialize(const std::string & str);
+				}
 			};
+
+			// ------------------------------------
+
+			struct Position : Component<Position>
+			{
+				float	x = 0, 
+						y = 0;
+
+				virtual std::string Serialize() override
+				{
+					return std::format("{}|{}", x, y);
+				}
+				virtual void Deserialize(const std::string& str) override
+				{
+					auto vals = util::DeserializeComponent(str);
+					x = std::stof(vals[0]);
+					x = std::stof(vals[1]);
+				}
+			};
+			
 		}
 		
 	}
