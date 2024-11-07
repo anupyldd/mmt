@@ -121,6 +121,9 @@ src/core/map/Atlas.h
 src/core/map/Atlas.cpp
 src/core/map/Map.h
 src/core/map/Map.cpp
+src/core/map/ECS.h
+src/core/map/ECS.cpp
+src/core/map/Components.h
 
 src/gui/Gui.h
 src/gui/Gui.cpp
