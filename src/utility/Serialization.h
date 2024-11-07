@@ -57,9 +57,25 @@ namespace hnd
 		}
 
 		template<class T>
-		void NumberFromJson(const picojson::object& obj, T var, const char* name)
+		inline void NumberFromJson(const picojson::object& obj, T var, const char* name)
 		{
 			var = static_cast<T>(obj.at(name).get<double>());
+		}
+
+		template<class T>
+		inline void NumberToStandardType(double num, T& var)
+		{
+			var = static_cast<T>(num);
+		}
+
+		template<class... Nums>
+		inline void NumbersFromJson(picojson::object& obj, const std::pair<Nums&, const char*>&... nums)
+		{
+			([&]
+				{
+					NumberToStandardType(obj.at(nums.second).get<double>(), nums.first);
+				}
+			(), ...);
 		}
 
 	}

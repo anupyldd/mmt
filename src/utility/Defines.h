@@ -11,3 +11,4 @@
 
 #define STR(type) #type
 #define PAIR(t1, t2) std::make_pair(t1, t2)
+#define REF(var) std::ref(var)

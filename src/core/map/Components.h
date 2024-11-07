@@ -31,7 +31,7 @@ namespace hnd
 			struct ComponentBase
 			{
 				virtual JsonValue Serialize() = 0;
-				virtual void Deserialize(const JsonObj& obj) = 0;
+				virtual void Deserialize(JsonObj& obj) = 0;
 				virtual ~ComponentBase() = default;
 			};
 			template<class CompType>
@@ -42,7 +42,7 @@ namespace hnd
 					return static_cast<CompType*>(this)->Serialize();
 				}
 
-				virtual void Deserialize(const JsonObj& obj) override
+				virtual void Deserialize(JsonObj& obj) override
 				{
 					static_cast<CompType*>(this)->Deserialize(obj);
 				}
@@ -50,26 +50,35 @@ namespace hnd
 
 			// ------------------------------------
 
-			struct Position : Component<Position>
+			struct Transform : Component<Transform>
 			{
-				float	x = 0, 
-						y = 0;
+				float	x = 0.0f, 
+						y = 0.0f;
+				float	scale = 1.0f;
+				float	angle = 0.0f;
 
 				virtual JsonValue Serialize() override final
 				{
 					picojson::value::object obj;
-					NumbersToJson(obj, PAIR(x, "x"), PAIR(y, "y"));
+					NumbersToJson(
+						obj,
+						PAIR(x,		STR(x)),
+						PAIR(y,		STR(y)),
+						PAIR(scale, STR(scale)),
+						PAIR(angle, STR(angle)));
 					picojson::value val(obj);
 					return val;
 				}
-				virtual void Deserialize(const JsonObj& obj) override final
+				virtual void Deserialize(JsonObj& obj) override final
 				{
-					NumberFromJson(obj, x, "x");
-					NumberFromJson(obj, y, "y");
+					NumbersFromJson(
+						obj,
+						PAIR(REF(x),	 STR(x)),
+						PAIR(REF(y),	 STR(y)),
+						PAIR(REF(scale), STR(scale)),
+						PAIR(REF(angle), STR(angle)));
 				}
 			};
-			
-
 		}
 		
 	}
