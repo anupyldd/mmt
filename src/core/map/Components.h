@@ -4,7 +4,9 @@
 #include <type_traits>
 #include <format>
 #include <typeinfo>
+#include <tuple>
 
+#include "picojson.h"
 #include "pico/pico_ecs.h"
 #include "raylib.h"
 
@@ -18,27 +20,31 @@ namespace hnd
 	{
 		namespace components
 		{
-			using ComponentId = ecs_id_t;
-
 			// COMPONENT ID'S TO BE STORED IN EACH ECS INSTANCE SEPARATELY IN A MAP
+
+			using namespace util;
+
+			using JsonValue = picojson::value;
+			using JsonObj = picojson::object;
+			using JsonValObj = picojson::value::object;
 
 			struct ComponentBase
 			{
-				virtual std::string Serialize() = 0;
-				virtual void Deserialize(const std::string& str) = 0;
+				virtual JsonValue Serialize() = 0;
+				virtual void Deserialize(const JsonObj& obj) = 0;
 				virtual ~ComponentBase() = default;
 			};
 			template<class CompType>
 			struct Component : ComponentBase
 			{
-				virtual std::string Serialize() override
+				virtual JsonValue Serialize() override
 				{
 					return static_cast<CompType*>(this)->Serialize();
 				}
 
-				virtual void Deserialize(const std::string& str) override
+				virtual void Deserialize(const JsonObj& obj) override
 				{
-					static_cast<CompType*>(this)->Deserialize(const std::string & str);
+					static_cast<CompType*>(this)->Deserialize(obj);
 				}
 			};
 
@@ -49,18 +55,21 @@ namespace hnd
 				float	x = 0, 
 						y = 0;
 
-				virtual std::string Serialize() override
+				virtual JsonValue Serialize() override final
 				{
-					return std::format("{}|{}", x, y);
+					picojson::value::object obj;
+					NumbersToJson(obj, PAIR(x, "x"), PAIR(y, "y"));
+					picojson::value val(obj);
+					return val;
 				}
-				virtual void Deserialize(const std::string& str) override
+				virtual void Deserialize(const JsonObj& obj) override final
 				{
-					auto vals = util::DeserializeComponent(str);
-					x = std::stof(vals[0]);
-					x = std::stof(vals[1]);
+					NumberFromJson(obj, x, "x");
+					NumberFromJson(obj, y, "y");
 				}
 			};
 			
+
 		}
 		
 	}
