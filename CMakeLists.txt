@@ -50,6 +50,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
+message("Fetching pico_headers...")
+FetchContent_Declare(
+  picoheaders
+  GIT_REPOSITORY https://github.com/empyreanx/pico_headers.git
+  GIT_TAG 080269a444fc4e4577ac40d929d1134a475f0f0e
+)
+FetchContent_MakeAvailable(picoheaders)
+
 ####################################################
 
 message("Working with third-party stuff...")
@@ -81,6 +89,11 @@ file(COPY ${imgui_SOURCE_DIR}/imstb_rectpack.h DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/imstb_textedit.h DESTINATION ${IMGUI_DIR})
 file(COPY ${imgui_SOURCE_DIR}/imstb_truetype.h DESTINATION ${IMGUI_DIR})
 
+message("Copying pico_headers")
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
+set(PICO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
+file(COPY ${picoheaders_SOURCE_DIR}/pico_ecs.h DESTINATION ${PICO_DIR})
+
 ####################################################
 ####################################################
 ####################################################
@@ -104,34 +117,13 @@ src/core/ConfigStructs.h
 src/core/Localization.h
 src/core/Localization.cpp
 
-#src/core/atlas/Map.h
-#src/core/atlas/Map.cpp
-#src/core/atlas/Layer.h
-#src/core/atlas/Layer.cpp
-#src/core/atlas/MapObject.h
-#src/core/atlas/MapObject.cpp
-#src/core/atlas/MapObjectGroup.h
-#src/core/atlas/MapObjectGroup.cpp
-#src/core/atlas/Quadtree.h
-#src/core/atlas/Quadtree.cpp
-
 src/core/map/Atlas.h
 src/core/map/Atlas.cpp
 src/core/map/Map.h
 src/core/map/Map.cpp
-
-src/core/ecs/Types.h
-src/core/ecs/EntityManager.h
-src/core/ecs/EntityManager.cpp
-src/core/ecs/ComponentArray.h
-src/core/ecs/ComponentManager.h
-src/core/ecs/System.h
-src/core/ecs/SystemManager.h
-src/core/ecs/EcsManager.h
-src/core/ecs/Components.h
-
-src/core/ecs/systems/LayerSystem.h
-src/core/ecs/systems/VisibilitySystem.h
+src/core/map/ECS.h
+src/core/map/ECS.cpp
+src/core/map/Components.h
 
 src/gui/Gui.h
 src/gui/Gui.cpp
@@ -175,6 +167,7 @@ target_include_directories(
 	${raylib_SOURCE_DIR}/src/external/glfw/include 
 	${picojson_SOURCE_DIR}
 	${IMGUI_DIR}
+	${PICO_DIR}
 	${VENDOR_DIR}
 )
 
