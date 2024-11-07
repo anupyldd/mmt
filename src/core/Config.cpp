@@ -173,6 +173,9 @@ namespace hnd
                 map->previewQuality = static_cast<float>(mp.at("previewQuality").get<double>());
                 map->lastWidth = static_cast<int>(mp.at("lastWidth").get<double>());
                 map->lastHeight = static_cast<int>(mp.at("lastHeight").get<double>());
+                map->maxEntityNumberLow = static_cast<int>(mp.at("maxEntityNumberLow").get<double>());
+                map->maxEntityNumberMedium = static_cast<int>(mp.at("maxEntityNumberMedium").get<double>());
+                map->maxEntityNumberHigh = static_cast<int>(mp.at("maxEntityNumberHigh").get<double>());
 
                 LOG_DBG("Loaded map config");
             }
@@ -189,6 +192,9 @@ namespace hnd
             mpObj["previewQuality"] = picojson::value(static_cast<double>(map->previewQuality));
             mpObj["lastWidth"] = picojson::value(static_cast<double>(map->lastWidth));
             mpObj["lastHeight"] = picojson::value(static_cast<double>(map->lastHeight));
+            mpObj["maxEntityNumberLow"] = picojson::value(static_cast<double>(map->maxEntityNumberLow));
+            mpObj["maxEntityNumberMedium"] = picojson::value(static_cast<double>(map->maxEntityNumberMedium));
+            mpObj["maxEntityNumberHigh"] = picojson::value(static_cast<double>(map->maxEntityNumberHigh));
 
             picojson::value val(mpObj);
             obj["map"] = val;

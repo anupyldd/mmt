@@ -10,6 +10,7 @@
 #include "pico/pico_ecs.h"
 
 #include "../../utility/Log.h"
+#include "../Config.h"
 
 namespace hnd
 {
@@ -21,11 +22,7 @@ namespace hnd
 		using SystemId		= ecs_id_t;
 
 		// when creating a map user can select density, default - medium (5k entities)
-		enum class EntityDensity { Small, Medium, Large };
-
-		constexpr int MAX_ENTITY_COUNT_LOW_DENSITY		= 2000;
-		constexpr int MAX_ENTITY_COUNT_MEDIUM_DENSITY	= 5000;	
-		constexpr int MAX_ENTITY_COUNT_HIGH_DENSITY		= 10000;
+		enum class EntityDensity { Low, Medium, High };
 
 		class EcsManager
 		{
