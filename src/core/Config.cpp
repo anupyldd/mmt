@@ -4,6 +4,8 @@ namespace hnd
 {
     namespace core
     {
+        using namespace util;
+
         bool Config::Load(const std::filesystem::path& relPath)
         {
             app = std::make_unique<AppConfig>();
@@ -80,14 +82,25 @@ namespace hnd
         {
             try
             {
-                const auto& ap = obj.at("app").get<picojson::object>();
+                auto& ap = obj.at("app").get<picojson::object>();
 
-                app->width = static_cast<int>(ap.at("width").get<double>());
-                app->height = static_cast<int>(ap.at("height").get<double>());
-                app->posX = static_cast<int>(ap.at("posX").get<double>());
-                app->posY = static_cast<int>(ap.at("posY").get<double>());
-                app->fps = static_cast<int>(ap.at("fps").get<double>());
-                app->title = ap.at("title").get<std::string>();
+                NumbersFromJson(
+                    ap,
+                    PAIR(REF(app->width),   STR(width)),
+                    PAIR(REF(app->height),  STR(height)),
+                    PAIR(REF(app->posX),    STR(posX)),
+                    PAIR(REF(app->posY),    STR(posY)),
+                    PAIR(REF(app->fps),     STR(fps))
+                );
+
+                StringsFromJson(
+                    ap,
+                    {
+                    {app->title,    STR(title)},
+                    {app->language, STR(language)},
+                    {app->version,  STR(version)}
+                    }
+                );
 
                 const auto& flags = ap.at("flags").get<picojson::array>();
                 for (const auto& f : flags)
@@ -95,8 +108,14 @@ namespace hnd
                     app->flags |= WindowFlagFromStr(f.get<std::string>());
                 }
 
-                app->language = ap.at("language").get<std::string>();
-                app->version = ap.at("version").get<std::string>();
+                //app->width = static_cast<int>(ap.at("width").get<double>());
+                //app->height = static_cast<int>(ap.at("height").get<double>());
+                //app->posX = static_cast<int>(ap.at("posX").get<double>());
+                //app->posY = static_cast<int>(ap.at("posY").get<double>());
+                //app->fps = static_cast<int>(ap.at("fps").get<double>());
+                //app->title = ap.at("title").get<std::string>();
+                //app->language = ap.at("language").get<std::string>();
+                //app->version = ap.at("version").get<std::string>();
 
                 LOG_DBG("Loaded app config");
             }

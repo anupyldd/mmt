@@ -5,6 +5,7 @@
 #include "ConfigStructs.h"
 #include "../utility/Defines.h"
 #include "../utility/Log.h"
+#include "../utility/Serialization.h"
 
 #include "raylib.h"
 #include "picojson.h"
