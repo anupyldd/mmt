@@ -58,24 +58,29 @@ namespace hnd
 		{
 			try
 			{
-				GetMapByName(name).value().name = newName;
+				//GetMapByName(name).value().name = newName;
+				return true;
 			}
 			catch (const std::exception& e)
 			{
 				LOG_ERROR(std::format("Failed to rename map {}: {}", name, e.what()));
+				return false;
 			}
 		}
 		bool Atlas::UpdateLastEditTime(const std::string& name)
 		{
 			try
 			{
-				GetMapByName(name).value().lastEditTime = std::chrono::system_clock::now();
+				//GetMapByName(name).value().lastEditTime = std::chrono::system_clock::now();
+				return true;
 			}
 			catch (const std::exception& e)
 			{
 				LOG_ERROR(std::format("Failed to update last edit time for map {}: {}", name, e.what()));
+				return false;
 			}
 		}
+		/*
 		std::optional<MapData&> Atlas::GetMapByName(const std::string& name)
 		{
 			auto iter = std::find_if(maps.begin(), maps.end(), 
@@ -83,5 +88,6 @@ namespace hnd
 			if (iter == maps.end()) return std::nullopt;
 			else return (*iter);
 		}
+		*/
 	}
 }

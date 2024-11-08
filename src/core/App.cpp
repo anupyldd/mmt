@@ -7,7 +7,6 @@ namespace hnd
 
 
 		/********************************************************/
-		Map map({ 400,400 });
 		/********************************************************/
 
 		App::App()
@@ -131,14 +130,11 @@ namespace hnd
 				owner->UpdateConfig();
 
 				/*********************************************/
-				if (IsKeyPressed(KEY_SPACE)) map.AddLayer("test");
 				if (IsKeyPressed(KEY_ESCAPE))
 				{
 					LOG_DBG("Going back to menu");
 					owner->fsm.ChangeState(&owner->mainMenuState);
 				}
-				map.Update();
-				map.Draw();
 				/*********************************************/
 
 				EndDrawing();
