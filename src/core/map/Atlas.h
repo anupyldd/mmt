@@ -50,7 +50,6 @@ namespace hnd
 
 		private:
 			bool UpdateLastEditTime(const std::string& name);
-			std::optional<MapData&> GetMapByName(const std::string& name);
 
 		private:
 			MapSort currentSort = MapSort::LastEditDesc;	// need for re-sorting on creation/deletion

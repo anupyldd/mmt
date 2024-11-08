@@ -43,18 +43,20 @@ namespace hnd
 			{
 				for (const auto& v : vec)
 				{
-					vals.emplace_back(picojson::value(f));
+					vals.emplace_back(picojson::value(v));
 				}
 			}
 			else
 			{
 				for (const auto& v : vec)
 				{
-					vals.emplace_back(picojson::value(static_cast<double>(f)););
+					vals.emplace_back(picojson::value(static_cast<double>(v)));
 				}
 			}
 			obj[name] = picojson::value(vals);
 		}
+
+		//--------------------------------------------------------------------
 
 		template<class T>
 		inline void NumberFromJson(const picojson::object& obj, T var, const char* name)
@@ -68,6 +70,8 @@ namespace hnd
 			var = static_cast<T>(num);
 		}
 
+
+		// non-const obj version
 		template<class... Nums>
 		inline void NumbersFromJson(picojson::object& obj, const std::pair<Nums&, const char*>&... nums)
 		{
@@ -78,5 +82,35 @@ namespace hnd
 			(), ...);
 		}
 
+		// const obj version
+		template<class... Nums>
+		inline void NumbersFromJson(const picojson::object& obj, const std::pair<Nums&, const char*>&... nums)
+		{
+			([&]
+				{
+					NumberToStandardType(obj.at(nums.second).get<double>(), nums.first);
+				}
+			(), ...);
+		}
+
+		// (non-const) first - value, second - name
+		inline void StringsFromJson(picojson::value::object& obj,
+			const std::initializer_list<std::pair<std::string&, std::string>>& strs)
+		{
+			for (const auto& str : strs)
+			{
+				str.first = obj.at(str.second).get<std::string>();
+			}
+		}
+
+		// (const) first - value, second - name
+		inline void StringsFromJson(const picojson::value::object& obj,
+			const std::initializer_list<std::pair<std::string&, std::string>>& strs)
+		{
+			for (const auto& str : strs)
+			{
+				str.first = obj.at(str.second).get<std::string>();
+			}
+		}
 	}
 }

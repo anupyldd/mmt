@@ -4,6 +4,8 @@ namespace hnd
 {
     namespace core
     {
+        using namespace util;
+
         bool Config::Load(const std::filesystem::path& relPath)
         {
             app = std::make_unique<AppConfig>();
@@ -80,14 +82,25 @@ namespace hnd
         {
             try
             {
-                const auto& ap = obj.at("app").get<picojson::object>();
+                auto& ap = obj.at("app").get<picojson::object>();
 
-                app->width = static_cast<int>(ap.at("width").get<double>());
-                app->height = static_cast<int>(ap.at("height").get<double>());
-                app->posX = static_cast<int>(ap.at("posX").get<double>());
-                app->posY = static_cast<int>(ap.at("posY").get<double>());
-                app->fps = static_cast<int>(ap.at("fps").get<double>());
-                app->title = ap.at("title").get<std::string>();
+                NumbersFromJson(
+                    ap,
+                    PAIR(REF(app->width),   STR(width)),
+                    PAIR(REF(app->height),  STR(height)),
+                    PAIR(REF(app->posX),    STR(posX)),
+                    PAIR(REF(app->posY),    STR(posY)),
+                    PAIR(REF(app->fps),     STR(fps))
+                );
+
+                StringsFromJson(
+                    ap,
+                    {
+                    {app->title,    STR(title)},
+                    {app->language, STR(language)},
+                    {app->version,  STR(version)}
+                    }
+                );
 
                 const auto& flags = ap.at("flags").get<picojson::array>();
                 for (const auto& f : flags)
@@ -95,8 +108,14 @@ namespace hnd
                     app->flags |= WindowFlagFromStr(f.get<std::string>());
                 }
 
-                app->language = ap.at("language").get<std::string>();
-                app->version = ap.at("version").get<std::string>();
+                //app->width = static_cast<int>(ap.at("width").get<double>());
+                //app->height = static_cast<int>(ap.at("height").get<double>());
+                //app->posX = static_cast<int>(ap.at("posX").get<double>());
+                //app->posY = static_cast<int>(ap.at("posY").get<double>());
+                //app->fps = static_cast<int>(ap.at("fps").get<double>());
+                //app->title = ap.at("title").get<std::string>();
+                //app->language = ap.at("language").get<std::string>();
+                //app->version = ap.at("version").get<std::string>();
 
                 LOG_DBG("Loaded app config");
             }
@@ -110,12 +129,32 @@ namespace hnd
         {
             picojson::value::object appObj;
 
-            appObj["width"] = picojson::value(static_cast<double>(app->width));
-            appObj["height"] = picojson::value(static_cast<double>(app->height));
-            appObj["posX"] = picojson::value(static_cast<double>(app->posX));
-            appObj["posY"] = picojson::value(static_cast<double>(app->posY));
-            appObj["fps"] = picojson::value(static_cast<double>(app->fps));
-            appObj["title"] = picojson::value(app->title);
+            NumbersToJson(
+                appObj,
+                PAIR(app->width,STR(width)),
+                PAIR(app->height,STR(height)),
+                PAIR(app->posX,STR(posX)),
+                PAIR(app->posY,STR(posY)),
+                PAIR(app->fps,STR(fps))
+            );
+
+            StringsToJson(
+                appObj,
+                {
+                {app->title,    STR(title)},
+                {app->language, STR(language)},
+                {app->version,  STR(version)}
+                }
+            );
+
+            //appObj["width"] = picojson::value(static_cast<double>(app->width));
+            //appObj["height"] = picojson::value(static_cast<double>(app->height));
+            //appObj["posX"] = picojson::value(static_cast<double>(app->posX));
+            //appObj["posY"] = picojson::value(static_cast<double>(app->posY));
+            //appObj["fps"] = picojson::value(static_cast<double>(app->fps));
+            //appObj["title"] = picojson::value(app->title);
+            //appObj["language"] = picojson::value(app->language);
+            //appObj["version"] = picojson::value(app->version);
 
             picojson::value::array flags;
             auto strFlags = WindowFlagsToVec(app->flags);
@@ -124,9 +163,6 @@ namespace hnd
                 flags.emplace_back(picojson::value(f));
             }
             appObj["flags"] = picojson::value(flags);
-
-            appObj["language"] = picojson::value(app->language);
-            appObj["version"] = picojson::value(app->version);
 
             picojson::value val(appObj);
             obj["app"] = val;
@@ -138,10 +174,23 @@ namespace hnd
             {
                 const auto& ui = obj.at("gui").get<picojson::object>();
 
-                gui->fontSize = static_cast<int>(ui.at("fontSize").get<double>());
-                gui->scale = static_cast<float>(ui.at("scale").get<double>());
-                gui->font = ui.at("font").get<std::string>();
-                gui->theme = ui.at("theme").get<std::string>();
+                NumbersFromJson(
+                    ui,
+                    PAIR(REF(gui->fontSize),STR(fontSize)),
+                    PAIR(REF(gui->scale),STR(scale))
+                );
+                StringsFromJson(
+                    ui,
+                    {
+                    {gui->font, STR(font)},
+                    {gui->theme,STR(theme)}
+                    }
+                );
+
+                //gui->fontSize = static_cast<int>(ui.at("fontSize").get<double>());
+                //gui->scale = static_cast<float>(ui.at("scale").get<double>());
+                //gui->font = ui.at("font").get<std::string>();
+                //gui->theme = ui.at("theme").get<std::string>();
 
                 LOG_DBG("Loaded gui config");
             }
@@ -155,10 +204,23 @@ namespace hnd
         {
             picojson::value::object uiObj;
 
-            uiObj["fontSize"] = picojson::value(static_cast<double>(gui->fontSize));
-            uiObj["scale"] = picojson::value(static_cast<double>(gui->scale));
-            uiObj["font"] = picojson::value(gui->font);
-            uiObj["theme"] = picojson::value(gui->theme);
+            NumbersToJson(
+                uiObj,
+                PAIR(gui->fontSize, STR(fontSize)),
+                PAIR(gui->scale,    STR(scale))
+            );
+            StringsToJson(
+                uiObj,
+                {
+                {gui->font, STR(font)},
+                {gui->theme,STR(theme)}
+                }
+            );
+
+            //uiObj["fontSize"] = picojson::value(static_cast<double>(gui->fontSize));
+            //uiObj["scale"] = picojson::value(static_cast<double>(gui->scale));
+            //uiObj["font"] = picojson::value(gui->font);
+            //uiObj["theme"] = picojson::value(gui->theme);
 
             picojson::value val(uiObj);
             obj["gui"] = val;
@@ -170,12 +232,22 @@ namespace hnd
             {
                 const auto& mp = obj.at("map").get<picojson::object>();
 
-                map->previewQuality = static_cast<float>(mp.at("previewQuality").get<double>());
-                map->lastWidth = static_cast<int>(mp.at("lastWidth").get<double>());
-                map->lastHeight = static_cast<int>(mp.at("lastHeight").get<double>());
-                map->maxEntityNumberLow = static_cast<int>(mp.at("maxEntityNumberLow").get<double>());
-                map->maxEntityNumberMedium = static_cast<int>(mp.at("maxEntityNumberMedium").get<double>());
-                map->maxEntityNumberHigh = static_cast<int>(mp.at("maxEntityNumberHigh").get<double>());
+                NumbersFromJson(
+                    mp,
+                    PAIR(REF(map->previewQuality),          STR(previewQuality)),
+                    PAIR(REF(map->lastWidth),               STR(lastWidth)),
+                    PAIR(REF(map->lastHeight),              STR(lastHeight)),
+                    PAIR(REF(map->maxEntityNumberLow),      STR(maxEntityNumberLow)),
+                    PAIR(REF(map->maxEntityNumberMedium),   STR(maxEntityNumberMedium)),
+                    PAIR(REF(map->maxEntityNumberHigh),     STR(maxEntityNumberHigh))
+                );
+
+                //map->previewQuality = static_cast<float>(mp.at("previewQuality").get<double>());
+                //map->lastWidth = static_cast<int>(mp.at("lastWidth").get<double>());
+                //map->lastHeight = static_cast<int>(mp.at("lastHeight").get<double>());
+                //map->maxEntityNumberLow = static_cast<int>(mp.at("maxEntityNumberLow").get<double>());
+                //map->maxEntityNumberMedium = static_cast<int>(mp.at("maxEntityNumberMedium").get<double>());
+                //map->maxEntityNumberHigh = static_cast<int>(mp.at("maxEntityNumberHigh").get<double>());
 
                 LOG_DBG("Loaded map config");
             }
@@ -189,12 +261,22 @@ namespace hnd
         {
             picojson::value::object mpObj;
 
-            mpObj["previewQuality"] = picojson::value(static_cast<double>(map->previewQuality));
-            mpObj["lastWidth"] = picojson::value(static_cast<double>(map->lastWidth));
-            mpObj["lastHeight"] = picojson::value(static_cast<double>(map->lastHeight));
-            mpObj["maxEntityNumberLow"] = picojson::value(static_cast<double>(map->maxEntityNumberLow));
-            mpObj["maxEntityNumberMedium"] = picojson::value(static_cast<double>(map->maxEntityNumberMedium));
-            mpObj["maxEntityNumberHigh"] = picojson::value(static_cast<double>(map->maxEntityNumberHigh));
+            NumbersToJson(
+                mpObj,
+                PAIR(map->previewQuality,           STR(previewQuality)),
+                PAIR(map->lastWidth,                STR(lastWidth)),
+                PAIR(map->lastHeight,               STR(lastHeight)),
+                PAIR(map->maxEntityNumberLow,       STR(maxEntityNumberLow)),
+                PAIR(map->maxEntityNumberMedium,    STR(maxEntityNumberMedium)),
+                PAIR(map->maxEntityNumberHigh,      STR(maxEntityNumberHigh))
+            );
+
+            //mpObj["previewQuality"] = picojson::value(static_cast<double>(map->previewQuality));
+            //mpObj["lastWidth"] = picojson::value(static_cast<double>(map->lastWidth));
+            //mpObj["lastHeight"] = picojson::value(static_cast<double>(map->lastHeight));
+            //mpObj["maxEntityNumberLow"] = picojson::value(static_cast<double>(map->maxEntityNumberLow));
+            //mpObj["maxEntityNumberMedium"] = picojson::value(static_cast<double>(map->maxEntityNumberMedium));
+            //mpObj["maxEntityNumberHigh"] = picojson::value(static_cast<double>(map->maxEntityNumberHigh));
 
             picojson::value val(mpObj);
             obj["map"] = val;
@@ -235,7 +317,7 @@ namespace hnd
             obj["meta"] = val;
         }
 
-        // ------------------
+        // -----------------------------------------------------------------
 
         unsigned int Config::WindowFlagFromStr(const std::string& str) const
         {

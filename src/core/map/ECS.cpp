@@ -31,6 +31,9 @@ namespace hnd
 
 			RegisterCommon();
 		}
+		void EcsManager::RegisterCommon()
+		{
+		}
 		EntityId EcsManager::CreateEntity()
 		{
 			return ecs_create(ecs);
@@ -49,6 +52,7 @@ namespace hnd
 					LOG_ERROR(std::format("Failed to assign component {} to entity {}: component is not registered", comp, id));
 				}
 			}
+			return id;
 		}
 	}
 }

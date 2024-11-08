@@ -12,7 +12,6 @@
 
 #include "raylib.h"
 
-#include "../ecs/EcsManager.h"
 #include "../../utility/Log.h"
 #include "../../utility/StringHash.h"
 
@@ -64,7 +63,6 @@ namespace hnd
 			bool CreateLayer(const std::string& name);
 
 		private:
-			EcsManager ecs;
 			MapParams params;
 			MapData* data = nullptr;
 		};

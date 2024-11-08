@@ -7,14 +7,17 @@ namespace hnd
 		Map& Map::Create(MapParams par)
 		{
 			params = std::move(par);
-			ecs.Init();
-			ecs.RegisterCommon();
 
-
+			return *this;
 		}
 		Map& Map::SetData(MapData* newData)
 		{
-			data = newData;
+			if(newData) data = newData;
+			return *this;
+		}
+
+		void Map::Update()
+		{
 		}
 
 		//-----------------------------------------
