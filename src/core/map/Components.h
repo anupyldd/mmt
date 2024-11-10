@@ -50,7 +50,7 @@ namespace hnd
 
 			// ------------------------------------
 
-			struct Transform : Component<Transform>
+			struct Transform : public Component<Transform>
 			{
 				float	x = 0.0f, 
 						y = 0.0f;
@@ -78,6 +78,94 @@ namespace hnd
 						PAIR(REF(scale), STR(scale)),
 						PAIR(REF(angle), STR(angle)));
 				}
+			};
+
+			struct Sprite : public Component<Sprite>
+			{
+				uint64_t handle = 0;
+
+				virtual JsonValue Serialize() override final
+				{
+					picojson::value::object obj;
+					StringsToJson(
+						obj,
+						{
+							{std::to_string(handle), STR(handle)}
+						}
+					);
+					picojson::value val(obj);
+					return val;
+				}
+				virtual void Deserialize(JsonObj& obj) override final
+				{
+					std::string val;
+					StringsFromJson(
+						obj,
+						{
+							{val, STR(handle)}
+						}
+					);
+					handle = std::stoll(val);
+				}
+			};
+
+			struct Name : public Component<Name>
+			{
+				std::string name;
+
+				virtual JsonValue Serialize() override final
+				{
+					picojson::value::object obj;
+					StringsToJson(
+						obj,
+						{
+							{name, STR(name)}
+						}
+					);
+					picojson::value val(obj);
+					return val;
+				}
+				virtual void Deserialize(JsonObj& obj) override final
+				{
+					StringsFromJson(
+						obj,
+						{
+							{name, STR(name)}
+						}
+					);
+				}
+			};
+
+			struct Description : public Component<Description>
+			{
+				std::string desc;
+
+				virtual JsonValue Serialize() override final
+				{
+					picojson::value::object obj;
+					StringsToJson(
+						obj,
+						{
+							{desc, STR(desc)}
+						}
+					);
+					picojson::value val(obj);
+					return val;
+				}
+				virtual void Deserialize(JsonObj& obj) override final
+				{
+					StringsFromJson(
+						obj,
+						{
+							{desc, STR(desc)}
+						}
+					);
+				}
+			};
+
+			struct Layer : public Component<Layer>
+			{
+
 			};
 		}
 		
