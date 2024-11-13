@@ -14,6 +14,18 @@
 #include "../../utility/Defines.h"
 #include "../../utility/Serialization.h"
 
+/*
+defines a component constructor that takes in an instance of the component object as argument,
+then copies it into the actual component. Final constructor has a name "<Component>Constructor"
+*/
+#define DEFINE_COMPONENT_CONSTRUCTOR(Component)											\
+	void Component##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
+	{																					\
+		Component* comp = static_cast<Component*>(ptr);									\
+		Component* init = static_cast<Component*>(args);								\
+		if(init) (*comp) = (*init);														\
+	}
+
 namespace hnd
 {
 	namespace core
@@ -46,7 +58,9 @@ namespace hnd
 				}
 			};
 
-			// ------------------------------------
+			// ------------------------------------------------------------------------
+			// ------------------------------------------------------------------------
+			// ------------------------------------------------------------------------
 
 			struct Transform : public Component<Transform>
 			{
@@ -77,6 +91,7 @@ namespace hnd
 						PAIR(REF(angle), STR(angle)));
 				}
 			};
+			DEFINE_COMPONENT_CONSTRUCTOR(Transform);
 
 			struct Sprite : public Component<Sprite>
 			{
@@ -106,6 +121,7 @@ namespace hnd
 					handle = std::stoll(val);
 				}
 			};
+			DEFINE_COMPONENT_CONSTRUCTOR(Sprite);
 
 			struct Name : public Component<Name>
 			{
@@ -133,6 +149,7 @@ namespace hnd
 					);
 				}
 			};
+			DEFINE_COMPONENT_CONSTRUCTOR(Name);
 
 			struct Description : public Component<Description>
 			{
@@ -160,6 +177,9 @@ namespace hnd
 					);
 				}
 			};
+			DEFINE_COMPONENT_CONSTRUCTOR(Description);
+
+
 			/*
 			struct Layer : public Component<Layer>
 			{

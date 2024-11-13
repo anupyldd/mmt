@@ -34,21 +34,28 @@ namespace hnd
 		void EcsManager::RegisterCommon()
 		{
 		}
-		EntityId EcsManager::CreateEntity()
+		EntityId EcsManager::EntityCreate()
 		{
 			return ecs_create(ecs);
 		}
-		void EcsManager::RemoveComponent(EntityId entity, const std::string& comp)
+		EntityId EcsManager::EntityCreateSet(std::initializer_list<std::string_view> componentIds)
 		{
-			try
+			EntityId id = ecs_create(ecs);
+		}
+		void EcsManager::EntityComponentsRemove(EntityId entity, std::initializer_list<std::string_view> comps)
+		{
+			for (auto& c : comps)
 			{
-				ecs_remove(ecs, entity, components.at(comp));
-			}
-			catch (const std::exception& e)
-			{
-				LOG_ERROR(std::format("Failed to remove component {} from entity {}: {}",
-					comp, entity, e.what()));
-				return;
+				try
+				{
+					ecs_remove(ecs, entity, components.at(std::string(c)));
+				}
+				catch (const std::exception& e)
+				{
+					LOG_ERROR(std::format("Failed to remove component {} from entity {}: {}",
+						c, entity, e.what()));
+					return;
+				}
 			}
 		}
 		/*
