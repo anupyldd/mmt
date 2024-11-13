@@ -27,7 +27,12 @@ namespace hnd
 		{
 		public:
 			void Init(EntityDensity mapSize);
+
+			~EcsManager();
 			
+			// removes all entities from the ECS, preserving systems and components.
+			void Reset();
+
 			void RegisterCommon();
 
 			// updates all systems
@@ -54,7 +59,7 @@ namespace hnd
 
 			void EntityDestroy(EntityId entity);
 			
-			// Queues an entity for destruction at the end of system execution
+			// queues an entity for destruction at the end of system execution
 			void EntityQueueDestroy(EntityId entity);
 
 			bool EntityIsReady(EntityId entity) const;
@@ -76,7 +81,14 @@ namespace hnd
 
 		public:	// SYSTEMS
 
-			void SystemRegister(SystemId id, std::initializer_list<ComponentId> comps = {});
+			void SystemRegister(
+				const std::string& name, 
+				SystemFuncPtr func,
+				std::initializer_list<std::string_view> requireComps = {},
+				std::initializer_list<std::string_view> excludeComps = {},
+				SystemAddCallbackPtr addCb = nullptr, 
+				SystemRemoveCallbackPtr removeCb = nullptr,
+				void* cbData = nullptr);
 			void SystemRequireComponents(std::initializer_list<ComponentId> comps);
 			void SystemExcludeComponent(std::initializer_list<ComponentId> comps);
 

@@ -31,6 +31,14 @@ namespace hnd
 
 			RegisterCommon();
 		}
+		EcsManager::~EcsManager()
+		{
+			ecs_free(ecs);
+		}
+		void EcsManager::Reset()
+		{
+			ecs_reset(ecs);
+		}
 		void EcsManager::RegisterCommon()
 		{
 		}
@@ -106,6 +114,33 @@ namespace hnd
 		void EcsManager::EntityQueueComponentRemove(EntityId entity, const std::string& comp)
 		{
 			ecs_queue_remove(ecs, entity, components.at(comp));
+		}
+		void EcsManager::SystemRegister(
+			const std::string& name,
+			SystemFuncPtr func,
+			std::initializer_list<std::string_view> requireComps,
+			std::initializer_list<std::string_view> excludeComps, 
+			SystemAddCallbackPtr addCb, 
+			SystemRemoveCallbackPtr removeCb, 
+			void* cbData)
+		{
+			if (systems.contains(name))
+			{
+				LOG_ERROR(std::format("Cannot register system {}: this name is already taken", name));
+				return;
+			}
+
+			SystemId id = ecs_register_system(ecs, func, addCb, removeCb, cbData);
+			systems[name] = id;
+
+			for (auto& c : requireComps)
+			{
+				ecs_require_component(ecs, id, components.at(std::string(c)));
+			}
+			for (auto& c : excludeComps)
+			{
+				ecs_exclude_component(ecs, id, components.at(std::string(c)));
+			}
 		}
 		/*
 		EntityId EcsManager::CreateSetEntity(std::initializer_list<ComponentId> componentIds)
