@@ -6,7 +6,7 @@ namespace hnd
 {
 	namespace core
 	{
-		using ECS = ecs_t;
+		using Ecs = ecs_t;
 		using EntityId = ecs_id_t;
 		using ComponentId = ecs_id_t;
 		using SystemId = ecs_id_t;

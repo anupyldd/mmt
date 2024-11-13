@@ -1,6 +1,10 @@
 #pragma once
 
 #include "EcsTypes.h"
+#include "Components.h"
+#include "../../utility/Log.h"
+
+#include "raylib.h"
 
 /*
 * creates a system function signature without a body.
@@ -22,9 +26,19 @@ namespace hnd
 {
 	namespace core
 	{
-		DECLARE_SYSTEM_FUNCTION(Transform)
-		{
+		using namespace components;
 
+		/*
+		* required: sprite, transform, visibility
+		* excluded:
+		*/
+		DECLARE_SYSTEM_FUNCTION(RenderSprite)
+		{
+			for (size_t i = 0; i < entity_count; i++)
+			{
+				
+				DrawTextureEx()
+			}
 		}
 	}
 }
