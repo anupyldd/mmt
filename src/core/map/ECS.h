@@ -89,8 +89,8 @@ namespace hnd
 				SystemAddCallbackPtr addCb = nullptr, 
 				SystemRemoveCallbackPtr removeCb = nullptr,
 				void* cbData = nullptr);
-			void SystemRequireComponents(std::initializer_list<ComponentId> comps);
-			void SystemExcludeComponent(std::initializer_list<ComponentId> comps);
+			void SystemRequireComponents(const std::string& name, std::initializer_list<std::string_view> comps);
+			void SystemExcludeComponent(const std::string& name, std::initializer_list<std::string_view> comps);
 
 		private:
 			ECS* ecs = nullptr;

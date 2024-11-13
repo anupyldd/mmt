@@ -142,6 +142,24 @@ namespace hnd
 				ecs_exclude_component(ecs, id, components.at(std::string(c)));
 			}
 		}
+		void EcsManager::SystemRequireComponents(const std::string& name, std::initializer_list<std::string_view> comps)
+		{
+			SystemId id = systems.at(name);
+
+			for (auto& c : comps)
+			{
+				ecs_require_component(ecs, id, components.at(std::string(c)));
+			}
+		}
+		void EcsManager::SystemExcludeComponent(const std::string& name, std::initializer_list<std::string_view> comps)
+		{
+			SystemId id = systems.at(name);
+
+			for (auto& c : comps)
+			{
+				ecs_exclude_component(ecs, id, components.at(std::string(c)));
+			}
+		}
 		/*
 		EntityId EcsManager::CreateSetEntity(std::initializer_list<ComponentId> componentIds)
 		{
