@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pico/pico_ecs.h"
+
 namespace hnd
 {
 	namespace core

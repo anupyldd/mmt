@@ -9,8 +9,6 @@
 #include <utility>
 #include <string_view>
 
-#include "pico/pico_ecs.h"
-
 #include "../../utility/Log.h"
 #include "../Config.h"
 #include "EcsTypes.h"
@@ -52,7 +50,7 @@ namespace hnd
 
 			// adds initialized components
 			template<class... Comps>
-			void EntityAddComponents(EntityId entity, std::pair<const char*, Comps>...);
+			void EntityAddComponents(EntityId entity, std::pair<const char*, Comps>... comps);
 
 			void EntityDestroy(EntityId entity);
 			
@@ -108,7 +106,7 @@ namespace hnd
 		}
 
 		template<class ...Comps>
-		inline void EcsManager::EntityAddComponents(EntityId entity, std::pair<const char*, Comps> ...)
+		inline void EcsManager::EntityAddComponents(EntityId entity, std::pair<const char*, Comps>... comps)
 		{
 			([&]
 				{
@@ -120,7 +118,7 @@ namespace hnd
 		template<class CompType>
 		inline CompType* EcsManager::EntityGetComponent(EntityId entity, const std::string& comp)
 		{
-			return dynamic_cast<CompType>(ecs_get(ecs, entity, comp));
+			return dynamic_cast<CompType>(ecs_get(ecs, entity, components.at(comp)));
 		}
 
 		template<class CompType>
@@ -128,7 +126,7 @@ namespace hnd
 		{
 			if (components.contains(name))
 			{
-				LOG_ERROR(std::format("Cannot register component {} (id {}): this name is already taken", name, id));
+				LOG_ERROR(std::format("Cannot register component {}: this name is already taken", name));
 				return;
 			}
 

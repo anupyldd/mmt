@@ -7,12 +7,12 @@
 #include <tuple>
 
 #include "picojson.h"
-#include "pico/pico_ecs.h"
 #include "raylib.h"
 
 #include "../../utility/StringHash.h"
 #include "../../utility/Defines.h"
 #include "../../utility/Serialization.h"
+#include "EcsTypes.h"
 
 /*
 defines a component constructor that takes in an instance of the component object as argument,
