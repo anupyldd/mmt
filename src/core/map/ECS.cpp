@@ -38,6 +38,20 @@ namespace hnd
 		{
 			return ecs_create(ecs);
 		}
+		void EcsManager::RemoveComponent(EntityId entity, const std::string& comp)
+		{
+			try
+			{
+				ecs_remove(ecs, entity, components.at(comp));
+			}
+			catch (const std::exception& e)
+			{
+				LOG_ERROR(std::format("Failed to remove component {} from entity {}: {}",
+					comp, entity, e.what()));
+				return;
+			}
+		}
+		/*
 		EntityId EcsManager::CreateSetEntity(std::initializer_list<ComponentId> componentIds)
 		{
 			EntityId id = ecs_create(ecs);
@@ -54,5 +68,6 @@ namespace hnd
 			}
 			return id;
 		}
+		*/
 	}
 }

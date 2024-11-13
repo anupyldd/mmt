@@ -5,22 +5,20 @@
 #include <vector>
 #include <algorithm>
 #include <exception>
+#include <unordered_map>
 #include <utility>
+#include <string_view>
 
 #include "pico/pico_ecs.h"
 
 #include "../../utility/Log.h"
 #include "../Config.h"
+#include "EcsTypes.h"
 
 namespace hnd
 {
 	namespace core
 	{
-		using ECS			= ecs_t;
-		using EntityId		= ecs_id_t;
-		using ComponentId	= ecs_id_t;
-		using SystemId		= ecs_id_t;
-
 		// when creating a map user can select density, default - medium (5k entities)
 		enum class EntityDensity { Low, Medium, High };
 
@@ -48,8 +46,9 @@ namespace hnd
 
 			void AddComponent(EntityId entity, ComponentId component);
 
-			void RegisterComponent(ComponentId id);
-			void RemoveComponent(EntityId entity);
+			template<class CompType>
+			void RegisterComponent(const std::string& name, ConstructorPtr ctor = nullptr, DestructorPtr dtor = nullptr);
+			void RemoveComponent(EntityId entity, const std::string& comp);
 
 			void RegisterSystem(SystemId id, std::initializer_list<ComponentId> componentList = {});
 			void AddRequiredSystemComponents(std::initializer_list<ComponentId> componentList);
@@ -58,11 +57,23 @@ namespace hnd
 		private:
 			ECS* ecs = nullptr;
 
-			std::vector<ComponentId> components;
-			std::vector<SystemId> systems;
-		};
+			std::unordered_map<std::string, ComponentId> components;
+			std::unordered_map<std::string, SystemId> systems;
+		};	
 
 		// -----------------------------------
+
+		template<class CompType>
+		inline void EcsManager::RegisterComponent(const std::string& name, ConstructorPtr ctor, DestructorPtr dtor)
+		{
+			if (components.contains(name))
+			{
+				LOG_ERROR(std::format("Cannot register component {} (id {}): this name is already taken", name, id));
+				return;
+			}
+
+			components[name] = ecs_register_component(ecs, sizeof(CompType), ctor, dtor);
+		}
 
 	}
 }

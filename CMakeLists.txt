@@ -124,6 +124,7 @@ src/core/map/Map.h
 src/core/map/Map.cpp
 src/core/map/ECS.h
 src/core/map/ECS.cpp
+src/core/map/EcsTypes.h
 src/core/map/Components.h
 
 src/gui/Gui.h

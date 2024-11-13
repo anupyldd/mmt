@@ -20,8 +20,6 @@ namespace hnd
 	{
 		namespace components
 		{
-			// COMPONENT ID'S TO BE STORED IN EACH ECS INSTANCE SEPARATELY IN A MAP
-
 			using namespace util;
 
 			using JsonValue = picojson::value;
@@ -162,11 +160,12 @@ namespace hnd
 					);
 				}
 			};
-
+			/*
 			struct Layer : public Component<Layer>
 			{
-
+				int order = 0;
 			};
+			*/
 		}
 		
 	}
