@@ -36,7 +36,7 @@ namespace hnd
 			void RegisterCommon();
 
 			// updates all systems
-			void Update();
+			void Update(double dt = 0.0);
 
 		public:	// ENTITIES
 

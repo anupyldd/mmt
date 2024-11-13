@@ -42,6 +42,11 @@ namespace hnd
 		void EcsManager::RegisterCommon()
 		{
 		}
+		void EcsManager::Update(double dt)
+		{
+			// some systems will probably be updated manually? like saving maybe?
+			ecs_update_systems(ecs, dt);
+		}
 		EntityId EcsManager::EntityCreate()
 		{
 			return ecs_create(ecs);
