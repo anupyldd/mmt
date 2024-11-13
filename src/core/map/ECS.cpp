@@ -38,9 +38,57 @@ namespace hnd
 		{
 			return ecs_create(ecs);
 		}
-		EntityId EcsManager::EntityCreateSet(std::initializer_list<std::string_view> componentIds)
+		EntityId EcsManager::EntityCreateSet(std::initializer_list<std::string_view> comps)
 		{
 			EntityId id = ecs_create(ecs);
+
+			for (auto& c : comps)
+			{
+				try
+				{
+					ecs_add(ecs, id, components.at(std::string(c)), nullptr);
+				}
+				catch (const std::exception& e)
+				{
+					LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
+						c, id, e.what()));
+					return;
+				}
+			}
+
+			return id;
+		}
+		void EcsManager::EntityAddComponents(EntityId entity, std::initializer_list<std::string_view> comps)
+		{
+			for (auto& c : comps)
+			{
+				try
+				{
+					ecs_add(ecs, entity, components.at(std::string(c)), nullptr);
+				}
+				catch (const std::exception& e)
+				{
+					LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
+						c, entity, e.what()));
+					return;
+				}
+			}
+		}
+		void EcsManager::EntityDestroy(EntityId entity)
+		{
+			ecs_destroy(ecs, entity);
+		}
+		void EcsManager::EntityQueueDestroy(EntityId entity)
+		{
+			ecs_queue_destroy(ecs, entity);
+		}
+		bool EcsManager::EntityIsReady(EntityId entity) const
+		{
+			return ecs_is_ready(ecs, entity);
+		}
+		bool EcsManager::EntityHasComponent(EntityId entity, const std::string& comp) const
+		{
+			return ecs_has(ecs, entity, components.at(comp));
 		}
 		void EcsManager::EntityComponentsRemove(EntityId entity, std::initializer_list<std::string_view> comps)
 		{
@@ -57,6 +105,10 @@ namespace hnd
 					return;
 				}
 			}
+		}
+		void EcsManager::EntityQueueComponentRemove(EntityId entity, const std::string& comp)
+		{
+			ecs_queue_remove(ecs, entity, components.at(comp));
 		}
 		/*
 		EntityId EcsManager::CreateSetEntity(std::initializer_list<ComponentId> componentIds)
