@@ -11,6 +11,8 @@
 #include <filesystem>
 #include <utility>
 
+#define ECS_MGR hnd::core::EcsManager::GetInstance()
+
 namespace hnd
 {
 	namespace core

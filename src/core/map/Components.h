@@ -186,6 +186,12 @@ namespace hnd
 			};
 			DEFINE_COMPONENT_CONSTRUCTOR(Description);
 
+			struct Visible : Component<Visible>
+			{
+				virtual JsonValue Serialize() override final {}
+				virtual void Deserialize(JsonObj& obj) override final { }
+			};
+
 			/*
 			struct Layer : public Component<Layer>
 			{

@@ -3,6 +3,7 @@
 #include "EcsTypes.h"
 #include "Components.h"
 #include "Ecs.h"
+#include "EcsManager.h"
 #include "../../utility/Log.h"
 
 #include "raylib.h"
@@ -23,6 +24,10 @@
 #define	DECLARE_SYSTEM_REMOVED_CALLBACK(Name)\
 	void Name##RemovedCallback(ecs_t* ecs, ecs_id_t entity_id, void* udata)
 
+// to be used in a loop of a system, gets the ptr to comp
+#define GET_ENTITY_COMPONENT_PTR(CompType)  \
+	EntityGetComponent<CompType>(ecs, entities[i], ECS_MGR.GetActiveComponentId(#CompType));
+
 namespace hnd
 {
 	namespace core
@@ -31,22 +36,19 @@ namespace hnd
 		using namespace ecs_wrapper;
 
 		/*
-		* required: sprite, transform, visibility
+		* required: sprite, transform, visible
 		* excluded:
 		*/
 		DECLARE_SYSTEM_FUNCTION(RenderSprite)
 		{
 			for (size_t i = 0; i < entity_count; i++)
 			{
-				/*
-				* problem: component id can differ between ecs instances
-				* there' no way to know it before registering
-				* systems need to somehow get the id
-				* so i guess there has to be some manager that manages insatnces of ecs
-				* and it'll retrieve the id of the component in the currently active ecs
-				*/
 
-				//Transform* transform = EntityGetComponent<Transform>(ecs,entities[i],)
+				Transform* transform = GET_ENTITY_COMPONENT_PTR(Transform);
+				Sprite* sprite = GET_ENTITY_COMPONENT_PTR(Sprite);
+				// not getting visible since it's just a marker
+
+				
 			}
 		}
 	}
