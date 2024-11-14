@@ -122,6 +122,8 @@ src/core/map/Atlas.h
 src/core/map/Atlas.cpp
 src/core/map/Map.h
 src/core/map/Map.cpp
+src/core/map/EcsInstance.h
+src/core/map/EcsInstance.cpp
 src/core/map/EcsManager.h
 src/core/map/EcsManager.cpp
 src/core/map/Ecs.h

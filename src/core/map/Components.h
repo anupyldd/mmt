@@ -26,6 +26,13 @@ then copies it into the actual component. Final constructor has a name "<Compone
 		if(init) (*comp) = (*init);														\
 	}
 
+/*
+* using this assumes that all ecs instances on all maps use the same components.
+* final id looks like "<Component>Id"
+*/
+#define GENERATE_COMPONENT_ID(Component) \
+	ecs_id_t Component##Id = util::HashString32(#Component);
+
 namespace hnd
 {
 	namespace core
@@ -178,7 +185,6 @@ namespace hnd
 				}
 			};
 			DEFINE_COMPONENT_CONSTRUCTOR(Description);
-
 
 			/*
 			struct Layer : public Component<Layer>

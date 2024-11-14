@@ -2,6 +2,7 @@
 
 #include "EcsTypes.h"
 #include "Components.h"
+#include "Ecs.h"
 #include "../../utility/Log.h"
 
 #include "raylib.h"
@@ -27,6 +28,7 @@ namespace hnd
 	namespace core
 	{
 		using namespace components;
+		using namespace ecs_wrapper;
 
 		/*
 		* required: sprite, transform, visibility
@@ -36,8 +38,15 @@ namespace hnd
 		{
 			for (size_t i = 0; i < entity_count; i++)
 			{
-				
-				DrawTextureEx()
+				/*
+				* problem: component id can differ between ecs instances
+				* there' no way to know it before registering
+				* systems need to somehow get the id
+				* so i guess there has to be some manager that manages insatnces of ecs
+				* and it'll retrieve the id of the component in the currently active ecs
+				*/
+
+				//Transform* transform = EntityGetComponent<Transform>(ecs,entities[i],)
 			}
 		}
 	}
