@@ -1,68 +1,141 @@
 #pragma once
 
+// pico_ecs wrapper
+
 #include <memory>
 #include <initializer_list>
 #include <vector>
 #include <algorithm>
 #include <exception>
+#include <unordered_map>
 #include <utility>
+#include <string>
+#include <string_view>
 
-#include "pico/pico_ecs.h"
-
+#include "EcsTypes.h"
 #include "../../utility/Log.h"
-#include "../Config.h"
 
 namespace hnd
 {
 	namespace core
 	{
-		using ECS			= ecs_t;
-		using EntityId		= ecs_id_t;
-		using ComponentId	= ecs_id_t;
-		using SystemId		= ecs_id_t;
-
-		// when creating a map user can select density, default - medium (5k entities)
-		enum class EntityDensity { Low, Medium, High };
-
-		class EcsManager
+		namespace ecs_wrapper
 		{
-		public:
-			void Init(EntityDensity mapSize);
-			
-			void RegisterCommon();
 
-			// updates all systems
-			void Update();
+			inline EntityId EntityCreate(Ecs* ecs)
+			{
+				return ecs_create(ecs);
+			}
 
-			// creates empty entity
-			EntityId CreateEntity();
+			inline EntityId EntityCreateSet(Ecs* ecs, std::initializer_list<ComponentId> comps)
+			{
+				EntityId id = ecs_create(ecs);
 
-			// creates and adds default-initialized components
-			EntityId CreateSetEntity(std::initializer_list<ComponentId> componentIds);
-			
-			/// creates and adds initialized components. LIST OF COMPONENT OBJECTS MUST BE IN THE SAME ORDER AS IN THE LIST OF IDS
+				for (auto& c : comps)
+				{
+					try
+					{
+						ecs_add(ecs, id, c, nullptr);
+					}
+					catch (const std::exception& e)
+					{
+						LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
+							c, id, e.what()));
+					}
+				}
+			}
+
+			/// creates and adds initialized components
 			template<class... Comps>
-			EntityId CreateSetEntity(std::pair<ComponentId, Comps>... components);
+			inline EntityId EntityCreateSet(Ecs* ecs, std::pair<ComponentId, Comps>... comps)
+			{
+				EntityId id = ecs_create(ecs);
 
-			void DestroyEntity(EntityId entity);
+				([&]
+					{
+						ecs_add(ecs, id, comps.first, &comps.second);
+					}
+				(), ...);
 
-			void AddComponent(EntityId entity, ComponentId component);
+				return id;
+			}
 
-			void RegisterComponent(ComponentId id);
-			void RemoveComponent(EntityId entity);
+			// adds default-initialized components
+			inline void EntityAddComponents(Ecs* ecs, EntityId entity, std::initializer_list<ComponentId> comps)
+			{
+				for (auto& c : comps)
+				{
+					try
+					{
+						ecs_add(ecs, entity, c, nullptr);
+					}
+					catch (const std::exception& e)
+					{
+						LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
+							c, entity, e.what()));
+					}
+				}
+			}
 
-			void RegisterSystem(SystemId id, std::initializer_list<ComponentId> componentList = {});
-			void AddRequiredSystemComponents(std::initializer_list<ComponentId> componentList);
+			// adds initialized components
+			template<class... Comps>
+			inline void EntityAddComponents(Ecs* ecs, EntityId entity, std::pair<const char*, Comps>... comps)
+			{
+				([&]
+					{
+						ecs_add(ecs, entity, components.at(comps.first), &comps.second);
+					}
+				(), ...);
+			}
 
+			inline void EntityDestroy(Ecs* ecs, EntityId entity)
+			{
+				ecs_destroy(ecs, entity);
+			}
 
-		private:
-			ECS* ecs = nullptr;
+			// queues an entity for destruction at the end of system execution
+			inline void EntityQueueDestroy(Ecs* ecs, EntityId entity)
+			{
+				ecs_queue_destroy(ecs, entity);
+			}
 
-			std::vector<ComponentId> components;
-			std::vector<SystemId> systems;
-		};
+			inline bool EntityIsReady(Ecs* ecs, EntityId entity)
+			{
+				return ecs_is_ready(ecs, entity);
+			}
 
-		// -----------------------------------
+			inline bool EntityHasComponent(Ecs* ecs, EntityId entity, ComponentId comp)
+			{
+				return ecs_has(ecs, entity, comp);
+			}
 
+			// Comp and comp should be the same, like Transform and "Transform"
+			template<class CompType>
+			inline CompType* EntityGetComponent(Ecs* ecs, EntityId entity, ComponentId comp)
+			{
+				return dynamic_cast<CompType>(ecs_get(ecs, entity, comp));
+			}
+
+			inline void EntityComponentsRemove(Ecs* ecs, EntityId entity, std::initializer_list<ComponentId> comps)
+			{
+				for (auto& c : comps)
+				{
+					try
+					{
+						ecs_remove(ecs, entity, c);
+					}
+					catch (const std::exception& e)
+					{
+						LOG_ERROR(std::format("Failed to remove component {} from entity {}: {}",
+							c, entity, e.what()));
+					}
+				}
+			}
+
+			inline void EntityQueueComponentRemove(Ecs* ecs, EntityId entity, ComponentId comp)
+			{
+				ecs_queue_remove(ecs, entity, comp);
+			}
+		}
 	}
 }
