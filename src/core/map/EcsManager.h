@@ -1,11 +1,13 @@
 #pragma once
 
 #include "EcsInstance.h"
+#include "MapUtil.h"
 
 #include <unordered_map>
 #include <vector>
 #include <cstdint>
 #include <filesystem>
+#include <utility>
 
 namespace hnd
 {
@@ -23,7 +25,7 @@ namespace hnd
 			void CreateInstance(const std::string& mapName, int maxEntityCount);
 
 			// loads previously saved instance from file by id
-			void LoadInstace(const std::string& mapName);
+			void LoadInstace(const std::string& atlasName, const std::string& mapName);
 
 			void DestroyInstance(const std::string& mapName);
 
@@ -32,7 +34,7 @@ namespace hnd
 			void UpdateActive();
 
 		private:
-			std::filesystem::path GetInstanceFilePath(const std::string& mapName) const;
+			std::filesystem::path GetInstanceFilePath(const std::string& atlasName, const std::string& mapName) const;
 
 		private:
 			std::unordered_map<std::string, std::unique_ptr<EcsInstance>> instances;

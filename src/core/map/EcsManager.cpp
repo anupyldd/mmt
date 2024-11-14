@@ -15,7 +15,7 @@ namespace hnd
 			instances[mapName] = std::make_unique<EcsInstance>();
 			instances.at(mapName)->Init(maxEntityCount);
 		}
-		void EcsManager::LoadInstace(const std::string& mapName)
+		void EcsManager::LoadInstace(const std::string& atlasName, const std::string& mapName)
 		{
 			if (instances.contains(mapName))
 			{
@@ -24,7 +24,7 @@ namespace hnd
 			}
 
 			instances[mapName] = std::make_unique<EcsInstance>();
-			instances.at(mapName)->Load(GetInstanceFilePath(mapName));
+			instances.at(mapName)->Load(GetInstanceFilePath(atlasName, mapName));
 		}
 		void EcsManager::DestroyInstance(const std::string& mapName)
 		{
@@ -37,10 +37,9 @@ namespace hnd
 			instances.at(mapName)->Destroy();
 			instances.erase(mapName);
 		}
-		std::filesystem::path EcsManager::GetInstanceFilePath(const std::string& mapName) const
+		std::filesystem::path EcsManager::GetInstanceFilePath(const std::string& atlasName, const std::string& mapName) const
 		{
-			LOG_DBG("TODO: GetInstanceFilePath()");
-			return std::filesystem::path();
+			return util::GetPathToMapSaveFile(atlasName, mapName);
 		}
 		void EcsManager::SetActiveInstace(const std::string& mapName)
 		{
