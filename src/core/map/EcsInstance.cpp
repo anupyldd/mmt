@@ -35,6 +35,14 @@ namespace hnd
 			// some systems will probably be updated manually? like saving maybe?
 			ecs_update_systems(ecs, dt);
 		}
+
+		void EcsInstance::Save(const std::filesystem::path& path)
+		{
+		}
+
+		void EcsInstance::Load(const std::filesystem::path& path)
+		{
+		}
 		
 		ComponentId EcsInstance::ComponentGetId(const std::string& name) const
 		{

@@ -131,6 +131,8 @@ src/core/map/EcsTypes.h
 src/core/map/Components.h
 src/core/map/Systems.h
 src/core/map/MapUtil.h
+src/core/map/ResourceManager.h
+src/core/map/ResourceManager.cpp
 
 src/gui/Gui.h
 src/gui/Gui.cpp

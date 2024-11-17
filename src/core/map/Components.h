@@ -18,12 +18,12 @@
 defines a component constructor that takes in an instance of the component object as argument,
 then copies it into the actual component. Final constructor has a name "<Component>Constructor"
 */
-#define DEFINE_COMPONENT_CONSTRUCTOR(Component)											\
-	void Component##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
-	{																					\
-		Component* comp = static_cast<Component*>(ptr);									\
-		Component* init = static_cast<Component*>(args);								\
-		if(init) (*comp) = (*init);														\
+#define DEFINE_COMPONENT_CONSTRUCTOR(Component)													\
+	inline void Component##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
+	{																							\
+		Component* comp = static_cast<Component*>(ptr);											\
+		Component* init = static_cast<Component*>(args);										\
+		if(init) (*comp) = (*init);																\
 	}
 
 /*
