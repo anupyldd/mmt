@@ -18,13 +18,20 @@
 defines a component constructor that takes in an instance of the component object as argument,
 then copies it into the actual component. Final constructor has a name "<Component>Constructor"
 */
-#define DEFINE_COMPONENT_CONSTRUCTOR(Component)											\
-	void Component##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
-	{																					\
-		Component* comp = static_cast<Component*>(ptr);									\
-		Component* init = static_cast<Component*>(args);								\
-		if(init) (*comp) = (*init);														\
+#define DEFINE_COMPONENT_CONSTRUCTOR(Component)													\
+	inline void Component##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
+	{																							\
+		Component* comp = static_cast<Component*>(ptr);											\
+		Component* init = static_cast<Component*>(args);										\
+		if(init) (*comp) = (*init);																\
 	}
+
+/*
+* using this assumes that all ecs instances on all maps use the same components.
+* final id looks like "<Component>Id"
+*/
+#define GENERATE_COMPONENT_ID(Component) \
+	ecs_id_t Component##Id = util::HashString32(#Component);
 
 namespace hnd
 {
@@ -179,6 +186,11 @@ namespace hnd
 			};
 			DEFINE_COMPONENT_CONSTRUCTOR(Description);
 
+			struct Visible : Component<Visible>
+			{
+				virtual JsonValue Serialize() override final {}
+				virtual void Deserialize(JsonObj& obj) override final { }
+			};
 
 			/*
 			struct Layer : public Component<Layer>

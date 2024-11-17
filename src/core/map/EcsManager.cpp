@@ -1,98 +1,71 @@
-#define PICO_ECS_MAX_COMPONENTS 32
-#define PICO_ECS_MAX_SYSTEMS 16
-
-#define PICO_ECS_IMPLEMENTATION
-
 #include "EcsManager.h"
 
 namespace hnd
 {
 	namespace core
 	{
-		void EcsManager::Init(EntityDensity mapSize)
+		void EcsManager::CreateInstance(const std::string& atlasName, const std::string& mapName, int maxEntityCount)
 		{
-			auto& conf = Config::GetInstance().map;
-
-			switch (mapSize)
+			if (InstanceExists(atlasName, mapName))
 			{
-			case EntityDensity::Low:
-				ecs = ecs_new(conf->maxEntityNumberLow, NULL);
-				break;
-			case EntityDensity::Medium:
-				ecs = ecs_new(conf->maxEntityNumberMedium, NULL);
-				break;
-			case EntityDensity::High:
-				ecs = ecs_new(conf->maxEntityNumberHigh, NULL);
-				break;
-			default: 
-				ecs = ecs_new(conf->maxEntityNumberMedium, NULL);
-				break;
-			}
-
-			RegisterCommon();
-		}
-		EcsManager::~EcsManager()
-		{
-			ecs_free(ecs);
-		}
-		void EcsManager::Reset()
-		{
-			ecs_reset(ecs);
-		}
-		void EcsManager::RegisterCommon()
-		{
-			LOG_DBG("TODO: RegisterCommon()");
-		}
-		void EcsManager::Update(double dt)
-		{
-			// some systems will probably be updated manually? like saving maybe?
-			ecs_update_systems(ecs, dt);
-		}
-		
-		void EcsManager::SystemRegister(
-			const std::string& name,
-			SystemFuncPtr func,
-			std::initializer_list<std::string_view> requireComps,
-			std::initializer_list<std::string_view> excludeComps, 
-			SystemAddCallbackPtr addCb, 
-			SystemRemoveCallbackPtr removeCb, 
-			void* cbData)
-		{
-			if (systems.contains(name))
-			{
-				LOG_ERROR(std::format("Cannot register system {}: this name is already taken", name));
+				LOG_ERROR(std::format("Failed to create ECS instance for map {}: instance for this map already exists", mapName));
 				return;
 			}
 
-			SystemId id = ecs_register_system(ecs, func, addCb, removeCb, cbData);
-			systems[name] = id;
-
-			for (auto& c : requireComps)
-			{
-				ecs_require_component(ecs, id, components.at(std::string(c)));
-			}
-			for (auto& c : excludeComps)
-			{
-				ecs_exclude_component(ecs, id, components.at(std::string(c)));
-			}
+			instances[atlasName][mapName] = std::make_unique<EcsInstance>();
+			instances.at(atlasName).at(mapName)->Init(maxEntityCount);
 		}
-		void EcsManager::SystemRequireComponents(const std::string& name, std::initializer_list<std::string_view> comps)
+		void EcsManager::LoadInstace(const std::string& atlasName, const std::string& mapName)
 		{
-			SystemId id = systems.at(name);
-
-			for (auto& c : comps)
+			if (InstanceExists(atlasName, mapName))
 			{
-				ecs_require_component(ecs, id, components.at(std::string(c)));
+				LOG_ERROR(std::format("Failed to load ECS instance for map {}: instance for this map is already loaded", mapName));
+				return;
 			}
+
+			instances[atlasName][mapName] = std::make_unique<EcsInstance>();
+			instances.at(atlasName).at(mapName)->Load(GetInstanceFilePath(atlasName, mapName));
 		}
-		void EcsManager::SystemExcludeComponent(const std::string& name, std::initializer_list<std::string_view> comps)
+		void EcsManager::DestroyInstance(const std::string& atlasName, const std::string& mapName)
 		{
-			SystemId id = systems.at(name);
-
-			for (auto& c : comps)
+			if (!InstanceExists(atlasName, mapName))
 			{
-				ecs_exclude_component(ecs, id, components.at(std::string(c)));
+				LOG_ERROR(std::format("Failed to destroy ECS instance for map {}: instance does not exist", mapName));
+				return;
 			}
+
+			instances.at(atlasName).at(mapName)->Destroy();
+			instances.at(atlasName).erase(mapName);
+		}
+		std::filesystem::path EcsManager::GetInstanceFilePath(const std::string& atlasName, const std::string& mapName) const
+		{
+			return util::GetPathToMapSaveFile(atlasName, mapName);
+		}
+		EcsInstance* EcsManager::GetActiveInstance() const
+		{
+			return activeInstance.second.second;
+		}
+		bool EcsManager::InstanceExists(const std::string& atlasName, const std::string& mapName) const
+		{
+			return instances.contains(atlasName) && instances.at(atlasName).contains(mapName);
+		}
+		void EcsManager::SetActiveInstace(const std::string& atlasName, const std::string& mapName)
+		{
+			if (!InstanceExists(atlasName, mapName))
+			{
+				LOG_ERROR(std::format("Failed to set ECS instance for map {} as active: instance does not exist", mapName));
+				return;
+			}
+
+			activeInstance.second.second = instances.at(atlasName).at(mapName).get();
+		}
+		void EcsManager::UpdateActive()
+		{
+			if (GetActiveInstance()) GetActiveInstance()->Update();
+		}
+		ComponentId EcsManager::GetActiveComponentId(const std::string& compName) const
+		{
+			return GetActiveInstance()->ComponentGetId(compName);
 		}
 	}
 }
