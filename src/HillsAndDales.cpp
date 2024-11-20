@@ -3,6 +3,7 @@
 
 #include "utility/Log.h"
 #include "core/App.h"
+#include "core/ResourceManager.h"
 
 int main()
 {

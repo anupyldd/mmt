@@ -6,7 +6,7 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project(HillsAndDales LANGUAGES CXX)
+project(HillsAndDales LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -57,6 +57,14 @@ FetchContent_Declare(
   GIT_TAG 080269a444fc4e4577ac40d929d1134a475f0f0e
 )
 FetchContent_MakeAvailable(picoheaders)
+
+message("Fetching rres...")
+FetchContent_Declare(
+  rres
+  GIT_REPOSITORY https://github.com/raysan5/rres.git
+  GIT_TAG 536eb301e05e2fafd631e766baeb92d76e6c8f81
+)
+FetchContent_MakeAvailable(rres)
 
 ####################################################
 
@@ -109,6 +117,8 @@ src/utility/StateMachine.h
 src/utility/StringHash.h
 src/utility/Observer.h
 src/utility/Serialization.h
+src/utility/RresImpl.c
+src/utility/RresImpl.h
 
 src/core/App.h
 src/core/App.cpp
@@ -117,6 +127,8 @@ src/core/Config.cpp
 src/core/ConfigStructs.h
 src/core/Localization.h
 src/core/Localization.cpp
+src/core/ResourceManager.h
+src/core/ResourceManager.cpp
 
 src/core/map/Atlas.h
 src/core/map/Atlas.cpp
@@ -131,8 +143,6 @@ src/core/map/EcsTypes.h
 src/core/map/Components.h
 src/core/map/Systems.h
 src/core/map/MapUtil.h
-src/core/map/ResourceManager.h
-src/core/map/ResourceManager.cpp
 
 src/gui/Gui.h
 src/gui/Gui.cpp
@@ -175,6 +185,7 @@ target_include_directories(
 	${raylib_SOURCE_DIR}/src/external 
 	${raylib_SOURCE_DIR}/src/external/glfw/include 
 	${picojson_SOURCE_DIR}
+	${rres_SOURCE_DIR}/src
 	${IMGUI_DIR}
 	${PICO_DIR}
 	${VENDOR_DIR}
@@ -185,3 +196,4 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 add_compile_options(/utf-8)
+add_compile_options(/permissive)
