@@ -28,7 +28,7 @@ namespace hnd
 		}
 		void EcsInstance::RegisterCommon()
 		{
-			LOG_DBG("TODO: RegisterCommon()");
+			HND_LOG_DEBUG("TODO: RegisterCommon()");
 		}
 		void EcsInstance::Update(double dt)
 		{
@@ -52,7 +52,7 @@ namespace hnd
 			}
 			catch (const std::exception& e)
 			{
-				LOG_ERROR(std::format("Failed to get ID of component {}: {}", name, e.what()));
+				HND_LOG_INFO(std::format("Failed to get ID of component {}: {}", name, e.what()));
 				return ECS_NULL;
 			}
 		}
@@ -68,7 +68,7 @@ namespace hnd
 		{
 			if (systems.contains(name))
 			{
-				LOG_ERROR(std::format("Cannot register system {}: this name is already taken", name));
+				HND_LOG_INFO(std::format("Cannot register system {}: this name is already taken", name));
 				return;
 			}
 

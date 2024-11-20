@@ -8,7 +8,7 @@ namespace hnd
 		{
 			if (InstanceExists(atlasName, mapName))
 			{
-				LOG_ERROR(std::format("Failed to create ECS instance for map {}: instance for this map already exists", mapName));
+				HND_LOG_INFO(std::format("Failed to create ECS instance for map {}: instance for this map already exists", mapName));
 				return;
 			}
 
@@ -19,7 +19,7 @@ namespace hnd
 		{
 			if (InstanceExists(atlasName, mapName))
 			{
-				LOG_ERROR(std::format("Failed to load ECS instance for map {}: instance for this map is already loaded", mapName));
+				HND_LOG_INFO(std::format("Failed to load ECS instance for map {}: instance for this map is already loaded", mapName));
 				return;
 			}
 
@@ -30,7 +30,7 @@ namespace hnd
 		{
 			if (!InstanceExists(atlasName, mapName))
 			{
-				LOG_ERROR(std::format("Failed to destroy ECS instance for map {}: instance does not exist", mapName));
+				HND_LOG_INFO(std::format("Failed to destroy ECS instance for map {}: instance does not exist", mapName));
 				return;
 			}
 
@@ -53,7 +53,7 @@ namespace hnd
 		{
 			if (!InstanceExists(atlasName, mapName))
 			{
-				LOG_ERROR(std::format("Failed to set ECS instance for map {} as active: instance does not exist", mapName));
+				HND_LOG_INFO(std::format("Failed to set ECS instance for map {} as active: instance does not exist", mapName));
 				return;
 			}
 

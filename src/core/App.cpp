@@ -19,7 +19,7 @@ namespace hnd
 		}
 		void App::Run()
 		{
-			LOG_DBG("App is now running");
+			HND_LOG_DEBUG("App is now running");
 
 			appGui.mainMenu.AddObserver(this);
 			fsm.SetCurrentState(&initLoadState);
@@ -44,7 +44,7 @@ namespace hnd
 			{
 			case EventType::GUI_FROM_MAIN_TO_EDIT:
 			{
-				LOG_DBG("handling notification");
+				HND_LOG_DEBUG("handling notification");
 				if(fsm.IsInState(&mainMenuState)) fsm.ChangeState(&mapEditState);
 			}
 			break;
@@ -63,7 +63,7 @@ namespace hnd
 
 			auto& conf = Config::GetInstance();
 			if (!conf.Load("data/config.json"))
-				LOG_ERROR("Error loading config, falling back to default values");
+				HND_LOG_INFO("Error loading config, falling back to default values");
 
 			Localization::GetInstance().Load("data/loc.json");
 
@@ -91,7 +91,7 @@ namespace hnd
 		void App::MainMenu::Enter(App* owner)
 		{
 			menuOpen = true;
-			LOG_DBG("Main menu is now open");
+			HND_LOG_DEBUG("Main menu is now open");
 		}
 		void App::MainMenu::Execute(App* owner)
 		{
@@ -111,13 +111,13 @@ namespace hnd
 		void App::MainMenu::Exit(App* owner)
 		{
 			menuOpen = false;
-			LOG_DBG("Exiting main menu");
+			HND_LOG_DEBUG("Exiting main menu");
 		}
 		//-------------------------------------
 		void App::MapEdit::Enter(App* owner)
 		{
 			editOpen = true;
-			LOG_DBG("Map edit is now open");
+			HND_LOG_DEBUG("Map edit is now open");
 		}
 		void App::MapEdit::Execute(App* owner)
 		{
@@ -132,7 +132,7 @@ namespace hnd
 				/*********************************************/
 				if (IsKeyPressed(KEY_ESCAPE))
 				{
-					LOG_DBG("Going back to menu");
+					HND_LOG_DEBUG("Going back to menu");
 					owner->fsm.ChangeState(&owner->mainMenuState);
 				}
 				/*********************************************/
@@ -145,7 +145,7 @@ namespace hnd
 		void App::MapEdit::Exit(App* owner)
 		{
 			editOpen = false;
-			LOG_DBG("Exiting map editing");
+			HND_LOG_DEBUG("Exiting map editing");
 		}
 		//-------------------------------------
 		void App::Close::Execute(App* owner)

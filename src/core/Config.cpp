@@ -26,7 +26,7 @@ namespace hnd
                 std::string err = picojson::parse(val, strCont);
                 if (!err.empty()) throw std::runtime_error("Failed to parse config file: " + err);
 
-                LOG_DBG("Parsed config file");
+                HND_LOG_DEBUG("Parsed config file");
 
                 if (!val.is<picojson::object>()) throw std::runtime_error("Config json is not an object");
                 const picojson::value::object& obj = val.get<picojson::object>();
@@ -39,14 +39,14 @@ namespace hnd
                 }
                 catch (const std::exception& e)
                 {
-                    LOG_ERROR(e.what());
+                    HND_LOG_INFO(e.what());
                 }
 
                 return true;
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load config file: " + std::string(e.what()));
+                HND_LOG_INFO("Failed to load config file: " + std::string(e.what()));
             }
         }
 
@@ -68,11 +68,11 @@ namespace hnd
                 std::string str = mainVal.serialize(true);
                 file << str;
 
-                LOG_DBG("Saved config");
+                HND_LOG_DEBUG("Saved config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to save config: " + std::string(e.what()));
+                HND_LOG_INFO("Failed to save config: " + std::string(e.what()));
             }
         }
 
@@ -117,11 +117,11 @@ namespace hnd
                 //app->language = ap.at("language").get<std::string>();
                 //app->version = ap.at("version").get<std::string>();
 
-                LOG_DBG("Loaded app config");
+                HND_LOG_DEBUG("Loaded app config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load app config: " + std::string(e.what()));
+                HND_LOG_INFO("Failed to load app config: " + std::string(e.what()));
             }
         }
 
@@ -192,11 +192,11 @@ namespace hnd
                 //gui->font = ui.at("font").get<std::string>();
                 //gui->theme = ui.at("theme").get<std::string>();
 
-                LOG_DBG("Loaded gui config");
+                HND_LOG_DEBUG("Loaded gui config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load gui config: " + std::string(e.what()));
+                HND_LOG_INFO("Failed to load gui config: " + std::string(e.what()));
             }
         }
 
@@ -249,11 +249,11 @@ namespace hnd
                 //map->maxEntityNumberMedium = static_cast<int>(mp.at("maxEntityNumberMedium").get<double>());
                 //map->maxEntityNumberHigh = static_cast<int>(mp.at("maxEntityNumberHigh").get<double>());
 
-                LOG_DBG("Loaded map config");
+                HND_LOG_DEBUG("Loaded map config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load map config: " + std::string(e.what()));
+                HND_LOG_INFO("Failed to load map config: " + std::string(e.what()));
             }
         }
 
@@ -294,11 +294,11 @@ namespace hnd
                     meta->languages.push_back(l.get<std::string>());
                 }
 
-                LOG_DBG("Loaded meta config: " + std::to_string(meta->languages.size()));
+                HND_LOG_DEBUG("Loaded meta config: " + std::to_string(meta->languages.size()));
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load meta config: " + std::string(e.what()));
+                HND_LOG_INFO("Failed to load meta config: " + std::string(e.what()));
             }
         }
 

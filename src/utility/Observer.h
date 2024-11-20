@@ -45,7 +45,7 @@ namespace hnd
 			{
 				for (auto& obs : observers)
 					obs->OnNotify(evt);
-				LOG_DBG("Notified with event type " + std::to_string(static_cast<uint16_t>(evt.type)));
+				HND_LOG_DEBUG("Notified with event type " + std::to_string(static_cast<uint16_t>(evt.type)));
 			}
 
 		private:

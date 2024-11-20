@@ -26,8 +26,8 @@ namespace hnd
         };
     }
     
-    #define LOG util::Log::GetInstance()
-    #define LOG_DBG(msg) util::Log::GetInstance().ConsoleDebug(msg)
-    #define LOG_INFO(msg) util::Log::GetInstance().ConsoleInfo(msg)
-    #define LOG_ERROR(msg) util::Log::GetInstance().ConsoleError(msg)
+    #define HND_LOG util::Log::GetInstance()
+    #define HND_LOG_DEBUG(msg) util::Log::GetInstance().ConsoleDebug(msg)
+    #define HND_LOG_INFO(msg) util::Log::GetInstance().ConsoleInfo(msg)
+    #define HND_LOG_INFO(msg) util::Log::GetInstance().ConsoleError(msg)
 }

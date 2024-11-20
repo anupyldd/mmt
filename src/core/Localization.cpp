@@ -23,7 +23,7 @@ namespace hnd
 
         bool Localization::Load(const std::filesystem::path& relPath)
         {
-            LOG_DBG("Loading loc...");
+            HND_LOG_DEBUG("Loading loc...");
 
             auto cwd = std::filesystem::current_path();
             std::ifstream file(cwd / relPath);
@@ -36,15 +36,15 @@ namespace hnd
             std::string err = picojson::parse(val, strCont);
             if (!err.empty()) throw std::runtime_error("Failed to parse localization file: " + err);
 
-            LOG_DBG("Parsed localization file");
+            HND_LOG_DEBUG("Parsed localization file");
 
             if (!val.is<picojson::object>()) throw std::runtime_error("Localization json is not an object");
             const picojson::value::object& obj = val.get<picojson::object>();
 
             LoadLocInfo(obj);
 
-            LOG_DBG("Loaded localization");
-            LOG_DBG("Loc map size: " + std::to_string(locMap.size()));
+            HND_LOG_DEBUG("Loaded localization");
+            HND_LOG_DEBUG("Loc map size: " + std::to_string(locMap.size()));
         }
         const std::unordered_map<std::string, MultiStr>& Localization::GetMap() const
         {
@@ -65,7 +65,7 @@ namespace hnd
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load localization info");
+                HND_LOG_INFO("Failed to load localization info");
             }
         }
         void Localization::LoadEntry(const picojson::value::object& obj, const std::string& id, const std::string& lang)
@@ -78,7 +78,7 @@ namespace hnd
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load localization entry: " + id);
+                HND_LOG_INFO("Failed to load localization entry: " + id);
             }
         }
     }
