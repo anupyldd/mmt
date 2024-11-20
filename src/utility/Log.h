@@ -14,7 +14,7 @@ namespace hnd
     {
         class Log
         {
-            SINGLETON(Log);
+            HND_SINGLETON(Log);
 
         public:
             void ConsoleDebug(const std::string& msg);

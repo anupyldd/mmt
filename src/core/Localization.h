@@ -32,7 +32,7 @@ namespace hnd
 
         class Localization
         {
-            SINGLETON(Localization);
+            HND_SINGLETON(Localization);
 
         public:
             bool Load(const std::filesystem::path& relPath);
