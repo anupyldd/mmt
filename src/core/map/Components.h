@@ -79,23 +79,25 @@ namespace hnd
 				virtual JsonValue Serialize() override final
 				{
 					picojson::value::object obj;
-					NumbersToJson(
+					ToJson(
 						obj,
-						PAIR(x,		STR(x)),
-						PAIR(y,		STR(y)),
-						PAIR(scale, STR(scale)),
-						PAIR(angle, STR(angle)));
+						HND_SERIALIZE(x),
+						HND_SERIALIZE(y),
+						HND_SERIALIZE(scale),
+						HND_SERIALIZE(angle)
+					);
 					picojson::value val(obj);
 					return val;
 				}
 				virtual void Deserialize(JsonObj& obj) override final
 				{
-					NumbersFromJson(
+					FromJson(
 						obj,
-						PAIR(REF(x),	 STR(x)),
-						PAIR(REF(y),	 STR(y)),
-						PAIR(REF(scale), STR(scale)),
-						PAIR(REF(angle), STR(angle)));
+						HND_DESERIALIZE(x),
+						HND_DESERIALIZE(y),
+						HND_DESERIALIZE(scale),
+						HND_DESERIALIZE(angle)
+					);
 				}
 			};
 			DEFINE_COMPONENT_CONSTRUCTOR(Transform);
@@ -107,11 +109,9 @@ namespace hnd
 				virtual JsonValue Serialize() override final
 				{
 					picojson::value::object obj;
-					StringsToJson(
+					ToJson(
 						obj,
-						{
-							{std::to_string(handle), STR(handle)}
-						}
+						HND_SERIALIZE(std::to_string(handle))
 					);
 					picojson::value val(obj);
 					return val;
@@ -119,11 +119,9 @@ namespace hnd
 				virtual void Deserialize(JsonObj& obj) override final
 				{
 					std::string val;
-					StringsFromJson(
+					FromJson(
 						obj,
-						{
-							{val, STR(handle)}
-						}
+						HND_DESERIALIZE_EX(val, handle)
 					);
 					handle = std::stoll(val);
 				}
@@ -137,22 +135,18 @@ namespace hnd
 				virtual JsonValue Serialize() override final
 				{
 					picojson::value::object obj;
-					StringsToJson(
+					ToJson(
 						obj,
-						{
-							{name, STR(name)}
-						}
+						HND_SERIALIZE(name)
 					);
 					picojson::value val(obj);
 					return val;
 				}
 				virtual void Deserialize(JsonObj& obj) override final
 				{
-					StringsFromJson(
+					FromJson(
 						obj,
-						{
-							{name, STR(name)}
-						}
+						HND_DESERIALIZE(name)
 					);
 				}
 			};
@@ -165,22 +159,18 @@ namespace hnd
 				virtual JsonValue Serialize() override final
 				{
 					picojson::value::object obj;
-					StringsToJson(
+					ToJson(
 						obj,
-						{
-							{desc, STR(desc)}
-						}
+						HND_SERIALIZE(desc)
 					);
 					picojson::value val(obj);
 					return val;
 				}
 				virtual void Deserialize(JsonObj& obj) override final
 				{
-					StringsFromJson(
+					FromJson(
 						obj,
-						{
-							{desc, STR(desc)}
-						}
+						HND_DESERIALIZE(desc)
 					);
 				}
 			};
