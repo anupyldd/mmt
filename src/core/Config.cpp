@@ -186,6 +186,14 @@ namespace hnd
             {
                 const auto& ui = obj.at("gui").get<picojson::object>();
 
+                FromJson(
+                    ui,
+                    HND_DESERIALIZE(gui->font),
+                    HND_DESERIALIZE(gui->fontSize),
+                    HND_DESERIALIZE(gui->scale),
+                    HND_DESERIALIZE(gui->theme)
+                );
+                /*
                 NumbersFromJson(
                     ui,
                     HND_DESERIALIZE(gui->fontSize),
@@ -198,6 +206,7 @@ namespace hnd
                     {gui->theme,STR(theme)}
                     }
                 );
+                */
 
                 //gui->fontSize = static_cast<int>(ui.at("fontSize").get<double>());
                 //gui->scale = static_cast<float>(ui.at("scale").get<double>());
@@ -216,6 +225,15 @@ namespace hnd
         {
             picojson::value::object uiObj;
 
+            ToJson(
+                uiObj,
+                HND_SERIALIZE(gui->font),
+                HND_SERIALIZE(gui->fontSize),
+                HND_SERIALIZE(gui->scale),
+                HND_SERIALIZE(gui->theme)
+            );
+
+            /*
             NumbersToJson(
                 uiObj,
                 PAIR(gui->fontSize, STR(fontSize)),
@@ -228,6 +246,7 @@ namespace hnd
                 {gui->theme,STR(theme)}
                 }
             );
+            */
 
             //uiObj["fontSize"] = picojson::value(static_cast<double>(gui->fontSize));
             //uiObj["scale"] = picojson::value(static_cast<double>(gui->scale));
