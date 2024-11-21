@@ -39,7 +39,7 @@ namespace hnd
 					}
 					catch (const std::exception& e)
 					{
-						LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
+						HND_LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
 							c, id, e.what()));
 					}
 				}
@@ -71,7 +71,7 @@ namespace hnd
 					}
 					catch (const std::exception& e)
 					{
-						LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
+						HND_LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
 							c, entity, e.what()));
 					}
 				}
@@ -126,7 +126,7 @@ namespace hnd
 					}
 					catch (const std::exception& e)
 					{
-						LOG_ERROR(std::format("Failed to remove component {} from entity {}: {}",
+						HND_LOG_ERROR(std::format("Failed to remove component {} from entity {}: {}",
 							c, entity, e.what()));
 					}
 				}

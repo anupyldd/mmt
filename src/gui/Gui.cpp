@@ -27,7 +27,7 @@ namespace hnd
             if (obj)
             {
                 objects.emplace_back(std::move(obj));
-                LOG_DBG("Added Gui object");
+                HND_LOG_DEBUG("Added Gui object");
             }
             */
         }
@@ -37,12 +37,12 @@ namespace hnd
             try
             {
                 objects.erase(std::find(objects.begin(), objects.end(), obj));
-                LOG_DBG("Removed Gui object");
+                HND_LOG_DEBUG("Removed Gui object");
             }
             catch (const std::exception& e)
             {
                 std::string msg("Could not remove Gui object: " + std::string(e.what()));
-                LOG_ERROR(msg);
+                HND_LOG_ERROR(msg);
             }
             */
         }

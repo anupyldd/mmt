@@ -32,7 +32,7 @@ namespace hnd
 		*/
 		class EcsManager
 		{
-			SINGLETON(EcsManager);
+			HND_SINGLETON(EcsManager);
 
 		public:
 			// creates default instance

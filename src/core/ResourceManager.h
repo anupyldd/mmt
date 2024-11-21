@@ -35,7 +35,7 @@ namespace hnd
 
 		class ResourceManager
 		{
-			SINGLETON(ResourceManager);
+			HND_SINGLETON(ResourceManager);
 			
 		public:
 			void Load();

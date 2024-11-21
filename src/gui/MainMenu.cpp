@@ -18,7 +18,7 @@ namespace hnd
 
 			if (ImGui::Button(LocC("new_map")))
 			{
-				LOG_DBG("Pressed button");
+				HND_LOG_DEBUG("Pressed button");
 				Notify({ .type = EventType::GUI_FROM_MAIN_TO_EDIT });
 			}
 

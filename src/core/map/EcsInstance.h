@@ -80,7 +80,7 @@ namespace hnd
 		{
 			if (components.contains(name))
 			{
-				LOG_ERROR(std::format("Cannot register component {}: this name is already taken", name));
+				HND_LOG_ERROR(std::format("Cannot register component {}: this name is already taken", name));
 				return;
 			}
 

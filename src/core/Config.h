@@ -23,7 +23,7 @@ namespace hnd
     {
         class Config
         {
-            SINGLETON(Config);
+            HND_SINGLETON(Config);
 
         public:
             bool Load(const std::filesystem::path& relPath);

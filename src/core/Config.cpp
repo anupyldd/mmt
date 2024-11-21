@@ -26,7 +26,7 @@ namespace hnd
                 std::string err = picojson::parse(val, strCont);
                 if (!err.empty()) throw std::runtime_error("Failed to parse config file: " + err);
 
-                LOG_DBG("Parsed config file");
+                HND_LOG_DEBUG("Parsed config file");
 
                 if (!val.is<picojson::object>()) throw std::runtime_error("Config json is not an object");
                 const picojson::value::object& obj = val.get<picojson::object>();
@@ -39,14 +39,14 @@ namespace hnd
                 }
                 catch (const std::exception& e)
                 {
-                    LOG_ERROR(e.what());
+                    HND_LOG_ERROR(e.what());
                 }
 
                 return true;
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load config file: " + std::string(e.what()));
+                HND_LOG_ERROR("Failed to load config file: " + std::string(e.what()));
             }
         }
 
@@ -68,11 +68,11 @@ namespace hnd
                 std::string str = mainVal.serialize(true);
                 file << str;
 
-                LOG_DBG("Saved config");
+                HND_LOG_DEBUG("Saved config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to save config: " + std::string(e.what()));
+                HND_LOG_ERROR("Failed to save config: " + std::string(e.what()));
             }
         }
 
@@ -84,13 +84,27 @@ namespace hnd
             {
                 auto& ap = obj.at("app").get<picojson::object>();
 
+                FromJson(
+                    ap,
+                    HND_DESERIALIZE(app->width),
+                    HND_DESERIALIZE(app->height),
+                    HND_DESERIALIZE(app->posX),
+                    HND_DESERIALIZE(app->posY),
+                    HND_DESERIALIZE(app->fps),
+
+                    HND_DESERIALIZE(app->title),
+                    HND_DESERIALIZE(app->version),
+                    HND_DESERIALIZE(app->language)
+                );
+
+                /*
                 NumbersFromJson(
                     ap,
-                    PAIR(REF(app->width),   STR(width)),
-                    PAIR(REF(app->height),  STR(height)),
-                    PAIR(REF(app->posX),    STR(posX)),
-                    PAIR(REF(app->posY),    STR(posY)),
-                    PAIR(REF(app->fps),     STR(fps))
+                    HND_DESERIALIZE(app->width), 
+                    HND_DESERIALIZE(app->height),
+                    HND_DESERIALIZE(app->posX),
+                    HND_DESERIALIZE(app->posY),
+                    HND_DESERIALIZE(app->fps)
                 );
 
                 StringsFromJson(
@@ -101,6 +115,7 @@ namespace hnd
                     {app->version,  STR(version)}
                     }
                 );
+                */
 
                 const auto& flags = ap.at("flags").get<picojson::array>();
                 for (const auto& f : flags)
@@ -108,20 +123,11 @@ namespace hnd
                     app->flags |= WindowFlagFromStr(f.get<std::string>());
                 }
 
-                //app->width = static_cast<int>(ap.at("width").get<double>());
-                //app->height = static_cast<int>(ap.at("height").get<double>());
-                //app->posX = static_cast<int>(ap.at("posX").get<double>());
-                //app->posY = static_cast<int>(ap.at("posY").get<double>());
-                //app->fps = static_cast<int>(ap.at("fps").get<double>());
-                //app->title = ap.at("title").get<std::string>();
-                //app->language = ap.at("language").get<std::string>();
-                //app->version = ap.at("version").get<std::string>();
-
-                LOG_DBG("Loaded app config");
+                HND_LOG_DEBUG("Loaded app config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load app config: " + std::string(e.what()));
+                HND_LOG_ERROR("Failed to load app config: " + std::string(e.what()));
             }
         }
 
@@ -129,13 +135,27 @@ namespace hnd
         {
             picojson::value::object appObj;
 
+            ToJson(
+                appObj,
+                HND_SERIALIZE(app->width),
+                HND_SERIALIZE(app->height),
+                HND_SERIALIZE(app->posX),
+                HND_SERIALIZE(app->posY),
+                HND_SERIALIZE(app->fps),
+
+                HND_SERIALIZE(app->title),
+                HND_SERIALIZE(app->version),
+                HND_SERIALIZE(app->language)
+            );
+
+            /*
             NumbersToJson(
                 appObj,
-                PAIR(app->width,STR(width)),
-                PAIR(app->height,STR(height)),
-                PAIR(app->posX,STR(posX)),
-                PAIR(app->posY,STR(posY)),
-                PAIR(app->fps,STR(fps))
+                HND_SERIALIZE(app->width),
+                HND_SERIALIZE(app->height),
+                HND_SERIALIZE(app->posX),
+                HND_SERIALIZE(app->posY),
+                HND_SERIALIZE(app->fps)
             );
 
             StringsToJson(
@@ -146,15 +166,7 @@ namespace hnd
                 {app->version,  STR(version)}
                 }
             );
-
-            //appObj["width"] = picojson::value(static_cast<double>(app->width));
-            //appObj["height"] = picojson::value(static_cast<double>(app->height));
-            //appObj["posX"] = picojson::value(static_cast<double>(app->posX));
-            //appObj["posY"] = picojson::value(static_cast<double>(app->posY));
-            //appObj["fps"] = picojson::value(static_cast<double>(app->fps));
-            //appObj["title"] = picojson::value(app->title);
-            //appObj["language"] = picojson::value(app->language);
-            //appObj["version"] = picojson::value(app->version);
+            */
 
             picojson::value::array flags;
             auto strFlags = WindowFlagsToVec(app->flags);
@@ -176,8 +188,8 @@ namespace hnd
 
                 NumbersFromJson(
                     ui,
-                    PAIR(REF(gui->fontSize),STR(fontSize)),
-                    PAIR(REF(gui->scale),STR(scale))
+                    HND_DESERIALIZE(gui->fontSize),
+                    HND_DESERIALIZE(gui->scale)
                 );
                 StringsFromJson(
                     ui,
@@ -192,11 +204,11 @@ namespace hnd
                 //gui->font = ui.at("font").get<std::string>();
                 //gui->theme = ui.at("theme").get<std::string>();
 
-                LOG_DBG("Loaded gui config");
+                HND_LOG_DEBUG("Loaded gui config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load gui config: " + std::string(e.what()));
+                HND_LOG_ERROR("Failed to load gui config: " + std::string(e.what()));
             }
         }
 
@@ -249,11 +261,11 @@ namespace hnd
                 //map->maxEntityNumberMedium = static_cast<int>(mp.at("maxEntityNumberMedium").get<double>());
                 //map->maxEntityNumberHigh = static_cast<int>(mp.at("maxEntityNumberHigh").get<double>());
 
-                LOG_DBG("Loaded map config");
+                HND_LOG_DEBUG("Loaded map config");
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load map config: " + std::string(e.what()));
+                HND_LOG_ERROR("Failed to load map config: " + std::string(e.what()));
             }
         }
 
@@ -294,11 +306,11 @@ namespace hnd
                     meta->languages.push_back(l.get<std::string>());
                 }
 
-                LOG_DBG("Loaded meta config: " + std::to_string(meta->languages.size()));
+                HND_LOG_DEBUG("Loaded meta config: " + std::to_string(meta->languages.size()));
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Failed to load meta config: " + std::string(e.what()));
+                HND_LOG_ERROR("Failed to load meta config: " + std::string(e.what()));
             }
         }
 
