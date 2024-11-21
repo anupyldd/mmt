@@ -47,16 +47,16 @@ namespace hnd
 
 			struct ComponentBase
 			{
-				virtual JsonValue Serialize() = 0;
+				virtual void Serialize(JsonValObj& valObj) = 0;
 				virtual void Deserialize(JsonObj& obj) = 0;
 				virtual ~ComponentBase() = default;
 			};
 			template<class CompType>
 			struct Component : ComponentBase
 			{
-				virtual JsonValue Serialize() override
+				virtual void Serialize(JsonValObj& valObj) override
 				{
-					return static_cast<CompType*>(this)->Serialize();
+					static_cast<CompType*>(this)->Serialize(valObj);
 				}
 
 				virtual void Deserialize(JsonObj& obj) override
@@ -76,7 +76,7 @@ namespace hnd
 				float	scale = 1.0f;
 				float	angle = 0.0f;
 
-				virtual JsonValue Serialize() override final
+				virtual void Serialize(JsonValObj& valObj) override final
 				{
 					picojson::value::object obj;
 					ToJson(
@@ -87,7 +87,7 @@ namespace hnd
 						HND_SERIALIZE(angle)
 					);
 					picojson::value val(obj);
-					return val;
+					valObj[STR(Transform)] = val;
 				}
 				virtual void Deserialize(JsonObj& obj) override final
 				{
@@ -106,15 +106,16 @@ namespace hnd
 			{
 				uint64_t handle = 0;
 
-				virtual JsonValue Serialize() override final
+				virtual void Serialize(JsonValObj& valObj) override final
 				{
 					picojson::value::object obj;
+					std::string v = std::to_string(handle);
 					ToJson(
 						obj,
-						HND_SERIALIZE(std::to_string(handle))
+						HND_SERIALIZE_EX(v, handle)
 					);
 					picojson::value val(obj);
-					return val;
+					valObj[STR(Sprite)] = val;
 				}
 				virtual void Deserialize(JsonObj& obj) override final
 				{
@@ -132,7 +133,7 @@ namespace hnd
 			{
 				std::string name;
 
-				virtual JsonValue Serialize() override final
+				virtual void Serialize(JsonValObj& valObj) override final
 				{
 					picojson::value::object obj;
 					ToJson(
@@ -140,7 +141,7 @@ namespace hnd
 						HND_SERIALIZE(name)
 					);
 					picojson::value val(obj);
-					return val;
+					valObj[STR(Name)] = val;
 				}
 				virtual void Deserialize(JsonObj& obj) override final
 				{
@@ -156,7 +157,7 @@ namespace hnd
 			{
 				std::string desc;
 
-				virtual JsonValue Serialize() override final
+				virtual void Serialize(JsonValObj& valObj) override final
 				{
 					picojson::value::object obj;
 					ToJson(
@@ -164,7 +165,7 @@ namespace hnd
 						HND_SERIALIZE(desc)
 					);
 					picojson::value val(obj);
-					return val;
+					valObj[STR(Description)] = val;
 				}
 				virtual void Deserialize(JsonObj& obj) override final
 				{
@@ -178,7 +179,10 @@ namespace hnd
 
 			struct Visible : Component<Visible>
 			{
-				virtual JsonValue Serialize() override final {}
+				virtual void Serialize(JsonValObj& valObj) override final 
+				{
+					valObj[STR(Visible)] = picojson::value();
+				}
 				virtual void Deserialize(JsonObj& obj) override final { }
 			};
 
