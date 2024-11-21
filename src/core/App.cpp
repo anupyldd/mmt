@@ -63,7 +63,7 @@ namespace hnd
 
 			auto& conf = Config::GetInstance();
 			if (!conf.Load("data/config.json"))
-				HND_LOG_INFO("Error loading config, falling back to default values");
+				HND_LOG_ERROR("Error loading config, falling back to default values");
 
 			Localization::GetInstance().Load("data/loc.json");
 

@@ -13,3 +13,6 @@
 #define STR(type) #type
 #define PAIR(t1, t2) std::make_pair(t1, t2)
 #define REF(var) std::ref(var)
+
+#define HND_DESERIALIZE(var) std::make_pair(std::ref(var), #var)
+#define HND_SERIALIZE(var) std::make_pair(var, #var)

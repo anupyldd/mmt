@@ -65,7 +65,7 @@ namespace hnd
             }
             catch (const std::exception& e)
             {
-                HND_LOG_INFO("Failed to load localization info");
+                HND_LOG_ERROR("Failed to load localization info");
             }
         }
         void Localization::LoadEntry(const picojson::value::object& obj, const std::string& id, const std::string& lang)
@@ -78,7 +78,7 @@ namespace hnd
             }
             catch (const std::exception& e)
             {
-                HND_LOG_INFO("Failed to load localization entry: " + id);
+                HND_LOG_ERROR("Failed to load localization entry: " + id);
             }
         }
     }

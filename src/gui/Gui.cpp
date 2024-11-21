@@ -42,7 +42,7 @@ namespace hnd
             catch (const std::exception& e)
             {
                 std::string msg("Could not remove Gui object: " + std::string(e.what()));
-                HND_LOG_INFO(msg);
+                HND_LOG_ERROR(msg);
             }
             */
         }

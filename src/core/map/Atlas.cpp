@@ -63,7 +63,7 @@ namespace hnd
 			}
 			catch (const std::exception& e)
 			{
-				HND_LOG_INFO(std::format("Failed to rename map {}: {}", name, e.what()));
+				HND_LOG_ERROR(std::format("Failed to rename map {}: {}", name, e.what()));
 				return false;
 			}
 		}
@@ -76,7 +76,7 @@ namespace hnd
 			}
 			catch (const std::exception& e)
 			{
-				HND_LOG_INFO(std::format("Failed to update last edit time for map {}: {}", name, e.what()));
+				HND_LOG_ERROR(std::format("Failed to update last edit time for map {}: {}", name, e.what()));
 				return false;
 			}
 		}

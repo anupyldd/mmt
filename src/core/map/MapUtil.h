@@ -47,7 +47,7 @@ namespace hnd
 				return cwd;
 			}
 			default:
-				HND_LOG_INFO(std::format("Map copy {} does not exist", copy));
+				HND_LOG_ERROR(std::format("Map copy {} does not exist", copy));
 				return cwd;
 			}
 		}
