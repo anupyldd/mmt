@@ -263,6 +263,12 @@ namespace hnd
             {
                 const auto& mp = obj.at("map").get<picojson::object>();
 
+                FromJson(
+                    mp,
+                    HND_DESERIALIZE(map->lastHeight),
+                    HND_DESERIALIZE(map->lastWidth)
+                );
+                /*
                 NumbersFromJson(
                     mp,
                     PAIR(REF(map->previewQuality),          STR(previewQuality)),
@@ -272,6 +278,7 @@ namespace hnd
                     PAIR(REF(map->maxEntityNumberMedium),   STR(maxEntityNumberMedium)),
                     PAIR(REF(map->maxEntityNumberHigh),     STR(maxEntityNumberHigh))
                 );
+                */
 
                 //map->previewQuality = static_cast<float>(mp.at("previewQuality").get<double>());
                 //map->lastWidth = static_cast<int>(mp.at("lastWidth").get<double>());
@@ -292,6 +299,12 @@ namespace hnd
         {
             picojson::value::object mpObj;
 
+            ToJson(
+                mpObj,
+                HND_SERIALIZE(map->lastHeight),
+                HND_SERIALIZE(map->lastWidth)
+            );
+            /*
             NumbersToJson(
                 mpObj,
                 PAIR(map->previewQuality,           STR(previewQuality)),
@@ -301,6 +314,7 @@ namespace hnd
                 PAIR(map->maxEntityNumberMedium,    STR(maxEntityNumberMedium)),
                 PAIR(map->maxEntityNumberHigh,      STR(maxEntityNumberHigh))
             );
+            */
 
             //mpObj["previewQuality"] = picojson::value(static_cast<double>(map->previewQuality));
             //mpObj["lastWidth"] = picojson::value(static_cast<double>(map->lastWidth));
