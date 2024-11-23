@@ -53,20 +53,39 @@ namespace hnd
 
 			for (unsigned int i = 0; i < chunkCount; ++i)
 			{
-				//std::cout << infos[i].type << '\n';
-				rresResourceChunk chunk = rresLoadResourceChunk(spath.c_str(), infos[i].id);
-				int unp = UnpackResourceChunk(&chunk);
 				if (infos[i].type == FOURCC_IMAGE)
 				{
-					Image img = LoadImageFromResource(chunk);
-					pack.textures[HashString32(spath.c_str())] = std::make_shared<Texture2D>(LoadTextureFromImage(img));
-					UnloadImage(img);
+					rresResourceChunk chunk = rresLoadResourceChunk(spath.c_str(), infos[i].id);
+					int result = UnpackResourceChunk(&chunk);
+					if (result == 0)
+					{
+						Image img = LoadImageFromResource(chunk);
+						pack.textures[HashString32(spath.c_str())]
+							= std::make_shared<Texture2D>(LoadTextureFromImage(img));
+						UnloadImage(img);
+					}
+					else HND_LOG_ERROR(
+						std::format("Failed to unpack resource chunk (id:{})", infos[i].id));
+
+					rresUnloadResourceChunk(chunk);
 				}
 				else if (infos[i].type == FOURCC_FONT)
 				{
-
+					rresResourceMulti multi = rresLoadResourceMulti(spath.c_str(), infos[i].id);
+					int result = -1;
+					for (unsigned int i = 0; i < multi.count; i++)
+					{
+						result = UnpackResourceChunk(&multi.chunks[i]); 
+						if (result != 0) HND_LOG_ERROR(
+							std::format("Failed to unpack multi resource chunk (id:{}, i:{})", infos[i].id, i));
+					}
+					if (result == 0)   
+					{
+						pack.fonts[HashString32(spath.c_str())]
+							= std::make_shared<Font>(LoadFontFromResource(multi));
+					}
+					rresUnloadResourceMulti(multi);
 				}
-				rresUnloadResourceChunk(chunk);
 			}
 
 			rresUnloadCentralDirectory(dir);
