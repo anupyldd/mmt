@@ -186,6 +186,14 @@ namespace hnd
             {
                 const auto& ui = obj.at("gui").get<picojson::object>();
 
+                FromJson(
+                    ui,
+                    HND_DESERIALIZE(gui->font),
+                    HND_DESERIALIZE(gui->fontSize),
+                    HND_DESERIALIZE(gui->scale),
+                    HND_DESERIALIZE(gui->theme)
+                );
+                /*
                 NumbersFromJson(
                     ui,
                     HND_DESERIALIZE(gui->fontSize),
@@ -198,6 +206,7 @@ namespace hnd
                     {gui->theme,STR(theme)}
                     }
                 );
+                */
 
                 //gui->fontSize = static_cast<int>(ui.at("fontSize").get<double>());
                 //gui->scale = static_cast<float>(ui.at("scale").get<double>());
@@ -216,6 +225,15 @@ namespace hnd
         {
             picojson::value::object uiObj;
 
+            ToJson(
+                uiObj,
+                HND_SERIALIZE(gui->font),
+                HND_SERIALIZE(gui->fontSize),
+                HND_SERIALIZE(gui->scale),
+                HND_SERIALIZE(gui->theme)
+            );
+
+            /*
             NumbersToJson(
                 uiObj,
                 PAIR(gui->fontSize, STR(fontSize)),
@@ -228,6 +246,7 @@ namespace hnd
                 {gui->theme,STR(theme)}
                 }
             );
+            */
 
             //uiObj["fontSize"] = picojson::value(static_cast<double>(gui->fontSize));
             //uiObj["scale"] = picojson::value(static_cast<double>(gui->scale));
@@ -244,6 +263,12 @@ namespace hnd
             {
                 const auto& mp = obj.at("map").get<picojson::object>();
 
+                FromJson(
+                    mp,
+                    HND_DESERIALIZE(map->lastHeight),
+                    HND_DESERIALIZE(map->lastWidth)
+                );
+                /*
                 NumbersFromJson(
                     mp,
                     PAIR(REF(map->previewQuality),          STR(previewQuality)),
@@ -253,6 +278,7 @@ namespace hnd
                     PAIR(REF(map->maxEntityNumberMedium),   STR(maxEntityNumberMedium)),
                     PAIR(REF(map->maxEntityNumberHigh),     STR(maxEntityNumberHigh))
                 );
+                */
 
                 //map->previewQuality = static_cast<float>(mp.at("previewQuality").get<double>());
                 //map->lastWidth = static_cast<int>(mp.at("lastWidth").get<double>());
@@ -273,6 +299,12 @@ namespace hnd
         {
             picojson::value::object mpObj;
 
+            ToJson(
+                mpObj,
+                HND_SERIALIZE(map->lastHeight),
+                HND_SERIALIZE(map->lastWidth)
+            );
+            /*
             NumbersToJson(
                 mpObj,
                 PAIR(map->previewQuality,           STR(previewQuality)),
@@ -282,6 +314,7 @@ namespace hnd
                 PAIR(map->maxEntityNumberMedium,    STR(maxEntityNumberMedium)),
                 PAIR(map->maxEntityNumberHigh,      STR(maxEntityNumberHigh))
             );
+            */
 
             //mpObj["previewQuality"] = picojson::value(static_cast<double>(map->previewQuality));
             //mpObj["lastWidth"] = picojson::value(static_cast<double>(map->lastWidth));
@@ -300,6 +333,11 @@ namespace hnd
             {
                 const auto& mt = obj.at("meta").get<picojson::object>();
 
+                FromJson(
+                    mt,
+                    HND_DESERIALIZE(meta->resourceRelPath)
+                );
+
                 const auto& langs = mt.at("available_languages").get<picojson::array>();
                 for (const auto& l : langs)
                 {
@@ -317,6 +355,11 @@ namespace hnd
         void Config::SaveMetaConfig(picojson::value::object& obj)
         {
             picojson::value::object metaObj;
+
+            ToJson(
+                metaObj,
+                HND_SERIALIZE(meta->resourceRelPath)
+            );
 
             picojson::value::array langs;
             for (const auto& l : meta->languages)

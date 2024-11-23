@@ -15,4 +15,7 @@
 #define REF(var) std::ref(var)
 
 #define HND_DESERIALIZE(var) std::make_pair(std::ref(var), #var)
+#define HND_DESERIALIZE_EX(var, var2) std::make_pair(std::ref(var), #var2)
+
 #define HND_SERIALIZE(var) std::make_pair(var, #var)
+#define HND_SERIALIZE_EX(var, var2) std::make_pair(var, #var2)
