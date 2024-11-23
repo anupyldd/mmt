@@ -333,6 +333,11 @@ namespace hnd
             {
                 const auto& mt = obj.at("meta").get<picojson::object>();
 
+                FromJson(
+                    mt,
+                    HND_DESERIALIZE(meta->resourceRelPath)
+                );
+
                 const auto& langs = mt.at("available_languages").get<picojson::array>();
                 for (const auto& l : langs)
                 {
@@ -350,6 +355,11 @@ namespace hnd
         void Config::SaveMetaConfig(picojson::value::object& obj)
         {
             picojson::value::object metaObj;
+
+            ToJson(
+                metaObj,
+                HND_SERIALIZE(meta->resourceRelPath)
+            );
 
             picojson::value::array langs;
             for (const auto& l : meta->languages)

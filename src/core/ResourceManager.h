@@ -2,15 +2,18 @@
 
 #include "raylib.h"
 
+#include "../utility/Log.h"
 #include "../utility/Defines.h"
-
 #include "../utility/RresImpl.h"
+#include "../utility/StringHash.h"
+#include "Config.h"
 
 #include <unordered_map>
 #include <memory>
 #include <cstdint>
 #include <filesystem>
 #include <string>
+#include <variant>
 
 namespace hnd
 {
@@ -23,32 +26,42 @@ namespace hnd
 		* - registry is populated
 		*/
 
-		struct TextureData
+		constexpr unsigned char FOURCC_IMAGE[4] = { 'I','M','G','E' };
+		constexpr unsigned char FOURCC_FONT[4]  = { 'F','N','T','G' };
+
+		using ResourceHandle = uint32_t;
+
+		struct Pack
 		{
 			std::string name;
-			Texture2D	texture;
+			std::unordered_map<ResourceHandle, std::shared_ptr<Texture2D>> textures;
+			std::unordered_map<ResourceHandle, std::shared_ptr<Font>> fonts;
 		};
-
-		using AssetHandle = uint32_t;
-		using TextureRegistry = std::unordered_map<uint32_t, std::shared_ptr<TextureData>>;
-		using SpriteRegistry = std::unordered_map<uint32_t, std::shared_ptr<TextureData>>;
+		
+		using PackRegistry = std::unordered_map<std::string, Pack>;
 
 		class ResourceManager
 		{
 			HND_SINGLETON(ResourceManager);
 			
 		public:
+			void SetResourcePath(const std::filesystem::path& path);
+
 			void Load();
 			void Unload();
 
 			void LoadPack(const std::string& name);
-
-			const Texture2D& GetTexture(AssetHandle handle) const;
-			const Texture2D& GetSprite(AssetHandle handle) const;
+			void UnloadPack(const std::string& name);
 
 		private:
-			TextureRegistry textures;
-			SpriteRegistry	sprites;
+			Pack LoadPack(const std::filesystem::path& path);
+			void LoadArchive(Pack& pack, const std::filesystem::path& path);
+			void LoadFile(Pack& pack, const std::filesystem::path& path);
+			
+		private:
+			PackRegistry packs;
+
+			std::filesystem::path resPath;
 		};
 	}
 }

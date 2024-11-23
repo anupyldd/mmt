@@ -34,6 +34,7 @@ namespace hnd
         struct MetaConfig
         {
             std::vector<std::string> languages;
+            std::string resourceRelPath = "data/resources/packs";
         };
 
         struct MapConfig

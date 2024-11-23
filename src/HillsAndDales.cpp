@@ -13,20 +13,6 @@ int main()
 
 	//core::App app;
 	//app.Run();
-
-	components::Transform tr;
-	tr.angle = 2;
-	tr.scale = 3;
-	tr.x = 5;
-
-	components::Sprite sp;
-	sp.handle = 987654;
-
-	picojson::value::object obj;
-	tr.Serialize(obj);
-	sp.Serialize(obj);
-
-	picojson::value v(obj);
-
-	std::cout << v.serialize(true);
+	Config::GetInstance().Load("data/config.json");
+	ResourceManager::GetInstance().Load();
 }
