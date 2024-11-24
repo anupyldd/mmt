@@ -1,11 +1,13 @@
 #pragma once
 
 #include "raylib.h"
+#include "picojson.h"
 
 #include "../utility/Log.h"
 #include "../utility/Defines.h"
 #include "../utility/RresImpl.h"
 #include "../utility/StringHash.h"
+#include "map/ResourcePack.h"
 #include "Config.h"
 
 #include <unordered_map>
@@ -14,31 +16,19 @@
 #include <filesystem>
 #include <string>
 #include <variant>
+#include <algorithm>
+#include <fstream>
+#include <cctype>
+#include <sstream>
 
 namespace hnd
 {
 	namespace core
 	{
-		/*
-		* order of resource loading
-		* - resources directory is scanned recursively
-		* - relative paths are hashed to form handles
-		* - registry is populated
-		*/
-
 		constexpr unsigned char FOURCC_IMAGE[4] = { 'I','M','G','E' };
 		constexpr unsigned char FOURCC_FONT[4]  = { 'F','N','T','G' };
 
-		using ResourceHandle = uint32_t;
-
-		struct Pack
-		{
-			std::string name;
-			std::unordered_map<ResourceHandle, std::shared_ptr<Texture2D>> textures;
-			std::unordered_map<ResourceHandle, std::shared_ptr<Font>> fonts;
-		};
-		
-		using PackRegistry = std::unordered_map<std::string, Pack>;
+		// -------------------------------------
 
 		class ResourceManager
 		{
@@ -55,13 +45,17 @@ namespace hnd
 
 		private:
 			Pack LoadPack(const std::filesystem::path& path);
-			void LoadArchive(Pack& pack, const std::filesystem::path& path);
+			void LoadPackMeta(Pack& pack, const std::filesystem::path& path);
+			void LoadDirectory(Pack& pack, ResourceType type, const std::filesystem::path& path);
+			void LoadArchive(Pack& pack, ResourceType type, const std::filesystem::path& path);
 			void LoadFile(Pack& pack, const std::filesystem::path& path);
 			
+			ResourceHandle GenerateHandle(const std::string& packName, ResourceType type, const std::string& resName);
+
 		private:
 			PackRegistry packs;
-
 			std::filesystem::path resPath;
+			Font defaultFont{ 0 };
 		};
 	}
 }

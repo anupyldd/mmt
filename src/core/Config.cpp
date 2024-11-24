@@ -36,6 +36,7 @@ namespace hnd
                     LoadAppConfig(obj);
                     LoadMetaConfig(obj);
                     LoadGuiConfig(obj);
+                    LoadMapConfig(obj);
                 }
                 catch (const std::exception& e)
                 {
@@ -62,6 +63,7 @@ namespace hnd
                 SaveAppConfig(obj);
                 SaveGuiConfig(obj);
                 SaveMetaConfig(obj);
+                SaveMapConfig(obj);
 
                 picojson::value mainVal(obj);
 
