@@ -24,20 +24,59 @@ namespace hnd
 		}
 		Pack ResourceManager::LoadPack(const std::filesystem::path& path)
 		{
+			HND_LOG_DEBUG(std::format("Loading pack at {}", path.string()));
+
 			Pack pack;
-			for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+			for (const auto& entry : std::filesystem::directory_iterator(path))
 			{
-				if (entry.path().filename().extension().string() == ".rres")
+				std::string fileName = entry.path().filename().string();
+				std::transform(fileName.begin(), fileName.end(), fileName.begin(),
+					[](unsigned char c) { return std::tolower(c); });
+				
+				if (fileName == "metadata.json")
 				{
-					LoadArchive(pack, entry.path());
+					LoadPackMeta(pack, entry.path());
 				}
 				else if (entry.is_regular_file())
 				{
-					LoadFile(pack, entry.path());
+					//LoadFile(pack, entry.path());
 				}
 			}
 			return pack;
 		}
+
+		void ResourceManager::LoadPackMeta(Pack& pack, const std::filesystem::path& path)
+		{
+			HND_LOG_DEBUG("Loading metadata");
+
+			std::ifstream file(path);
+			std::stringstream contents;
+			contents << file.rdbuf();
+
+			std::string strCont = contents.str();
+			picojson::value val;
+
+			std::string err = picojson::parse(val, strCont);
+			if (!err.empty()) HND_LOG_ERROR(std::format("Failed to parse meta file at {}: {}",
+				path.string(), err));
+
+			if (!val.is<picojson::object>()) HND_LOG_ERROR(std::format("Meta json at {} is not an object",
+				path.string()));
+
+			const picojson::value::object& obj = val.get<picojson::object>();
+			
+			pack.name = obj.at("name").get<std::string>();
+			pack.author = obj.at("author").get<std::string>();
+			pack.license = obj.at("license").get<std::string>();
+			pack.version = obj.at("version").get<std::string>();
+			pack.lastUpdate = obj.at("last_update").get<std::string>();
+			pack.description = obj.at("description").get<std::string>();
+
+			HND_LOG_DEBUG(std::format("Pack metadata:\n{}\n{}\n{}\n{}\n{}\n{}",
+				pack.name, pack.author, pack.license, pack.version, pack.lastUpdate, pack.description));
+		}
+
+		/*
 		void ResourceManager::LoadArchive(Pack& pack, const std::filesystem::path& path)
 		{
 			using namespace util;
@@ -95,5 +134,6 @@ namespace hnd
 		{
 			//HND_LOG_DEBUG("FILE: " + path.filename().string());
 		}
+		*/
 	}
 }

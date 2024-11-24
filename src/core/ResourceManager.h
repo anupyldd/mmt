@@ -1,6 +1,7 @@
 #pragma once
 
 #include "raylib.h"
+#include "picojson.h"
 
 #include "../utility/Log.h"
 #include "../utility/Defines.h"
@@ -14,6 +15,9 @@
 #include <filesystem>
 #include <string>
 #include <variant>
+#include <algorithm>
+#include <fstream>
+#include <cctype>
 
 namespace hnd
 {
@@ -33,8 +37,14 @@ namespace hnd
 
 		struct Pack
 		{
-			std::string name;
+			std::string name,
+						author,
+						license,
+						version,
+						description,
+						lastUpdate;
 			std::unordered_map<ResourceHandle, std::shared_ptr<Texture2D>> textures;
+			std::unordered_map<ResourceHandle, std::shared_ptr<Texture2D>> sprites;
 			std::unordered_map<ResourceHandle, std::shared_ptr<Font>> fonts;
 		};
 		
@@ -55,13 +65,14 @@ namespace hnd
 
 		private:
 			Pack LoadPack(const std::filesystem::path& path);
+			void LoadPackMeta(Pack& pack, const std::filesystem::path& path);
 			void LoadArchive(Pack& pack, const std::filesystem::path& path);
 			void LoadFile(Pack& pack, const std::filesystem::path& path);
 			
 		private:
 			PackRegistry packs;
-
 			std::filesystem::path resPath;
+			Font defaultFont{ 0 };
 		};
 	}
 }
