@@ -102,7 +102,7 @@ namespace hnd
 				// archive loading handles different types of resources itself
 				if (entry.path().extension() == ".rres")
 				{
-					LoadArchive(pack, type, entry.path());
+					//LoadArchive(pack, type, entry.path());
 				}
 				// loading objects or textures
 				else if ((
@@ -117,17 +117,19 @@ namespace hnd
 
 					if (type == ResourceType::Texture)
 					{
-						pack.textures[GenerateHandle(pack.name, type, entry.path().filename().string())] =
+						pack.textures[entry.path().filename().string()] =
 							TextureData(entry.path().stem().string(), 
-							std::make_shared<Texture2D>(LoadTextureFromImage(img)));
+								GenerateHandle(pack.name, type, entry.path().filename().string()),
+								std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
 						HND_LOG_DEBUG("Loaded texture " + entry.path().filename().string());
 					}
 					else
 					{
-						pack.objects[GenerateHandle(pack.name, type, entry.path().filename().string())] =
+						pack.objects[entry.path().filename().string()] =
 							TextureData(entry.path().stem().string(),
-							std::make_shared<Texture2D>(LoadTextureFromImage(img)));
+								GenerateHandle(pack.name, type, entry.path().filename().string()),
+								std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
 						HND_LOG_DEBUG("Loaded object " + entry.path().filename().string());
 					}
@@ -140,10 +142,10 @@ namespace hnd
 					entry.path().extension() == ".otf") &&
 					type == ResourceType::Font)
 				{
-					pack.fonts[GenerateHandle(pack.name, type, entry.path().filename().string())] =
-						FontData(entry.path().stem().string(),
-						std::make_shared<Font>(LoadFont(entry.path().string().c_str())));
-
+					pack.fonts[entry.path().filename().string()] =
+						FontData(entry.path().stem().string(), 
+							GenerateHandle(pack.name, type, entry.path().filename().string()),
+							std::make_shared<Font>(LoadFont(entry.path().string().c_str())));
 
 					HND_LOG_DEBUG("Loaded font " + entry.path().filename().string());
 				}
@@ -165,6 +167,14 @@ namespace hnd
 			return util::HashString32(sstr.str().c_str());
 		}
 
+		bool ResourceManager::SameFourCC(const unsigned char first[4], const unsigned char second[4]) const
+		{
+			return	first[0] == second[0] && 
+					first[1] == second[1] && 
+					first[2] == second[2] && 
+					first[3] == second[3];
+		}
+
 		void ResourceManager::LoadArchive(Pack& pack, ResourceType type, const std::filesystem::path& path)
 		{
 			using namespace util;
@@ -182,9 +192,10 @@ namespace hnd
 			for (unsigned int i = 0; i < chunkCount; i++)
 			{
 				// skips fonts in tex/obj dirs and tex/obj in font dir
-				if ((infos[i].type == FOURCC_IMAGE && type == ResourceType::Font) ||
-					infos[i].type == FOURCC_FONT && (type == ResourceType::Texture|| type==ResourceType::Object))
+				if ((SameFourCC(infos[i].type, FOURCC_IMAGE) && type == ResourceType::Font) ||
+					SameFourCC(infos[i].type, FOURCC_FONT) && (type == ResourceType::Texture|| type==ResourceType::Object))
 					continue;
+
 				std::string name;
 				for (unsigned int j = 0; j < dir.count; j++)
 				{
@@ -196,7 +207,7 @@ namespace hnd
 					}
 				}
 
-				if (infos[i].type == FOURCC_IMAGE)
+				if(SameFourCC(infos[i].type, FOURCC_IMAGE))
 				{
 					rresResourceChunk chunk = rresLoadResourceChunk(spath.c_str(), infos[i].id);
 					int result = UnpackResourceChunk(&chunk);
@@ -205,17 +216,23 @@ namespace hnd
 						Image img = LoadImageFromResource(chunk);
 						if (type == ResourceType::Texture)
 						{
-							pack.textures[GenerateHandle(pack.name, type, name)] =
-								TextureData(name,std::make_shared<Texture2D>(LoadTextureFromImage(img)));
+							pack.textures[name] =
+								TextureData(
+									name,
+									GenerateHandle(pack.name, type, name),
+									std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-							HND_LOG_DEBUG("From archive loaded texture " + name);
+							HND_LOG_DEBUG("ARCHIVE: loaded texture " + name);
 						}
 						else
 						{
-							pack.objects[GenerateHandle(pack.name, type, name)] =
-								TextureData(name, std::make_shared<Texture2D>(LoadTextureFromImage(img)));
+							pack.objects[name] =
+								TextureData(
+									name, 
+									GenerateHandle(pack.name, type, name),
+									std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-							HND_LOG_DEBUG("From archive loaded object " + name);
+							HND_LOG_DEBUG("ARCHIVE: loaded object " + name);
 						}
 						UnloadImage(img);
 					}
@@ -224,7 +241,7 @@ namespace hnd
 
 					rresUnloadResourceChunk(chunk);
 				}
-				else if (infos[i].type == FOURCC_FONT)
+				else if (SameFourCC(infos[i].type, FOURCC_FONT))
 				{
 					rresResourceMulti multi = rresLoadResourceMulti(spath.c_str(), infos[i].id);
 					int result = -1;
@@ -236,10 +253,13 @@ namespace hnd
 					}
 					if (result == 0)
 					{
-						pack.fonts[GenerateHandle(pack.name, type, name)]= 
-							FontData(name, std::make_shared<Font>(LoadFontFromResource(multi)));
+						pack.fonts[name]= 
+							FontData(
+								name, 
+								GenerateHandle(pack.name, type, name),
+								std::make_shared<Font>(LoadFontFromResource(multi)));
 
-						HND_LOG_DEBUG("From archive loaded font " + name);
+						HND_LOG_DEBUG("ARCHIVE: loaded font " + name);
 					}
 					rresUnloadResourceMulti(multi);
 				}

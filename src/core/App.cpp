@@ -85,6 +85,10 @@ namespace hnd
 			SetExitKey(KEY_NULL);
 			rlImGuiSetup(true);
 
+			/********************************/
+			ResourceManager::GetInstance().Load();
+			/********************************/
+
 			owner->fsm.ChangeState(&owner->mainMenuState);
 		}
 		//-----------------------------------

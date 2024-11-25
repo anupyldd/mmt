@@ -20,6 +20,7 @@
 #include <fstream>
 #include <cctype>
 #include <sstream>
+#include <string.h>
 
 namespace hnd
 {
@@ -51,6 +52,8 @@ namespace hnd
 			void LoadFile(Pack& pack, const std::filesystem::path& path);
 			
 			ResourceHandle GenerateHandle(const std::string& packName, ResourceType type, const std::string& resName);
+
+			bool SameFourCC(const unsigned char first[4], const unsigned char second[4]) const;
 
 		private:
 			PackRegistry packs;

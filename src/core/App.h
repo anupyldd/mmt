@@ -7,6 +7,7 @@
 #include "../gui/Gui.h"
 #include "../utility/StateMachine.h"
 #include "../utility/Observer.h"
+#include "ResourceManager.h"
 
 #include <exception>
 
