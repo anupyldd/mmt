@@ -7,7 +7,7 @@
 #include "rlImGui.h"
 #include "imgui.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace gui
 	{

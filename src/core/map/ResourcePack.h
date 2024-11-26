@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <cstdint>
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{

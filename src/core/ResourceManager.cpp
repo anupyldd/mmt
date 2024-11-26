@@ -2,7 +2,7 @@
 
 #include "raylib.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{
@@ -24,7 +24,7 @@ namespace hnd
 		}
 		Pack ResourceManager::LoadPack(const std::filesystem::path& path)
 		{
-			HND_LOG_DEBUG(std::format("Loading pack at {}", path.string()));
+			MMT_LOG_DEBUG(std::format("Loading pack at {}", path.string()));
 
 			Pack pack;
 
@@ -64,7 +64,7 @@ namespace hnd
 
 		void ResourceManager::LoadPackMeta(Pack& pack, const std::filesystem::path& path)
 		{
-			HND_LOG_DEBUG("Loading metadata");
+			MMT_LOG_DEBUG("Loading metadata");
 
 			std::ifstream file(path);
 			std::stringstream contents;
@@ -74,10 +74,10 @@ namespace hnd
 			picojson::value val;
 
 			std::string err = picojson::parse(val, strCont);
-			if (!err.empty()) HND_LOG_ERROR(std::format("Failed to parse meta file at {}: {}",
+			if (!err.empty()) MMT_LOG_ERROR(std::format("Failed to parse meta file at {}: {}",
 				path.string(), err));
 
-			if (!val.is<picojson::object>()) HND_LOG_ERROR(std::format("Meta json at {} is not an object",
+			if (!val.is<picojson::object>()) MMT_LOG_ERROR(std::format("Meta json at {} is not an object",
 				path.string()));
 
 			const picojson::value::object& obj = val.get<picojson::object>();
@@ -89,7 +89,7 @@ namespace hnd
 			pack.lastUpdate = obj.at("last_update").get<std::string>();
 			pack.description = obj.at("description").get<std::string>();
 
-			HND_LOG_DEBUG(std::format("Pack metadata:\n{}\n{}\n{}\n{}\n{}\n{}",
+			MMT_LOG_DEBUG(std::format("Pack metadata:\n{}\n{}\n{}\n{}\n{}\n{}",
 				pack.name, pack.author, pack.license, pack.version, pack.lastUpdate, pack.description));
 		}
 
@@ -122,7 +122,7 @@ namespace hnd
 								GenerateHandle(pack.name, type, entry.path().filename().string()),
 								std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-						HND_LOG_DEBUG("Loaded texture " + entry.path().filename().string());
+						MMT_LOG_DEBUG("Loaded texture " + entry.path().filename().string());
 					}
 					else
 					{
@@ -131,7 +131,7 @@ namespace hnd
 								GenerateHandle(pack.name, type, entry.path().filename().string()),
 								std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-						HND_LOG_DEBUG("Loaded object " + entry.path().filename().string());
+						MMT_LOG_DEBUG("Loaded object " + entry.path().filename().string());
 					}
 
 					UnloadImage(img);
@@ -147,7 +147,7 @@ namespace hnd
 							GenerateHandle(pack.name, type, entry.path().filename().string()),
 							std::make_shared<Font>(LoadFont(entry.path().string().c_str())));
 
-					HND_LOG_DEBUG("Loaded font " + entry.path().filename().string());
+					MMT_LOG_DEBUG("Loaded font " + entry.path().filename().string());
 				}
 			}
 		}
@@ -178,12 +178,12 @@ namespace hnd
 		void ResourceManager::LoadArchive(Pack& pack, ResourceType type, const std::filesystem::path& path)
 		{
 			using namespace util;
-			HND_LOG_DEBUG("ARCHIVE: " + path.filename().string());
+			MMT_LOG_DEBUG("ARCHIVE: " + path.filename().string());
 
 			std::string spath = path.string();
 
 			rresCentralDir dir = rresLoadCentralDirectory(spath.c_str());
-			if (dir.count == 0) HND_LOG_DEBUG("ARCHIVE: No central directory");
+			if (dir.count == 0) MMT_LOG_DEBUG("ARCHIVE: No central directory");
 
 			unsigned int chunkCount = 0;
 			rresResourceChunkInfo* infos = rresLoadResourceChunkInfoAll(spath.c_str(), &chunkCount);
@@ -222,7 +222,7 @@ namespace hnd
 									GenerateHandle(pack.name, type, name),
 									std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-							HND_LOG_DEBUG("ARCHIVE: loaded texture " + name);
+							MMT_LOG_DEBUG("ARCHIVE: loaded texture " + name);
 						}
 						else
 						{
@@ -232,11 +232,11 @@ namespace hnd
 									GenerateHandle(pack.name, type, name),
 									std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-							HND_LOG_DEBUG("ARCHIVE: loaded object " + name);
+							MMT_LOG_DEBUG("ARCHIVE: loaded object " + name);
 						}
 						UnloadImage(img);
 					}
-					else HND_LOG_ERROR(
+					else MMT_LOG_ERROR(
 						std::format("Failed to unpack resource chunk (id:{})", infos[i].id));
 
 					rresUnloadResourceChunk(chunk);
@@ -248,7 +248,7 @@ namespace hnd
 					for (unsigned int i = 0; i < multi.count; i++)
 					{
 						result = UnpackResourceChunk(&multi.chunks[i]);
-						if (result != 0) HND_LOG_ERROR(
+						if (result != 0) MMT_LOG_ERROR(
 							std::format("Failed to unpack multi resource chunk (id:{}, i:{})", infos[i].id, i));
 					}
 					if (result == 0)
@@ -259,7 +259,7 @@ namespace hnd
 								GenerateHandle(pack.name, type, name),
 								std::make_shared<Font>(LoadFontFromResource(multi)));
 
-						HND_LOG_DEBUG("ARCHIVE: loaded font " + name);
+						MMT_LOG_DEBUG("ARCHIVE: loaded font " + name);
 					}
 					rresUnloadResourceMulti(multi);
 				}
@@ -270,12 +270,12 @@ namespace hnd
 		void ResourceManager::LoadArchive(Pack& pack, ResourceType type, const std::filesystem::path& path)
 		{
 			using namespace util;
-			HND_LOG_DEBUG("ARCHIVE: " + path.filename().string());
+			MMT_LOG_DEBUG("ARCHIVE: " + path.filename().string());
 
 			std::string spath = path.string();
 
 			rresCentralDir dir = rresLoadCentralDirectory(spath.c_str());
-			if (dir.count == 0) HND_LOG_DEBUG("ARCHIVE: No central directory");
+			if (dir.count == 0) MMT_LOG_DEBUG("ARCHIVE: No central directory");
 
 			unsigned int chunkCount = 0;
 			rresResourceChunkInfo* infos = rresLoadResourceChunkInfoAll(spath.c_str(), &chunkCount);
@@ -293,7 +293,7 @@ namespace hnd
 							= std::make_shared<Texture2D>(LoadTextureFromImage(img));
 						UnloadImage(img);
 					}
-					else HND_LOG_ERROR(
+					else MMT_LOG_ERROR(
 						std::format("Failed to unpack resource chunk (id:{})", infos[i].id));
 
 					rresUnloadResourceChunk(chunk);
@@ -305,7 +305,7 @@ namespace hnd
 					for (unsigned int i = 0; i < multi.count; i++)
 					{
 						result = UnpackResourceChunk(&multi.chunks[i]); 
-						if (result != 0) HND_LOG_ERROR(
+						if (result != 0) MMT_LOG_ERROR(
 							std::format("Failed to unpack multi resource chunk (id:{}, i:{})", infos[i].id, i));
 					}
 					if (result == 0)   
@@ -322,7 +322,7 @@ namespace hnd
 		}
 		void ResourceManager::LoadFile(Pack& pack, const std::filesystem::path& path)
 		{
-			//HND_LOG_DEBUG("FILE: " + path.filename().string());
+			//MMT_LOG_DEBUG("FILE: " + path.filename().string());
 		}
 		*/
 	}

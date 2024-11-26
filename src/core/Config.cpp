@@ -1,6 +1,6 @@
 #include "Config.h"
 
-namespace hnd
+namespace mmt
 {
     namespace core
     {
@@ -26,7 +26,7 @@ namespace hnd
                 std::string err = picojson::parse(val, strCont);
                 if (!err.empty()) throw std::runtime_error("Failed to parse config file: " + err);
 
-                HND_LOG_DEBUG("Parsed config file");
+                MMT_LOG_DEBUG("Parsed config file");
 
                 if (!val.is<picojson::object>()) throw std::runtime_error("Config json is not an object");
                 const picojson::value::object& obj = val.get<picojson::object>();
@@ -40,14 +40,14 @@ namespace hnd
                 }
                 catch (const std::exception& e)
                 {
-                    HND_LOG_ERROR(e.what());
+                    MMT_LOG_ERROR(e.what());
                 }
 
                 return true;
             }
             catch (const std::exception& e)
             {
-                HND_LOG_ERROR("Failed to load config file: " + std::string(e.what()));
+                MMT_LOG_ERROR("Failed to load config file: " + std::string(e.what()));
             }
         }
 
@@ -70,11 +70,11 @@ namespace hnd
                 std::string str = mainVal.serialize(true);
                 file << str;
 
-                HND_LOG_DEBUG("Saved config");
+                MMT_LOG_DEBUG("Saved config");
             }
             catch (const std::exception& e)
             {
-                HND_LOG_ERROR("Failed to save config: " + std::string(e.what()));
+                MMT_LOG_ERROR("Failed to save config: " + std::string(e.what()));
             }
         }
 
@@ -88,25 +88,25 @@ namespace hnd
 
                 FromJson(
                     ap,
-                    HND_DESERIALIZE(app->width),
-                    HND_DESERIALIZE(app->height),
-                    HND_DESERIALIZE(app->posX),
-                    HND_DESERIALIZE(app->posY),
-                    HND_DESERIALIZE(app->fps),
+                    MMT_DESERIALIZE(app->width),
+                    MMT_DESERIALIZE(app->height),
+                    MMT_DESERIALIZE(app->posX),
+                    MMT_DESERIALIZE(app->posY),
+                    MMT_DESERIALIZE(app->fps),
 
-                    HND_DESERIALIZE(app->title),
-                    HND_DESERIALIZE(app->version),
-                    HND_DESERIALIZE(app->language)
+                    MMT_DESERIALIZE(app->title),
+                    MMT_DESERIALIZE(app->version),
+                    MMT_DESERIALIZE(app->language)
                 );
 
                 /*
                 NumbersFromJson(
                     ap,
-                    HND_DESERIALIZE(app->width), 
-                    HND_DESERIALIZE(app->height),
-                    HND_DESERIALIZE(app->posX),
-                    HND_DESERIALIZE(app->posY),
-                    HND_DESERIALIZE(app->fps)
+                    MMT_DESERIALIZE(app->width), 
+                    MMT_DESERIALIZE(app->height),
+                    MMT_DESERIALIZE(app->posX),
+                    MMT_DESERIALIZE(app->posY),
+                    MMT_DESERIALIZE(app->fps)
                 );
 
                 StringsFromJson(
@@ -125,11 +125,11 @@ namespace hnd
                     app->flags |= WindowFlagFromStr(f.get<std::string>());
                 }
 
-                HND_LOG_DEBUG("Loaded app config");
+                MMT_LOG_DEBUG("Loaded app config");
             }
             catch (const std::exception& e)
             {
-                HND_LOG_ERROR("Failed to load app config: " + std::string(e.what()));
+                MMT_LOG_ERROR("Failed to load app config: " + std::string(e.what()));
             }
         }
 
@@ -139,25 +139,25 @@ namespace hnd
 
             ToJson(
                 appObj,
-                HND_SERIALIZE(app->width),
-                HND_SERIALIZE(app->height),
-                HND_SERIALIZE(app->posX),
-                HND_SERIALIZE(app->posY),
-                HND_SERIALIZE(app->fps),
+                MMT_SERIALIZE(app->width),
+                MMT_SERIALIZE(app->height),
+                MMT_SERIALIZE(app->posX),
+                MMT_SERIALIZE(app->posY),
+                MMT_SERIALIZE(app->fps),
 
-                HND_SERIALIZE(app->title),
-                HND_SERIALIZE(app->version),
-                HND_SERIALIZE(app->language)
+                MMT_SERIALIZE(app->title),
+                MMT_SERIALIZE(app->version),
+                MMT_SERIALIZE(app->language)
             );
 
             /*
             NumbersToJson(
                 appObj,
-                HND_SERIALIZE(app->width),
-                HND_SERIALIZE(app->height),
-                HND_SERIALIZE(app->posX),
-                HND_SERIALIZE(app->posY),
-                HND_SERIALIZE(app->fps)
+                MMT_SERIALIZE(app->width),
+                MMT_SERIALIZE(app->height),
+                MMT_SERIALIZE(app->posX),
+                MMT_SERIALIZE(app->posY),
+                MMT_SERIALIZE(app->fps)
             );
 
             StringsToJson(
@@ -190,16 +190,16 @@ namespace hnd
 
                 FromJson(
                     ui,
-                    HND_DESERIALIZE(gui->font),
-                    HND_DESERIALIZE(gui->fontSize),
-                    HND_DESERIALIZE(gui->scale),
-                    HND_DESERIALIZE(gui->theme)
+                    MMT_DESERIALIZE(gui->font),
+                    MMT_DESERIALIZE(gui->fontSize),
+                    MMT_DESERIALIZE(gui->scale),
+                    MMT_DESERIALIZE(gui->theme)
                 );
                 /*
                 NumbersFromJson(
                     ui,
-                    HND_DESERIALIZE(gui->fontSize),
-                    HND_DESERIALIZE(gui->scale)
+                    MMT_DESERIALIZE(gui->fontSize),
+                    MMT_DESERIALIZE(gui->scale)
                 );
                 StringsFromJson(
                     ui,
@@ -215,11 +215,11 @@ namespace hnd
                 //gui->font = ui.at("font").get<std::string>();
                 //gui->theme = ui.at("theme").get<std::string>();
 
-                HND_LOG_DEBUG("Loaded gui config");
+                MMT_LOG_DEBUG("Loaded gui config");
             }
             catch (const std::exception& e)
             {
-                HND_LOG_ERROR("Failed to load gui config: " + std::string(e.what()));
+                MMT_LOG_ERROR("Failed to load gui config: " + std::string(e.what()));
             }
         }
 
@@ -229,10 +229,10 @@ namespace hnd
 
             ToJson(
                 uiObj,
-                HND_SERIALIZE(gui->font),
-                HND_SERIALIZE(gui->fontSize),
-                HND_SERIALIZE(gui->scale),
-                HND_SERIALIZE(gui->theme)
+                MMT_SERIALIZE(gui->font),
+                MMT_SERIALIZE(gui->fontSize),
+                MMT_SERIALIZE(gui->scale),
+                MMT_SERIALIZE(gui->theme)
             );
 
             /*
@@ -267,8 +267,8 @@ namespace hnd
 
                 FromJson(
                     mp,
-                    HND_DESERIALIZE(map->lastHeight),
-                    HND_DESERIALIZE(map->lastWidth)
+                    MMT_DESERIALIZE(map->lastHeight),
+                    MMT_DESERIALIZE(map->lastWidth)
                 );
                 /*
                 NumbersFromJson(
@@ -289,11 +289,11 @@ namespace hnd
                 //map->maxEntityNumberMedium = static_cast<int>(mp.at("maxEntityNumberMedium").get<double>());
                 //map->maxEntityNumberHigh = static_cast<int>(mp.at("maxEntityNumberHigh").get<double>());
 
-                HND_LOG_DEBUG("Loaded map config");
+                MMT_LOG_DEBUG("Loaded map config");
             }
             catch (const std::exception& e)
             {
-                HND_LOG_ERROR("Failed to load map config: " + std::string(e.what()));
+                MMT_LOG_ERROR("Failed to load map config: " + std::string(e.what()));
             }
         }
 
@@ -303,8 +303,8 @@ namespace hnd
 
             ToJson(
                 mpObj,
-                HND_SERIALIZE(map->lastHeight),
-                HND_SERIALIZE(map->lastWidth)
+                MMT_SERIALIZE(map->lastHeight),
+                MMT_SERIALIZE(map->lastWidth)
             );
             /*
             NumbersToJson(
@@ -337,7 +337,7 @@ namespace hnd
 
                 FromJson(
                     mt,
-                    HND_DESERIALIZE(meta->resourceRelPath)
+                    MMT_DESERIALIZE(meta->resourceRelPath)
                 );
 
                 const auto& langs = mt.at("available_languages").get<picojson::array>();
@@ -346,11 +346,11 @@ namespace hnd
                     meta->languages.push_back(l.get<std::string>());
                 }
 
-                HND_LOG_DEBUG("Loaded meta config: " + std::to_string(meta->languages.size()));
+                MMT_LOG_DEBUG("Loaded meta config: " + std::to_string(meta->languages.size()));
             }
             catch (const std::exception& e)
             {
-                HND_LOG_ERROR("Failed to load meta config: " + std::string(e.what()));
+                MMT_LOG_ERROR("Failed to load meta config: " + std::string(e.what()));
             }
         }
 
@@ -360,7 +360,7 @@ namespace hnd
 
             ToJson(
                 metaObj,
-                HND_SERIALIZE(meta->resourceRelPath)
+                MMT_SERIALIZE(meta->resourceRelPath)
             );
 
             picojson::value::array langs;

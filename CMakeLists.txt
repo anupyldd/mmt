@@ -6,7 +6,7 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project(HillsAndDales LANGUAGES CXX C)
+project(mmt LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -108,7 +108,7 @@ file(COPY ${picoheaders_SOURCE_DIR}/pico_ecs.h DESTINATION ${PICO_DIR})
 
 set(SRCS
 
-src/HillsAndDales.cpp
+src/MMT.cpp
 
 src/utility/Defines.h
 src/utility/Log.h
@@ -193,7 +193,7 @@ target_include_directories(
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET HillsAndDales PROPERTY CXX_STANDARD 20)
+  set_property(TARGET mmt PROPERTY CXX_STANDARD 20)
 endif()
 
 add_compile_options(/utf-8)

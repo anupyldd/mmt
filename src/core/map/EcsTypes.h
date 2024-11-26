@@ -2,7 +2,7 @@
 
 #include "pico/pico_ecs.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{

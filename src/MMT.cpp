@@ -7,7 +7,7 @@
 
 int main()
 {
-	using namespace hnd;
+	using namespace mmt;
 	using namespace core;
 
 	core::App app;

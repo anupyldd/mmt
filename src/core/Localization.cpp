@@ -1,7 +1,7 @@
 #include "Localization.h"
 #include "Localization.h"
 
-namespace hnd
+namespace mmt
 {
     namespace core
     {
@@ -23,7 +23,7 @@ namespace hnd
 
         bool Localization::Load(const std::filesystem::path& relPath)
         {
-            HND_LOG_DEBUG("Loading loc...");
+            MMT_LOG_DEBUG("Loading loc...");
 
             auto cwd = std::filesystem::current_path();
             std::ifstream file(cwd / relPath);
@@ -36,15 +36,15 @@ namespace hnd
             std::string err = picojson::parse(val, strCont);
             if (!err.empty()) throw std::runtime_error("Failed to parse localization file: " + err);
 
-            HND_LOG_DEBUG("Parsed localization file");
+            MMT_LOG_DEBUG("Parsed localization file");
 
             if (!val.is<picojson::object>()) throw std::runtime_error("Localization json is not an object");
             const picojson::value::object& obj = val.get<picojson::object>();
 
             LoadLocInfo(obj);
 
-            HND_LOG_DEBUG("Loaded localization");
-            HND_LOG_DEBUG("Loc map size: " + std::to_string(locMap.size()));
+            MMT_LOG_DEBUG("Loaded localization");
+            MMT_LOG_DEBUG("Loc map size: " + std::to_string(locMap.size()));
         }
         const std::unordered_map<std::string, MultiStr>& Localization::GetMap() const
         {
@@ -65,7 +65,7 @@ namespace hnd
             }
             catch (const std::exception& e)
             {
-                HND_LOG_ERROR("Failed to load localization info");
+                MMT_LOG_ERROR("Failed to load localization info");
             }
         }
         void Localization::LoadEntry(const picojson::value::object& obj, const std::string& id, const std::string& lang)
@@ -78,7 +78,7 @@ namespace hnd
             }
             catch (const std::exception& e)
             {
-                HND_LOG_ERROR("Failed to load localization entry: " + id);
+                MMT_LOG_ERROR("Failed to load localization entry: " + id);
             }
         }
     }

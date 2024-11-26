@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace hnd
+namespace mmt
 {
 	namespace util
 	{

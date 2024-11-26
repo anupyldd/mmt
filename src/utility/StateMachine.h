@@ -4,7 +4,7 @@
 #include <exception>
 #include <string>
 
-#define INVALID_STATE_CHANGE_EXCEPTION_THROW(fsm) {                     \
+#define MMT_INVALID_STATE_CHANGE_EXCEPTION_THROW(fsm) {                     \
 std::stringstream msg;                                                  \
 msg << '[' << typeid(fsm).name() << ']' <<                              \
 " Attempting to change to an invalid state.\n Last valid state: " <<    \
@@ -12,7 +12,7 @@ msg << '[' << typeid(fsm).name() << ']' <<                              \
 throw std::runtime_error(msg.str());                                    \
 }
 
-namespace hnd
+namespace mmt
 {
     namespace util
     {
@@ -57,7 +57,7 @@ namespace hnd
 
             void ChangeState(State<OwnerType>* newState)
             {
-                if (!newState) INVALID_STATE_CHANGE_EXCEPTION_THROW(*this);
+                if (!newState) MMT_INVALID_STATE_CHANGE_EXCEPTION_THROW(*this);
 
                 previousState = currentState;
                 currentState->Exit(owner);

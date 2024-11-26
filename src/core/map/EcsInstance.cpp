@@ -5,7 +5,7 @@
 
 #include "EcsInstance.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{
@@ -28,7 +28,7 @@ namespace hnd
 		}
 		void EcsInstance::RegisterCommon()
 		{
-			HND_LOG_DEBUG("TODO: RegisterCommon()");
+			MMT_LOG_DEBUG("TODO: RegisterCommon()");
 		}
 		void EcsInstance::Update(double dt)
 		{
@@ -52,7 +52,7 @@ namespace hnd
 			}
 			catch (const std::exception& e)
 			{
-				HND_LOG_ERROR(std::format("Failed to get ID of component {}: {}", name, e.what()));
+				MMT_LOG_ERROR(std::format("Failed to get ID of component {}: {}", name, e.what()));
 				return ECS_NULL;
 			}
 		}
@@ -68,7 +68,7 @@ namespace hnd
 		{
 			if (systems.contains(name))
 			{
-				HND_LOG_ERROR(std::format("Cannot register system {}: this name is already taken", name));
+				MMT_LOG_ERROR(std::format("Cannot register system {}: this name is already taken", name));
 				return;
 			}
 

@@ -15,7 +15,7 @@
 #include "../../utility/Log.h"
 #include "../../utility/StringHash.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{

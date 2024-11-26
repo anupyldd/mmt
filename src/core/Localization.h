@@ -10,7 +10,7 @@
 #include <string>
 #include <filesystem>
 
-namespace hnd
+namespace mmt
 {
     namespace core
     {
@@ -32,7 +32,7 @@ namespace hnd
 
         class Localization
         {
-            HND_SINGLETON(Localization);
+            MMT_SINGLETON(Localization);
 
         public:
             bool Load(const std::filesystem::path& relPath);

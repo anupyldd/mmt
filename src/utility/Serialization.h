@@ -12,7 +12,7 @@
 
 #include "picojson.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace util
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace hnd
+namespace mmt
 {
 	namespace gui
 	{

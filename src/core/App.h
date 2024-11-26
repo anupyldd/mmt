@@ -11,7 +11,7 @@
 
 #include <exception>
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{

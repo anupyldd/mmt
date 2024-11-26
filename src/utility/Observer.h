@@ -9,7 +9,7 @@
 #include "Log.h"
 #include "Defines.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace util
 	{
@@ -45,7 +45,7 @@ namespace hnd
 			{
 				for (auto& obs : observers)
 					obs->OnNotify(evt);
-				HND_LOG_DEBUG("Notified with event type " + std::to_string(static_cast<uint16_t>(evt.type)));
+				MMT_LOG_DEBUG("Notified with event type " + std::to_string(static_cast<uint16_t>(evt.type)));
 			}
 
 		private:

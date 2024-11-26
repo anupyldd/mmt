@@ -33,7 +33,7 @@ then copies it into the actual component. Final constructor has a name "<Compone
 #define GENERATE_COMPONENT_ID(Component) \
 	ecs_id_t Component##Id = util::HashString32(#Component);
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{
@@ -81,10 +81,10 @@ namespace hnd
 					picojson::value::object obj;
 					ToJson(
 						obj,
-						HND_SERIALIZE(x),
-						HND_SERIALIZE(y),
-						HND_SERIALIZE(scale),
-						HND_SERIALIZE(angle)
+						MMT_SERIALIZE(x),
+						MMT_SERIALIZE(y),
+						MMT_SERIALIZE(scale),
+						MMT_SERIALIZE(angle)
 					);
 					picojson::value val(obj);
 					valObj[STR(Transform)] = val;
@@ -93,10 +93,10 @@ namespace hnd
 				{
 					FromJson(
 						obj,
-						HND_DESERIALIZE(x),
-						HND_DESERIALIZE(y),
-						HND_DESERIALIZE(scale),
-						HND_DESERIALIZE(angle)
+						MMT_DESERIALIZE(x),
+						MMT_DESERIALIZE(y),
+						MMT_DESERIALIZE(scale),
+						MMT_DESERIALIZE(angle)
 					);
 				}
 			};
@@ -112,7 +112,7 @@ namespace hnd
 					std::string v = std::to_string(handle);
 					ToJson(
 						obj,
-						HND_SERIALIZE_EX(v, handle)
+						MMT_SERIALIZE_EX(v, handle)
 					);
 					picojson::value val(obj);
 					valObj[STR(Sprite)] = val;
@@ -122,7 +122,7 @@ namespace hnd
 					std::string val;
 					FromJson(
 						obj,
-						HND_DESERIALIZE_EX(val, handle)
+						MMT_DESERIALIZE_EX(val, handle)
 					);
 					handle = std::stoll(val);
 				}
@@ -138,7 +138,7 @@ namespace hnd
 					picojson::value::object obj;
 					ToJson(
 						obj,
-						HND_SERIALIZE(name)
+						MMT_SERIALIZE(name)
 					);
 					picojson::value val(obj);
 					valObj[STR(Name)] = val;
@@ -147,7 +147,7 @@ namespace hnd
 				{
 					FromJson(
 						obj,
-						HND_DESERIALIZE(name)
+						MMT_DESERIALIZE(name)
 					);
 				}
 			};
@@ -162,7 +162,7 @@ namespace hnd
 					picojson::value::object obj;
 					ToJson(
 						obj,
-						HND_SERIALIZE(desc)
+						MMT_SERIALIZE(desc)
 					);
 					picojson::value val(obj);
 					valObj[STR(Description)] = val;
@@ -171,7 +171,7 @@ namespace hnd
 				{
 					FromJson(
 						obj,
-						HND_DESERIALIZE(desc)
+						MMT_DESERIALIZE(desc)
 					);
 				}
 			};
