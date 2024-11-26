@@ -29,8 +29,6 @@ namespace mmt
 			std::chrono::time_point<std::chrono::system_clock> creationTime;
 			std::chrono::time_point<std::chrono::system_clock> lastEditTime;
 
-			Image preview{ 0 };	// generated on creation and regenerated each save
-
 		public:
 			MapData(const std::string& name);
 

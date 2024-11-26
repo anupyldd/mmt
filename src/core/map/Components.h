@@ -33,6 +33,22 @@ then copies it into the actual component. Final constructor has a name "<Compone
 #define GENERATE_COMPONENT_ID(Component) \
 	ecs_id_t Component##Id = util::HashString32(#Component);
 
+/*
+generates marker component with default structure
+serialize outputs null object
+deserialize does nothing
+*/
+#define MTT_GENERATE_MARKER_COMPONENT(CompName)						\
+	struct CompName : public Component<CompName>					\
+	{																\
+		virtual void Serialize(JsonValObj& valObj) override final	\
+		{															\
+			valObj[#CompName] = picojson::value();					\
+		}															\
+		virtual void Deserialize(JsonObj& obj) override final { }	\
+	}
+
+
 namespace mmt
 {
 	namespace core
@@ -177,21 +193,13 @@ namespace mmt
 			};
 			DEFINE_COMPONENT_CONSTRUCTOR(Description);
 
-			struct Visible : Component<Visible>
-			{
-				virtual void Serialize(JsonValObj& valObj) override final 
-				{
-					valObj[STR(Visible)] = picojson::value();
-				}
-				virtual void Deserialize(JsonObj& obj) override final { }
-			};
+			// markers ------------------------------------
 
-			/*
-			struct Layer : public Component<Layer>
-			{
-				int order = 0;
-			};
-			*/
+			MTT_GENERATE_MARKER_COMPONENT(Culled);
+			DEFINE_COMPONENT_CONSTRUCTOR(Culled);
+
+			MTT_GENERATE_MARKER_COMPONENT(Selected);
+			DEFINE_COMPONENT_CONSTRUCTOR(Selected);
 		}
 		
 	}

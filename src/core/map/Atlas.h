@@ -20,10 +20,10 @@ namespace mmt
 {
 	namespace core
 	{
-		/// <summary>
-		/// ~Asc: earliest first (date), A-Z (alpha) | 
-		/// ~Desc: latest first (date), Z-A (alpha)
-		/// </summary>
+		/*
+		* ~Asc: earliest first (date), A-Z (alpha)  
+		* ~Desc: latest first (date), Z-A (alpha)
+		*/
 		enum class MapSort
 		{
 			CreatedAsc, CreatedDesc,

@@ -89,6 +89,10 @@ namespace mmt
 			ResourceManager::GetInstance().Load();
 			/********************************/
 
+		#ifdef IMGUI_HAS_DOCK
+			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		#endif
+
 			owner->fsm.ChangeState(&owner->mainMenuState);
 		}
 		//-----------------------------------
