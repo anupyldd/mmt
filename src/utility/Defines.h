@@ -14,8 +14,8 @@
 #define PAIR(t1, t2) std::make_pair(t1, t2)
 #define REF(var) std::ref(var)
 
-#define MMT_DESERIALIZE(var) std::make_pair(std::ref(var), #var)
-#define MMT_DESERIALIZE_EX(var, var2) std::make_pair(std::ref(var), #var2)
+#define MMT_DESERIALIZE(var) std::make_pair(std::ref(var), util::GetMemberName(#var).c_str())
+#define MMT_DESERIALIZE_EX(var, var2) std::make_pair(std::ref(var), util::GetMemberName(#var2).c_str())
 
-#define MMT_SERIALIZE(var) std::make_pair(var, #var)
-#define MMT_SERIALIZE_EX(var, var2) std::make_pair(var, #var2)
+#define MMT_SERIALIZE(var) std::make_pair(var, util::GetMemberName(#var).c_str())
+#define MMT_SERIALIZE_EX(var, var2) std::make_pair(var, util::GetMemberName(#var2).c_str())

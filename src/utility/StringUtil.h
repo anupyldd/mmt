@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+#include <algorithm>
 
 namespace mmt
 {
@@ -25,6 +27,16 @@ namespace mmt
                 hash = static_cast<uint32_t>(*input++) + 33 * hash;
             }
             return hash;
+        }
+
+        // gets name after '.' or '->'. e.g. gets "name" from "app->name"
+        constexpr std::string GetMemberName(const char* name)
+        {
+            std::string str(name);
+            if (str.find('.') != str.npos)
+                return str.substr(str.find_last_of('.') + 1);
+            else
+                return str.substr(str.find_last_of('>') + 1);
         }
 	}
 }

@@ -86,6 +86,8 @@ namespace mmt
             {
                 auto& ap = obj.at("app").get<picojson::object>();
 
+                MMT_LOG_DEBUG(util::GetMemberName(STR(app->width)));
+
                 FromJson(
                     ap,
                     MMT_DESERIALIZE(app->width),

@@ -1,30 +1,32 @@
 {
   "app": {
-    "flags": [ "FLAG_WINDOW_RESIZABLE" ],
+    "flags": [
+      "FLAG_WINDOW_RESIZABLE"
+    ],
     "fps": 60,
-    "height": 400,
-    "posX": 100,
-    "posY": 100,
+    "height": 660,
+    "language": "en",
+    "posX": 318,
+    "posY": 215,
     "title": "MMT",
-    "width": 600,
     "version": "0.0",
-    "language": "en"
+    "width": 1141
+  },
+  "gui": {
+    "font": "FiraCode",
+    "fontSize": 32,
+    "scale": 1,
+    "theme": "default"
+  },
+  "map": {
+    "lastHeight": 300,
+    "lastWidth": 500
   },
   "meta": {
     "available_languages": [
       "en",
       "ru"
-    ]
-  },
-  "gui": {
-    "fontSize": 32,
-    "font": "FiraCode",
-    "theme": "default",
-    "scale": 1.0
-  },
-  "map": {
-    "previewQuality": 0.5,
-    "lastWidth": 500,
-    "lastHeight": 300
+    ],
+    "resourceRelPath": "data\/resources\/packs"
   }
 }
