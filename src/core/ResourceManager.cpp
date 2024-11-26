@@ -12,14 +12,21 @@ namespace mmt
 		}
 		void ResourceManager::Load()
 		{
-			SetResourcePath(std::filesystem::path(Config::GetInstance().meta->resourceRelPath));
-
-			for (const auto& entry : std::filesystem::directory_iterator(resPath))
+			try
 			{
-				if (entry.is_directory())
+				SetResourcePath(std::filesystem::path(Config::GetInstance().meta->resourceRelPath));
+
+				for (const auto& entry : std::filesystem::directory_iterator(resPath))
 				{
-					packs[entry.path().filename().stem().string()] = LoadPack(entry.path());
+					if (entry.is_directory())
+					{
+						packs[entry.path().filename().stem().string()] = LoadPack(entry.path());
+					}
 				}
+			}
+			catch (const std::exception& e)
+			{
+				MMT_LOG_ERROR(std::format("Failed to load resources: {}", e.what()));
 			}
 		}
 		Pack ResourceManager::LoadPack(const std::filesystem::path& path)

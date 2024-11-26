@@ -6,6 +6,7 @@
 #include "../utility/Defines.h"
 #include "../utility/Log.h"
 #include "../utility/Serialization.h"
+#include "../utility/StringUtil.h"
 
 #include "raylib.h"
 #include "picojson.h"

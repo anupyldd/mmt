@@ -114,7 +114,7 @@ src/utility/Defines.h
 src/utility/Log.h
 src/utility/Log.cpp 
 src/utility/StateMachine.h
-src/utility/StringHash.h
+src/utility/StringUtil.h
 src/utility/Observer.h
 src/utility/Serialization.h
 src/utility/RresImpl.c

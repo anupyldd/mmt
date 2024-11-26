@@ -4,6 +4,7 @@
 #include "utility/Log.h"
 #include "core/App.h"
 #include "core/map/Components.h"
+#include "utility/StringUtil.h"
 
 int main()
 {

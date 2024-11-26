@@ -9,7 +9,7 @@
 #include "picojson.h"
 #include "raylib.h"
 
-#include "../../utility/StringHash.h"
+#include "../../utility/StringUtil.h"
 #include "../../utility/Defines.h"
 #include "../../utility/Serialization.h"
 #include "EcsTypes.h"

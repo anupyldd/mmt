@@ -14,7 +14,7 @@
 
 #include "Map.h"
 #include "../../utility/Log.h"
-#include "../../utility/StringHash.h"
+#include "../../utility/StringUtil.h"
 
 namespace mmt
 {

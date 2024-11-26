@@ -86,6 +86,8 @@ namespace mmt
             {
                 auto& ap = obj.at("app").get<picojson::object>();
 
+                MMT_LOG_DEBUG(util::GetMemberName(STR(app->width)));
+
                 FromJson(
                     ap,
                     MMT_DESERIALIZE(app->width),
@@ -98,26 +100,6 @@ namespace mmt
                     MMT_DESERIALIZE(app->version),
                     MMT_DESERIALIZE(app->language)
                 );
-
-                /*
-                NumbersFromJson(
-                    ap,
-                    MMT_DESERIALIZE(app->width), 
-                    MMT_DESERIALIZE(app->height),
-                    MMT_DESERIALIZE(app->posX),
-                    MMT_DESERIALIZE(app->posY),
-                    MMT_DESERIALIZE(app->fps)
-                );
-
-                StringsFromJson(
-                    ap,
-                    {
-                    {app->title,    STR(title)},
-                    {app->language, STR(language)},
-                    {app->version,  STR(version)}
-                    }
-                );
-                */
 
                 const auto& flags = ap.at("flags").get<picojson::array>();
                 for (const auto& f : flags)
@@ -150,26 +132,6 @@ namespace mmt
                 MMT_SERIALIZE(app->language)
             );
 
-            /*
-            NumbersToJson(
-                appObj,
-                MMT_SERIALIZE(app->width),
-                MMT_SERIALIZE(app->height),
-                MMT_SERIALIZE(app->posX),
-                MMT_SERIALIZE(app->posY),
-                MMT_SERIALIZE(app->fps)
-            );
-
-            StringsToJson(
-                appObj,
-                {
-                {app->title,    STR(title)},
-                {app->language, STR(language)},
-                {app->version,  STR(version)}
-                }
-            );
-            */
-
             picojson::value::array flags;
             auto strFlags = WindowFlagsToVec(app->flags);
             for (const auto& f : strFlags)
@@ -195,26 +157,7 @@ namespace mmt
                     MMT_DESERIALIZE(gui->scale),
                     MMT_DESERIALIZE(gui->theme)
                 );
-                /*
-                NumbersFromJson(
-                    ui,
-                    MMT_DESERIALIZE(gui->fontSize),
-                    MMT_DESERIALIZE(gui->scale)
-                );
-                StringsFromJson(
-                    ui,
-                    {
-                    {gui->font, STR(font)},
-                    {gui->theme,STR(theme)}
-                    }
-                );
-                */
-
-                //gui->fontSize = static_cast<int>(ui.at("fontSize").get<double>());
-                //gui->scale = static_cast<float>(ui.at("scale").get<double>());
-                //gui->font = ui.at("font").get<std::string>();
-                //gui->theme = ui.at("theme").get<std::string>();
-
+                
                 MMT_LOG_DEBUG("Loaded gui config");
             }
             catch (const std::exception& e)
@@ -235,26 +178,6 @@ namespace mmt
                 MMT_SERIALIZE(gui->theme)
             );
 
-            /*
-            NumbersToJson(
-                uiObj,
-                PAIR(gui->fontSize, STR(fontSize)),
-                PAIR(gui->scale,    STR(scale))
-            );
-            StringsToJson(
-                uiObj,
-                {
-                {gui->font, STR(font)},
-                {gui->theme,STR(theme)}
-                }
-            );
-            */
-
-            //uiObj["fontSize"] = picojson::value(static_cast<double>(gui->fontSize));
-            //uiObj["scale"] = picojson::value(static_cast<double>(gui->scale));
-            //uiObj["font"] = picojson::value(gui->font);
-            //uiObj["theme"] = picojson::value(gui->theme);
-
             picojson::value val(uiObj);
             obj["gui"] = val;
         }
@@ -270,24 +193,6 @@ namespace mmt
                     MMT_DESERIALIZE(map->lastHeight),
                     MMT_DESERIALIZE(map->lastWidth)
                 );
-                /*
-                NumbersFromJson(
-                    mp,
-                    PAIR(REF(map->previewQuality),          STR(previewQuality)),
-                    PAIR(REF(map->lastWidth),               STR(lastWidth)),
-                    PAIR(REF(map->lastHeight),              STR(lastHeight)),
-                    PAIR(REF(map->maxEntityNumberLow),      STR(maxEntityNumberLow)),
-                    PAIR(REF(map->maxEntityNumberMedium),   STR(maxEntityNumberMedium)),
-                    PAIR(REF(map->maxEntityNumberHigh),     STR(maxEntityNumberHigh))
-                );
-                */
-
-                //map->previewQuality = static_cast<float>(mp.at("previewQuality").get<double>());
-                //map->lastWidth = static_cast<int>(mp.at("lastWidth").get<double>());
-                //map->lastHeight = static_cast<int>(mp.at("lastHeight").get<double>());
-                //map->maxEntityNumberLow = static_cast<int>(mp.at("maxEntityNumberLow").get<double>());
-                //map->maxEntityNumberMedium = static_cast<int>(mp.at("maxEntityNumberMedium").get<double>());
-                //map->maxEntityNumberHigh = static_cast<int>(mp.at("maxEntityNumberHigh").get<double>());
 
                 MMT_LOG_DEBUG("Loaded map config");
             }
@@ -306,24 +211,6 @@ namespace mmt
                 MMT_SERIALIZE(map->lastHeight),
                 MMT_SERIALIZE(map->lastWidth)
             );
-            /*
-            NumbersToJson(
-                mpObj,
-                PAIR(map->previewQuality,           STR(previewQuality)),
-                PAIR(map->lastWidth,                STR(lastWidth)),
-                PAIR(map->lastHeight,               STR(lastHeight)),
-                PAIR(map->maxEntityNumberLow,       STR(maxEntityNumberLow)),
-                PAIR(map->maxEntityNumberMedium,    STR(maxEntityNumberMedium)),
-                PAIR(map->maxEntityNumberHigh,      STR(maxEntityNumberHigh))
-            );
-            */
-
-            //mpObj["previewQuality"] = picojson::value(static_cast<double>(map->previewQuality));
-            //mpObj["lastWidth"] = picojson::value(static_cast<double>(map->lastWidth));
-            //mpObj["lastHeight"] = picojson::value(static_cast<double>(map->lastHeight));
-            //mpObj["maxEntityNumberLow"] = picojson::value(static_cast<double>(map->maxEntityNumberLow));
-            //mpObj["maxEntityNumberMedium"] = picojson::value(static_cast<double>(map->maxEntityNumberMedium));
-            //mpObj["maxEntityNumberHigh"] = picojson::value(static_cast<double>(map->maxEntityNumberHigh));
 
             picojson::value val(mpObj);
             obj["map"] = val;

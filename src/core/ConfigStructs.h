@@ -18,7 +18,7 @@ namespace mmt
 
             unsigned int flags = 0;
 
-            std::string title = "Hills and Dales",
+            std::string title = "MMT",
                         version = "0.0",
                         language = "en";
         };

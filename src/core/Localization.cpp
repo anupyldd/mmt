@@ -23,28 +23,35 @@ namespace mmt
 
         bool Localization::Load(const std::filesystem::path& relPath)
         {
-            MMT_LOG_DEBUG("Loading loc...");
+            try
+            {
+                MMT_LOG_DEBUG("Loading loc...");
 
-            auto cwd = std::filesystem::current_path();
-            std::ifstream file(cwd / relPath);
-            std::stringstream contents;
-            contents << file.rdbuf();
+                auto cwd = std::filesystem::current_path();
+                std::ifstream file(cwd / relPath);
+                std::stringstream contents;
+                contents << file.rdbuf();
 
-            std::string strCont = contents.str();
-            picojson::value val;
+                std::string strCont = contents.str();
+                picojson::value val;
 
-            std::string err = picojson::parse(val, strCont);
-            if (!err.empty()) throw std::runtime_error("Failed to parse localization file: " + err);
+                std::string err = picojson::parse(val, strCont);
+                if (!err.empty()) throw std::runtime_error("Failed to parse localization file: " + err);
 
-            MMT_LOG_DEBUG("Parsed localization file");
+                MMT_LOG_DEBUG("Parsed localization file");
 
-            if (!val.is<picojson::object>()) throw std::runtime_error("Localization json is not an object");
-            const picojson::value::object& obj = val.get<picojson::object>();
+                if (!val.is<picojson::object>()) throw std::runtime_error("Localization json is not an object");
+                const picojson::value::object& obj = val.get<picojson::object>();
 
-            LoadLocInfo(obj);
+                LoadLocInfo(obj);
 
-            MMT_LOG_DEBUG("Loaded localization");
-            MMT_LOG_DEBUG("Loc map size: " + std::to_string(locMap.size()));
+                MMT_LOG_DEBUG("Loaded localization");
+                MMT_LOG_DEBUG("Loc map size: " + std::to_string(locMap.size()));
+            }
+            catch (const std::exception& e)
+            {
+                MMT_LOG_ERROR(std::format("Failed to load localization: {}", e.what()));
+            }
         }
         const std::unordered_map<std::string, MultiStr>& Localization::GetMap() const
         {

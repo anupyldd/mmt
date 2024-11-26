@@ -6,7 +6,7 @@
 #include "../utility/Log.h"
 #include "../utility/Defines.h"
 #include "../utility/RresImpl.h"
-#include "../utility/StringHash.h"
+#include "../utility/StringUtil.h"
 #include "map/ResourcePack.h"
 #include "Config.h"
 
