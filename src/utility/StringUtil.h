@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <string>
 #include <algorithm>
+#include <chrono>
+#include <sstream>
 
 namespace mmt
 {
@@ -37,6 +39,14 @@ namespace mmt
                 return str.substr(str.find_last_of('.') + 1);
             else
                 return str.substr(str.find_last_of('>') + 1);
+        }
+
+        inline std::string TimeAsString(std::chrono::time_point<std::chrono::system_clock> timePoint)
+        {
+            auto in_time_t = std::chrono::system_clock::to_time_t(timePoint);
+            std::stringstream ss;
+            ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X");
+            return ss.str();
         }
 	}
 }

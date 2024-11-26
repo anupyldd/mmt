@@ -5,6 +5,7 @@
 #include <format>
 #include <typeinfo>
 #include <tuple>
+#include <chrono>
 
 #include "picojson.h"
 #include "raylib.h"
@@ -198,7 +199,6 @@ namespace mmt
 				/*
 				* ~Asc: earliest first (date), A-Z (alpha)
 				* ~Desc: latest first (date), Z-A (alpha)
-				*/
 				enum MapSort
 				{
 					MSORT_CREATED_ASC = 0, 
@@ -208,8 +208,9 @@ namespace mmt
 					MSORT_ALPHA_ASC, 
 					MSORT_ALPHA_DESC
 				};
+				*/
 
-				MapSort currentSortBy = MSORT_ALPHA_DESC;
+				std::string sortBy = "last_edit_desc";
 				std::string name = "Unnamed Atlas";
 				uint32_t id = 0;
 
@@ -219,7 +220,7 @@ namespace mmt
 					ToJson(
 						obj,
 						MMT_SERIALIZE(name),
-						MMT_SERIALIZE(currentSortBy),
+						MMT_SERIALIZE(sortBy),
 						MMT_SERIALIZE(id)
 					);
 					picojson::value val(obj);
@@ -230,12 +231,44 @@ namespace mmt
 					FromJson(
 						obj,
 						MMT_DESERIALIZE(name),
-						MMT_DESERIALIZE(currentSortBy),
+						MMT_DESERIALIZE(sortBy),
 						MMT_DESERIALIZE(id)
 					);
 				}
 			};
 			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Atlas);
+
+			struct Map : public Component<Map>
+			{
+				std::string name = "Unnamed map",
+							creationTime = "Undefined time",
+							lastEditTime = "Undefined time";
+				uint32_t	atlasId = 0;
+						
+				virtual void Serialize(JsonValObj& valObj) override final
+				{
+					picojson::value::object obj;
+					ToJson(
+						obj,
+						MMT_SERIALIZE(name),
+						MMT_SERIALIZE(atlasId),
+						MMT_SERIALIZE(creationTime),
+						MMT_SERIALIZE(lastEditTime)
+					);
+					picojson::value val(obj);
+					valObj[STR(Map)] = val;
+				}
+				virtual void Deserialize(JsonObj& obj) override final
+				{
+					FromJson(
+						obj,
+						MMT_DESERIALIZE(name),
+						MMT_DESERIALIZE(atlasId),
+						MMT_DESERIALIZE(creationTime),
+						MMT_DESERIALIZE(lastEditTime)
+					);
+				}
+			};
 
 			// markers ------------------------------------
 
