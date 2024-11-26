@@ -11,9 +11,7 @@
 #include <filesystem>
 #include <utility>
 
-#define ECS_MGR hnd::core::EcsManager::GetInstance()
-
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{
@@ -32,7 +30,7 @@ namespace hnd
 		*/
 		class EcsManager
 		{
-			HND_SINGLETON(EcsManager);
+			MMT_SINGLETON(EcsManager);
 
 		public:
 			// creates default instance

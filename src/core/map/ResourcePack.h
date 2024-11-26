@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <cstdint>
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{
@@ -15,20 +15,22 @@ namespace hnd
 		struct TextureData
 		{
 			TextureData() = default;
-			TextureData(const std::string& name, std::shared_ptr<Texture2D> tex)
-				: name(name), texture(tex) { }
+			TextureData(const std::string& name, ResourceHandle handle, std::shared_ptr<Texture2D> tex)
+				: name(name), handle(handle), texture(tex) { }
 
 			std::string name;
+			ResourceHandle handle;
 			std::shared_ptr<Texture2D> texture;
 		};
 
 		struct FontData
 		{
 			FontData() = default;
-			FontData(const std::string& name, std::shared_ptr<Font> font)
-				: name(name), font(font) { }
+			FontData(const std::string& name, ResourceHandle handle, std::shared_ptr<Font> font)
+				: name(name), handle(handle), font(font) { }
 
 			std::string name;
+			ResourceHandle handle;
 			std::shared_ptr<Font> font;
 		};
 
@@ -43,9 +45,9 @@ namespace hnd
 			//std::unordered_map<ResourceHandle, std::shared_ptr<Texture2D>> textures;
 			//std::unordered_map<ResourceHandle, std::shared_ptr<Texture2D>> objects;
 			//std::unordered_map<ResourceHandle, std::shared_ptr<Font>> fonts;
-			std::unordered_map<ResourceHandle, TextureData> textures;
-			std::unordered_map<ResourceHandle, TextureData> objects;
-			std::unordered_map<ResourceHandle, FontData> fonts;
+			std::unordered_map<std::string, TextureData> textures;
+			std::unordered_map<std::string, TextureData> objects;
+			std::unordered_map<std::string, FontData> fonts;
 		};
 
 		using PackRegistry = std::unordered_map<std::string, Pack>;

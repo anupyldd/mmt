@@ -1,6 +1,6 @@
 #include "MainMenu.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace gui
 	{
@@ -18,7 +18,7 @@ namespace hnd
 
 			if (ImGui::Button(LocC("new_map")))
 			{
-				HND_LOG_DEBUG("Pressed button");
+				MMT_LOG_DEBUG("Pressed button");
 				Notify({ .type = EventType::GUI_FROM_MAIN_TO_EDIT });
 			}
 

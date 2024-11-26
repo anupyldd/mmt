@@ -1,6 +1,6 @@
 #include "App.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{
@@ -19,7 +19,7 @@ namespace hnd
 		}
 		void App::Run()
 		{
-			HND_LOG_DEBUG("App is now running");
+			MMT_LOG_DEBUG("App is now running");
 
 			appGui.mainMenu.AddObserver(this);
 			fsm.SetCurrentState(&initLoadState);
@@ -44,7 +44,7 @@ namespace hnd
 			{
 			case EventType::GUI_FROM_MAIN_TO_EDIT:
 			{
-				HND_LOG_DEBUG("handling notification");
+				MMT_LOG_DEBUG("handling notification");
 				if(fsm.IsInState(&mainMenuState)) fsm.ChangeState(&mapEditState);
 			}
 			break;
@@ -63,7 +63,7 @@ namespace hnd
 
 			auto& conf = Config::GetInstance();
 			if (!conf.Load("data/config.json"))
-				HND_LOG_ERROR("Error loading config, falling back to default values");
+				MMT_LOG_ERROR("Error loading config, falling back to default values");
 
 			Localization::GetInstance().Load("data/loc.json");
 
@@ -85,13 +85,17 @@ namespace hnd
 			SetExitKey(KEY_NULL);
 			rlImGuiSetup(true);
 
+			/********************************/
+			ResourceManager::GetInstance().Load();
+			/********************************/
+
 			owner->fsm.ChangeState(&owner->mainMenuState);
 		}
 		//-----------------------------------
 		void App::MainMenu::Enter(App* owner)
 		{
 			menuOpen = true;
-			HND_LOG_DEBUG("Main menu is now open");
+			MMT_LOG_DEBUG("Main menu is now open");
 		}
 		void App::MainMenu::Execute(App* owner)
 		{
@@ -111,13 +115,13 @@ namespace hnd
 		void App::MainMenu::Exit(App* owner)
 		{
 			menuOpen = false;
-			HND_LOG_DEBUG("Exiting main menu");
+			MMT_LOG_DEBUG("Exiting main menu");
 		}
 		//-------------------------------------
 		void App::MapEdit::Enter(App* owner)
 		{
 			editOpen = true;
-			HND_LOG_DEBUG("Map edit is now open");
+			MMT_LOG_DEBUG("Map edit is now open");
 		}
 		void App::MapEdit::Execute(App* owner)
 		{
@@ -132,7 +136,7 @@ namespace hnd
 				/*********************************************/
 				if (IsKeyPressed(KEY_ESCAPE))
 				{
-					HND_LOG_DEBUG("Going back to menu");
+					MMT_LOG_DEBUG("Going back to menu");
 					owner->fsm.ChangeState(&owner->mainMenuState);
 				}
 				/*********************************************/
@@ -145,7 +149,7 @@ namespace hnd
 		void App::MapEdit::Exit(App* owner)
 		{
 			editOpen = false;
-			HND_LOG_DEBUG("Exiting map editing");
+			MMT_LOG_DEBUG("Exiting map editing");
 		}
 		//-------------------------------------
 		void App::Close::Execute(App* owner)

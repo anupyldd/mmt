@@ -15,7 +15,7 @@
 #include "EcsTypes.h"
 #include "../../utility/Log.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{
@@ -39,7 +39,7 @@ namespace hnd
 					}
 					catch (const std::exception& e)
 					{
-						HND_LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
+						MMT_LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
 							c, id, e.what()));
 					}
 				}
@@ -71,7 +71,7 @@ namespace hnd
 					}
 					catch (const std::exception& e)
 					{
-						HND_LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
+						MMT_LOG_ERROR(std::format("Failed to add component {} to entity {}: {}",
 							c, entity, e.what()));
 					}
 				}
@@ -126,7 +126,7 @@ namespace hnd
 					}
 					catch (const std::exception& e)
 					{
-						HND_LOG_ERROR(std::format("Failed to remove component {} from entity {}: {}",
+						MMT_LOG_ERROR(std::format("Failed to remove component {} from entity {}: {}",
 							c, entity, e.what()));
 					}
 				}

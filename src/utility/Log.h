@@ -8,13 +8,13 @@
 #include <format>
 #include <iostream>
 
-namespace hnd
+namespace mmt
 {
     namespace util
     {
         class Log
         {
-            HND_SINGLETON(Log);
+            MMT_SINGLETON(Log);
 
         public:
             void ConsoleDebug(const std::string& msg);
@@ -26,8 +26,8 @@ namespace hnd
         };
     }
     
-    #define HND_LOG util::Log::GetInstance()
-    #define HND_LOG_DEBUG(msg) util::Log::GetInstance().ConsoleDebug(msg)
-    #define HND_LOG_INFO(msg) util::Log::GetInstance().ConsoleInfo(msg)
-    #define HND_LOG_ERROR(msg) util::Log::GetInstance().ConsoleError(msg)
+    #define MMT_LOG util::Log::GetInstance()
+    #define MMT_LOG_DEBUG(msg) util::Log::GetInstance().ConsoleDebug(msg)
+    #define MMT_LOG_INFO(msg) util::Log::GetInstance().ConsoleInfo(msg)
+    #define MMT_LOG_ERROR(msg) util::Log::GetInstance().ConsoleError(msg)
 }

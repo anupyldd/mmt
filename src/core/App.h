@@ -7,10 +7,11 @@
 #include "../gui/Gui.h"
 #include "../utility/StateMachine.h"
 #include "../utility/Observer.h"
+#include "ResourceManager.h"
 
 #include <exception>
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{

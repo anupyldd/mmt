@@ -1,6 +1,6 @@
 #include "Gui.h"
 
-namespace hnd
+namespace mmt
 {
     namespace gui
     {
@@ -27,7 +27,7 @@ namespace hnd
             if (obj)
             {
                 objects.emplace_back(std::move(obj));
-                HND_LOG_DEBUG("Added Gui object");
+                MMT_LOG_DEBUG("Added Gui object");
             }
             */
         }
@@ -37,12 +37,12 @@ namespace hnd
             try
             {
                 objects.erase(std::find(objects.begin(), objects.end(), obj));
-                HND_LOG_DEBUG("Removed Gui object");
+                MMT_LOG_DEBUG("Removed Gui object");
             }
             catch (const std::exception& e)
             {
                 std::string msg("Could not remove Gui object: " + std::string(e.what()));
-                HND_LOG_ERROR(msg);
+                MMT_LOG_ERROR(msg);
             }
             */
         }

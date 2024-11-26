@@ -1,6 +1,6 @@
 #include "Log.h"
 
-namespace hnd
+namespace mmt
 {
     namespace util
     {

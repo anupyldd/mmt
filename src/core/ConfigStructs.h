@@ -6,7 +6,7 @@
 
 #include "raylib.h"
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{

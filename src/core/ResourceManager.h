@@ -20,8 +20,9 @@
 #include <fstream>
 #include <cctype>
 #include <sstream>
+#include <string.h>
 
-namespace hnd
+namespace mmt
 {
 	namespace core
 	{
@@ -32,13 +33,15 @@ namespace hnd
 
 		class ResourceManager
 		{
-			HND_SINGLETON(ResourceManager);
+			MMT_SINGLETON(ResourceManager);
 			
 		public:
 			void SetResourcePath(const std::filesystem::path& path);
 
 			void Load();
 			void Unload();
+
+			void LoadDefault();
 
 			void LoadPack(const std::string& name);
 			void UnloadPack(const std::string& name);
@@ -52,10 +55,14 @@ namespace hnd
 			
 			ResourceHandle GenerateHandle(const std::string& packName, ResourceType type, const std::string& resName);
 
+			bool SameFourCC(const unsigned char first[4], const unsigned char second[4]) const;
+
 		private:
-			PackRegistry packs;
-			std::filesystem::path resPath;
-			Font defaultFont{ 0 };
+			PackRegistry			packs;
+			std::filesystem::path	resPath;
+
+			Font					defaultFont{ 0 };
+			Image					appIcon{ 0 };
 		};
 	}
 }

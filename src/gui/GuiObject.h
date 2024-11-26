@@ -3,7 +3,7 @@
 #include "../utility/Observer.h"
 #include "../core/Localization.h"
 
-namespace hnd
+namespace mmt
 {
     namespace gui
     {

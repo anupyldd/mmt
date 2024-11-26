@@ -13,7 +13,7 @@
 #include "../utility/Log.h"
 #include "../utility/StateMachine.h"
 
-namespace hnd
+namespace mmt
 {
     namespace gui
     {
