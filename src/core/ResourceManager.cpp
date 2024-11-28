@@ -15,6 +15,7 @@ namespace mmt
 			try
 			{
 				SetResourcePath(std::filesystem::path(Config::GetInstance().meta->resourceRelPath));
+				LoadDefault();
 
 				for (const auto& entry : std::filesystem::directory_iterator(resPath))
 				{
@@ -23,11 +24,60 @@ namespace mmt
 						packs[entry.path().filename().stem().string()] = LoadPack(entry.path());
 					}
 				}
+
+			#if _DEBUG
+				MMT_LOG_DEBUG("Loaded packs: ------------------");
+				for (const auto& p : packs)
+				{
+					MMT_LOG_DEBUG(p.second.name);
+					MMT_LOG_DEBUG(p.second.author);
+					MMT_LOG_DEBUG(p.second.license);
+					MMT_LOG_DEBUG(p.second.version);
+					MMT_LOG_DEBUG(p.second.lastUpdate);
+					MMT_LOG_DEBUG(p.second.description);
+					MMT_LOG_DEBUG("\ttextures:");
+					for (const auto& t : p.second.textures)
+					{
+						MMT_LOG_DEBUG(t.second.name);
+						MMT_LOG_DEBUG(std::to_string(t.second.handle));
+					}
+					MMT_LOG_DEBUG("\tobjects:");
+					for (const auto& o : p.second.objects)
+					{
+						MMT_LOG_DEBUG(o.second.name);
+						MMT_LOG_DEBUG(std::to_string(o.second.handle));
+					}
+					MMT_LOG_DEBUG("\tfonts:");
+					for (const auto& f : p.second.textures)
+					{
+						MMT_LOG_DEBUG(f.second.name);
+						MMT_LOG_DEBUG(std::to_string(f.second.handle));
+					}
+				#endif
+				}
 			}
 			catch (const std::exception& e)
 			{
 				MMT_LOG_ERROR(std::format("Failed to load resources: {}", e.what()));
 			}
+		}
+		void ResourceManager::LoadDefault()
+		{
+			auto path = std::filesystem::current_path() / "data" / "resources" / "default";
+			MMT_LOG_DEBUG(path.string());
+			for (const auto& entry : std::filesystem::directory_iterator(path))
+			{
+				if (entry.path().extension().string() == ".ttf")
+				{
+					defaultFont = LoadFont(entry.path().string().c_str());
+				}
+				else if (entry.path().extension().string() == ".png")
+				{
+					appIcon = LoadImage(entry.path().string().c_str());
+				}
+			}
+			if (!IsFontValid(defaultFont)) MMT_LOG_ERROR("Invalid default font");
+			if (IsImageValid(appIcon)) SetWindowIcon(appIcon);
 		}
 		Pack ResourceManager::LoadPack(const std::filesystem::path& path)
 		{
