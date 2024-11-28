@@ -11,12 +11,13 @@ int main()
 	using namespace mmt;
 	using namespace core;
 
-	//core::App app;
-	//app.Run();
+	core::App app;
+	app.Run();
 	//Config::GetInstance().Load("data/config.json");
 
+	/*
 	components::Atlas at;
-	at.sortBy = at.MSORT_ALPHA_ASC;
+	at.sortBy = 4;
 	at.id = 132243;
 	at.name = "some atlas";
 
@@ -31,4 +32,5 @@ int main()
 
 	picojson::value mainVal(obj);
 	std::cout << mainVal.serialize(true);
+	*/
 }

@@ -17,6 +17,9 @@ namespace mmt
             {
                 auto cwd = std::filesystem::current_path();
                 std::ifstream file(cwd / relPath);
+
+                MMT_LOG_DEBUG((cwd / relPath).string());
+
                 std::stringstream contents;
                 contents << file.rdbuf();
 
@@ -157,7 +160,7 @@ namespace mmt
                     MMT_DESERIALIZE(gui->scale),
                     MMT_DESERIALIZE(gui->theme)
                 );
-                
+
                 MMT_LOG_DEBUG("Loaded gui config");
             }
             catch (const std::exception& e)

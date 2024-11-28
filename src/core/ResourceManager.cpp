@@ -109,7 +109,7 @@ namespace mmt
 				// archive loading handles different types of resources itself
 				if (entry.path().extension() == ".rres")
 				{
-					//LoadArchive(pack, type, entry.path());
+					LoadArchive(pack, type, entry.path());
 				}
 				// loading objects or textures
 				else if ((

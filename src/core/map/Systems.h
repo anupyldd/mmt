@@ -4,6 +4,7 @@
 #include "Components.h"
 #include "Ecs.h"
 #include "EcsManager.h"
+#include "../ResourceManager.h"
 #include "../../utility/Log.h"
 
 #include "raylib.h"
@@ -26,7 +27,7 @@
 
 // to be used in a loop of a system, gets the ptr to comp
 #define MMT_GET_ENTITY_COMPONENT_PTR(CompType)  \
-	EntityGetComponent<CompType>(ecs, entities[i], ECS_MGR.GetActiveComponentId(#CompType));
+	EntityGetComponent<CompType>(ecs, entities[i], EcsManager::GetInstance().GetActiveComponentId(#CompType));
 
 namespace mmt
 {
@@ -34,22 +35,22 @@ namespace mmt
 	{
 		using namespace components;
 		using namespace ecs_wrapper;
-
+		class EcsManager;
 		/*
-		* required: sprite, transform, visible
-		* excluded:
-		*/
+		* required: sprite, transform
+		* excluded: culled
 		MMT_DECLARE_SYSTEM_FUNCTION(RenderSprite)
 		{
 			for (size_t i = 0; i < entity_count; i++)
 			{
-
+				
 				Transform* transform = MMT_GET_ENTITY_COMPONENT_PTR(Transform);
 				Sprite* sprite = MMT_GET_ENTITY_COMPONENT_PTR(Sprite);
 				// not getting visible since it's just a marker
-
-				
+				DrawCircle(transform->x, transform->y, 5, RED);
 			}
 		}
+		*/
+
 	}
 }

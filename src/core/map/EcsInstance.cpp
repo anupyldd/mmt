@@ -29,6 +29,14 @@ namespace mmt
 		void EcsInstance::RegisterCommon()
 		{
 			MMT_LOG_DEBUG("TODO: RegisterCommon()");
+
+			using namespace components;
+
+			ComponentRegister<Transform>(STR(Transform), TransformConstructor);
+			ComponentRegister<Sprite>(STR(Sprite), SpriteConstructor);
+
+			//SystemRegister(STR(RenderSpriteSystem), RenderSpriteSystem,
+			//	{ STR(Transform), STR(Sprite) });
 		}
 		void EcsInstance::Update(double dt)
 		{
