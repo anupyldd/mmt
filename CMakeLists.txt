@@ -22,7 +22,7 @@ message("Fetching raylib...")
 FetchContent_Declare(
   raylib
   GIT_REPOSITORY https://github.com/raysan5/raylib.git
-  GIT_TAG ae50bfa2cc569c0f8d5bc4315d39db64005b1b08
+  GIT_TAG c1ab645ca298a2801097931d1079b10ff7eb9df8
 )
 FetchContent_MakeAvailable(raylib)
 

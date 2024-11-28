@@ -3,6 +3,7 @@
 #include "EcsInstance.h"
 #include "MapUtil.h"
 #include "EcsTypes.h"
+#include "Systems.h"
 #include "../../utility/Defines.h"
 
 #include <unordered_map>
@@ -15,6 +16,7 @@ namespace mmt
 {
 	namespace core
 	{
+		class EcsInstance;
 
 		// { atlas_name : { map_name : ecs_instance } }
 		using EcsInstanceMap = std::unordered_map<std::string, std::unordered_map<std::string, std::unique_ptr<EcsInstance>>>;
@@ -58,5 +60,7 @@ namespace mmt
 			EcsInstanceMap instances;
 			EcsActiveInstance activeInstance;
 		};
+
+		inline EcsManager& EcsMgr() { return EcsManager::GetInstance(); }
 	}
 }

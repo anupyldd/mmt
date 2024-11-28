@@ -4,13 +4,13 @@
       "FLAG_WINDOW_RESIZABLE"
     ],
     "fps": 60,
-    "height": 660,
+    "height": 700,
     "language": "en",
     "posX": 318,
     "posY": 215,
-    "title": "MMT",
+    "title": "MMT WTF",
     "version": "0.0",
-    "width": 1141
+    "width": 700
   },
   "gui": {
     "font": "FiraCode",

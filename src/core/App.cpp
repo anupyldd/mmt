@@ -4,11 +4,6 @@ namespace mmt
 {
 	namespace core
 	{
-
-
-		/********************************************************/
-		/********************************************************/
-
 		App::App()
 			: fsm(this)
 		{
@@ -89,6 +84,10 @@ namespace mmt
 			ResourceManager::GetInstance().Load();
 			/********************************/
 
+		#ifdef IMGUI_HAS_DOCK
+			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		#endif
+
 			owner->fsm.ChangeState(&owner->mainMenuState);
 		}
 		//-----------------------------------
@@ -99,11 +98,16 @@ namespace mmt
 		}
 		void App::MainMenu::Execute(App* owner)
 		{
+			// -------------
+			//EcsMgr().CreateInstance("atlas1", "map1", 5000);
+			// -------------
+
 			while (!WindowShouldClose() && menuOpen)
 			{
 				BeginDrawing();
 				ClearBackground(BLUE);
 
+				//EcsMgr().UpdateActive();
 				owner->appGui.UpdateDraw(GuiState::MainMenu);
 				owner->UpdateConfig();
 

@@ -5,6 +5,7 @@
 #include <format>
 #include <typeinfo>
 #include <tuple>
+#include <chrono>
 
 #include "picojson.h"
 #include "raylib.h"
@@ -18,7 +19,7 @@
 defines a component constructor that takes in an instance of the component object as argument,
 then copies it into the actual component. Final constructor has a name "<Component>Constructor"
 */
-#define DEFINE_COMPONENT_CONSTRUCTOR(Component)													\
+#define MTT_DEFINE_COMPONENT_CONSTRUCTOR(Component)													\
 	inline void Component##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
 	{																							\
 		Component* comp = static_cast<Component*>(ptr);											\
@@ -30,8 +31,25 @@ then copies it into the actual component. Final constructor has a name "<Compone
 * using this assumes that all ecs instances on all maps use the same components.
 * final id looks like "<Component>Id"
 */
-#define GENERATE_COMPONENT_ID(Component) \
+#define MTT_GENERATE_COMPONENT_ID(Component) \
 	ecs_id_t Component##Id = util::HashString32(#Component);
+
+/*
+generates marker component with default structure
+serialize outputs null object
+deserialize does nothing
+name is preserved
+*/
+#define MTT_GENERATE_MARKER_COMPONENT(CompName)						\
+	struct CompName : public Component<CompName>					\
+	{																\
+		virtual void Serialize(JsonValObj& valObj) override final	\
+		{															\
+			valObj[#CompName] = picojson::value();					\
+		}															\
+		virtual void Deserialize(JsonObj& obj) override final { }	\
+	}
+
 
 namespace mmt
 {
@@ -69,6 +87,83 @@ namespace mmt
 			// ------------------------------------------------------------------------
 			// ------------------------------------------------------------------------
 
+			struct Atlas : public Component<Atlas>
+			{
+				/*
+				~Asc: earliest first (date), A-Z (alpha)
+				~Desc: latest first (date), Z-A (alpha)
+				
+					0 = CREATED_ASC,
+					1 = CREATED_DESC,
+					2 = LAST_EDIT_ASC,
+					3 = LAST_EDIT_DESC,
+					4 = ALPHA_ASC,
+					5 = ALPHA_DESC
+				
+				*/
+				int sortBy = 2;
+				std::string name = "Unnamed Atlas";
+				uint32_t id = 0;
+
+				virtual void Serialize(JsonValObj& valObj) override final
+				{
+					picojson::value::object obj;
+					ToJson(
+						obj,
+						MMT_SERIALIZE(name),
+						MMT_SERIALIZE(sortBy),
+						MMT_SERIALIZE(id)
+					);
+					picojson::value val(obj);
+					valObj[STR(Atlas)] = val;
+				}
+				virtual void Deserialize(JsonObj& obj) override final
+				{
+					FromJson(
+						obj,
+						MMT_DESERIALIZE(name),
+						MMT_DESERIALIZE(sortBy),
+						MMT_DESERIALIZE(id)
+					);
+				}
+			};
+			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Atlas);
+
+			struct Map : public Component<Map>
+			{
+				std::string name = "Unnamed map",
+					creationTime = "Undefined time",
+					lastEditTime = "Undefined time";
+				uint32_t	atlasId = 0;
+
+				virtual void Serialize(JsonValObj& valObj) override final
+				{
+					picojson::value::object obj;
+					ToJson(
+						obj,
+						MMT_SERIALIZE(name),
+						MMT_SERIALIZE(atlasId),
+						MMT_SERIALIZE(creationTime),
+						MMT_SERIALIZE(lastEditTime)
+					);
+					picojson::value val(obj);
+					valObj[STR(Map)] = val;
+				}
+				virtual void Deserialize(JsonObj& obj) override final
+				{
+					FromJson(
+						obj,
+						MMT_DESERIALIZE(name),
+						MMT_DESERIALIZE(atlasId),
+						MMT_DESERIALIZE(creationTime),
+						MMT_DESERIALIZE(lastEditTime)
+					);
+				}
+			};
+			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Map);
+
+			// ------------------------------------------------------------------------
+
 			struct Transform : public Component<Transform>
 			{
 				float	x = 0.0f, 
@@ -100,34 +195,55 @@ namespace mmt
 					);
 				}
 			};
-			DEFINE_COMPONENT_CONSTRUCTOR(Transform);
+			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Transform);
 
-			struct Sprite : public Component<Sprite>
+			// texture from file, not canvas
+			struct Texture : public Component<Texture>
 			{
-				uint64_t handle = 0;
+				std::string name;
 
 				virtual void Serialize(JsonValObj& valObj) override final
 				{
 					picojson::value::object obj;
-					std::string v = std::to_string(handle);
 					ToJson(
 						obj,
-						MMT_SERIALIZE_EX(v, handle)
+						MMT_SERIALIZE(name)
 					);
 					picojson::value val(obj);
-					valObj[STR(Sprite)] = val;
+					valObj[STR(Texture)] = val;
 				}
 				virtual void Deserialize(JsonObj& obj) override final
 				{
-					std::string val;
 					FromJson(
 						obj,
-						MMT_DESERIALIZE_EX(val, handle)
+						MMT_DESERIALIZE(name)
 					);
-					handle = std::stoll(val);
 				}
 			};
-			DEFINE_COMPONENT_CONSTRUCTOR(Sprite);
+
+			struct Sprite : public Component<Sprite>
+			{
+				std::string name = 0;
+
+				virtual void Serialize(JsonValObj& valObj) override final
+				{
+					picojson::value::object obj;
+					ToJson(
+						obj,
+						MMT_SERIALIZE(name)
+					);
+					picojson::value val(obj);
+					valObj[STR(Texture)] = val;
+				}
+				virtual void Deserialize(JsonObj& obj) override final
+				{
+					FromJson(
+						obj,
+						MMT_DESERIALIZE(name)
+					);
+				}
+			};
+			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Sprite);
 
 			struct Name : public Component<Name>
 			{
@@ -151,7 +267,7 @@ namespace mmt
 					);
 				}
 			};
-			DEFINE_COMPONENT_CONSTRUCTOR(Name);
+			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Name);
 
 			struct Description : public Component<Description>
 			{
@@ -175,23 +291,18 @@ namespace mmt
 					);
 				}
 			};
-			DEFINE_COMPONENT_CONSTRUCTOR(Description);
+			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Description);
 
-			struct Visible : Component<Visible>
-			{
-				virtual void Serialize(JsonValObj& valObj) override final 
-				{
-					valObj[STR(Visible)] = picojson::value();
-				}
-				virtual void Deserialize(JsonObj& obj) override final { }
-			};
+			
 
-			/*
-			struct Layer : public Component<Layer>
-			{
-				int order = 0;
-			};
-			*/
+			// markers ------------------------------------------------
+
+			MTT_GENERATE_MARKER_COMPONENT(Culled);
+			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Culled);
+
+			// can be active object, tool, map, whatever
+			MTT_GENERATE_MARKER_COMPONENT(Active);
+			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Active);
 		}
 		
 	}

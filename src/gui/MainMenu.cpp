@@ -16,6 +16,10 @@ namespace mmt
 
 			ImGui::Begin("Main Menu", 0, 0);
 
+		#ifdef IMGUI_HAS_DOCK
+			ImGui::DockSpaceOverViewport(0, NULL, ImGuiDockNodeFlags_PassthruCentralNode); 
+		#endif
+			
 			if (ImGui::Button(LocC("new_map")))
 			{
 				MMT_LOG_DEBUG("Pressed button");

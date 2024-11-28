@@ -29,7 +29,6 @@ namespace mmt
 			lastEditTime(std::chrono::system_clock::now())
 		{
 			id = util::HashString(name.c_str());
-			preview = GenImageColor(100, 50, BLACK);	// just a placeholder until first save
 		}
 		std::string MapData::CreationTimeAsString()
 		{
@@ -41,7 +40,6 @@ namespace mmt
 		}
 		void MapData::SetPreview(Image newPreview)
 		{
-			preview = std::move(newPreview);
 		}
 		std::string MapData::TimeAsString(std::chrono::time_point<std::chrono::system_clock> timePoint)
 		{

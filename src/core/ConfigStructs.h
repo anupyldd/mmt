@@ -18,7 +18,7 @@ namespace mmt
 
             unsigned int flags = 0;
 
-            std::string title = "MMT",
+            std::string title = "MMT (failed)",
                         version = "0.0",
                         language = "en";
         };
