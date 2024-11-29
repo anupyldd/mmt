@@ -136,8 +136,8 @@ src/core/map/Map.h
 src/core/map/Map.cpp
 src/core/map/EcsInstance.h
 src/core/map/EcsInstance.cpp
-src/core/map/EcsManager.h
-src/core/map/EcsManager.cpp
+#src/core/map/EcsManager.h
+#src/core/map/EcsManager.cpp
 src/core/map/Ecs.h
 src/core/map/EcsTypes.h
 src/core/map/Components.h
