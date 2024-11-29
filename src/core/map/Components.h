@@ -19,20 +19,30 @@
 defines a component constructor that takes in an instance of the component object as argument,
 then copies it into the actual component. Final constructor has a name "<Component>Constructor"
 */
-#define MTT_DEFINE_COMPONENT_CONSTRUCTOR(Component)													\
-	inline void Component##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
+#define MTT_DEFINE_COMPONENT_CONSTRUCTOR(CompName)												\
+	inline void CompName##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
 	{																							\
-		Component* comp = static_cast<Component*>(ptr);											\
-		Component* init = static_cast<Component*>(args);										\
+		CompName* comp = static_cast<CompName*>(ptr);											\
+		CompName* init = static_cast<CompName*>(args);											\
 		if(init) (*comp) = (*init);																\
 	}
 
 /*
-* using this assumes that all ecs instances on all maps use the same components.
-* final id looks like "<Component>Id"
+use for non-marker components
+defines a component signature, constructor and id.
+body of the component is still needed.
+component name is preserved.
+component id is component name + Id.
 */
-#define MTT_GENERATE_COMPONENT_ID(Component) \
-	ecs_id_t Component##Id = util::HashString32(#Component);
+#define MTT_DEFINE_COMPONENT(CompName)															\
+	ecs_id_t CompName##Id;																		\
+	inline void CompName##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
+	{																							\
+		CompName* comp = static_cast<CompName*>(ptr);											\
+		CompName* init = static_cast<CompName*>(args);											\
+		if(init) (*comp) = (*init);																\
+	}																							\
+	struct CompName : public Component<CompName>
 
 /*
 generates marker component with default structure
@@ -40,7 +50,7 @@ serialize outputs null object
 deserialize does nothing
 name is preserved
 */
-#define MTT_GENERATE_MARKER_COMPONENT(CompName)						\
+#define MTT_DEFINE_MARKER_COMPONENT(CompName)						\
 	struct CompName : public Component<CompName>					\
 	{																\
 		virtual void Serialize(JsonValObj& valObj) override final	\
@@ -87,7 +97,7 @@ namespace mmt
 			// ------------------------------------------------------------------------
 			// ------------------------------------------------------------------------
 
-			struct Atlas : public Component<Atlas>
+			MTT_DEFINE_COMPONENT(Atlas)
 			{
 				/*
 				~Asc: earliest first (date), A-Z (alpha)
@@ -127,9 +137,8 @@ namespace mmt
 					);
 				}
 			};
-			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Atlas);
 
-			struct Map : public Component<Map>
+			MTT_DEFINE_COMPONENT(Map)
 			{
 				std::string name = "Unnamed map",
 					creationTime = "Undefined time",
@@ -160,11 +169,10 @@ namespace mmt
 					);
 				}
 			};
-			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Map);
 
 			// ------------------------------------------------------------------------
 
-			struct Transform : public Component<Transform>
+			MTT_DEFINE_COMPONENT(Transform)
 			{
 				float	x = 0.0f, 
 						y = 0.0f;
@@ -195,10 +203,9 @@ namespace mmt
 					);
 				}
 			};
-			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Transform);
 
 			// texture from file, not canvas
-			struct Texture : public Component<Texture>
+			MTT_DEFINE_COMPONENT(Texture)
 			{
 				std::string name;
 
@@ -221,7 +228,7 @@ namespace mmt
 				}
 			};
 
-			struct Sprite : public Component<Sprite>
+			MTT_DEFINE_COMPONENT(Sprite)
 			{
 				std::string name = 0;
 
@@ -243,9 +250,8 @@ namespace mmt
 					);
 				}
 			};
-			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Sprite);
 
-			struct Name : public Component<Name>
+			MTT_DEFINE_COMPONENT(Name)
 			{
 				std::string name;
 
@@ -267,9 +273,8 @@ namespace mmt
 					);
 				}
 			};
-			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Name);
 
-			struct Description : public Component<Description>
+			MTT_DEFINE_COMPONENT(Description)
 			{
 				std::string desc;
 
@@ -291,17 +296,15 @@ namespace mmt
 					);
 				}
 			};
-			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Description);
-
 			
 
 			// markers ------------------------------------------------
 
-			MTT_GENERATE_MARKER_COMPONENT(Culled);
+			MTT_DEFINE_MARKER_COMPONENT(Culled);
 			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Culled);
 
 			// can be active object, tool, map, whatever
-			MTT_GENERATE_MARKER_COMPONENT(Active);
+			MTT_DEFINE_MARKER_COMPONENT(Active);
 			MTT_DEFINE_COMPONENT_CONSTRUCTOR(Active);
 		}
 		

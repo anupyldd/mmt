@@ -113,8 +113,7 @@ namespace mmt
 			template<class CompType>
 			inline CompType* EntityGetComponent(Ecs* ecs, EntityId entity, ComponentId comp)
 			{
-				//return dynamic_cast<CompType>(ecs_get(ecs, entity, comp));
-				return dynamic_cast<CompType>(ecs_get(ecs, entity, comp));
+				return static_cast<CompType*>(ecs_get(ecs, entity, comp));
 			}
 
 			inline void EntityComponentsRemove(Ecs* ecs, EntityId entity, std::initializer_list<ComponentId> comps)

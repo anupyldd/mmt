@@ -15,7 +15,7 @@
 #include "EcsTypes.h"
 #include "Components.h"
 #include "Ecs.h"
-//#include "Systems.h"
+#include "Systems.h"
 
 namespace mmt
 {

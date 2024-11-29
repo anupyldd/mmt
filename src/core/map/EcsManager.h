@@ -3,7 +3,6 @@
 #include "EcsInstance.h"
 #include "MapUtil.h"
 #include "EcsTypes.h"
-#include "Systems.h"
 #include "../../utility/Defines.h"
 
 #include <unordered_map>
@@ -23,13 +22,8 @@ namespace mmt
 		// { atlas_name : { map_name : ecs_instance } }
 		using EcsActiveInstance = std::pair<std::string, std::pair<std::string, EcsInstance*>>;
 
-		/*
-		* manages ecs instances.
-		* each instance is associated with 1 map, 1 map can have only 1 instance.
-		* instances are loaded/saved/etc by map name.
-		* ecs manager works in together with atlases, but not managed by them.
-		* only one instance of EcsManager exists in a program.
-		*/
+		// -----------------------
+
 		class EcsManager
 		{
 			MMT_SINGLETON(EcsManager);
