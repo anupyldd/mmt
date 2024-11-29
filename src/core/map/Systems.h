@@ -27,7 +27,7 @@
 
 // to be used in a loop of a system, gets the ptr to comp
 #define MMT_GET_ENTITY_COMPONENT_PTR(CompType)  \
-	EntityGetComponent<CompType>(ecs, entities[i], core::EcsManager::GetInstance().GetActiveComponentId(#CompType));
+	EntityGetComponent<CompType>(ecs, entities[i], CompType##Id);
 
 namespace mmt
 {
@@ -36,19 +36,17 @@ namespace mmt
 		using namespace components;
 		using namespace ecs_wrapper;
 
-		class EcsManager;
-
 		/*
 		* required: sprite, transform
 		* excluded: culled
 		*/
-		MMT_DECLARE_SYSTEM_FUNCTION(RenderSprite)
+		MMT_SYSTEM_FUNCTION(RenderSprite)
 		{
 			for (size_t i = 0; i < entity_count; i++)
 			{
 				
-				//Transform* transform = MMT_GET_ENTITY_COMPONENT_PTR(Transform);
-				//Sprite* sprite = MMT_GET_ENTITY_COMPONENT_PTR(Sprite);
+				Transform* transform = MMT_GET_ENTITY_COMPONENT_PTR(Transform);
+				Sprite* sprite = MMT_GET_ENTITY_COMPONENT_PTR(Sprite);
 				//DrawCircle(transform->x, transform->y, 5, RED);
 			}
 		}

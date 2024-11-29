@@ -16,8 +16,20 @@
 #include "EcsTypes.h"
 
 /*
+defines a component constructor that takes in an instance of the component object as argument,
+then copies it into the actual component. Final constructor has a name "<Component>Constructor"
+*/
+#define MTT_COMPONENT_CONSTRUCTOR(CompName)												\
+	inline void CompName##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
+	{																							\
+		CompName* comp = static_cast<CompName*>(ptr);											\
+		CompName* init = static_cast<CompName*>(args);											\
+		if(init) (*comp) = (*init);																\
+	}
+
+/*
 use for non-marker components
-defines a component signature, constructor and id.
+defines a component and id.
 body of the component is still needed.
 component name is preserved.
 component id is component name + Id.
@@ -125,6 +137,7 @@ namespace mmt
 					);
 				}
 			};
+			MTT_COMPONENT_CONSTRUCTOR(Atlas);
 
 			MTT_COMPONENT(Map)
 			{
@@ -157,6 +170,7 @@ namespace mmt
 					);
 				}
 			};
+			MTT_COMPONENT_CONSTRUCTOR(Map);
 
 			// ------------------------------------------------------------------------
 
@@ -191,6 +205,7 @@ namespace mmt
 					);
 				}
 			};
+			MTT_COMPONENT_CONSTRUCTOR(Transform);
 
 			// texture from file, not canvas
 			MTT_COMPONENT(Texture)
@@ -215,6 +230,7 @@ namespace mmt
 					);
 				}
 			};
+			MTT_COMPONENT_CONSTRUCTOR(Texture);
 
 			MTT_COMPONENT(Sprite)
 			{
@@ -238,6 +254,7 @@ namespace mmt
 					);
 				}
 			};
+			MTT_COMPONENT_CONSTRUCTOR(Sprite);
 
 			MTT_COMPONENT(Name)
 			{
@@ -261,6 +278,7 @@ namespace mmt
 					);
 				}
 			};
+			MTT_COMPONENT_CONSTRUCTOR(Name);
 
 			MTT_COMPONENT(Description)
 			{
@@ -284,14 +302,13 @@ namespace mmt
 					);
 				}
 			};
-			
+			MTT_COMPONENT_CONSTRUCTOR(Description);
 
 			// markers ------------------------------------------------
 
-			MTT_MARKER_COMPONENT(Culled);
-
 			// can be active object, tool, map, whatever
 			MTT_MARKER_COMPONENT(Active);
+			MTT_MARKER_COMPONENT(Culled);
 		}
 		
 	}
