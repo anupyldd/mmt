@@ -35,13 +35,7 @@ component name is preserved.
 component id is component name + Id.
 */
 #define MTT_COMPONENT(CompName)															\
-	ecs_id_t CompName##Id;																		\
-	inline void CompName##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
-	{																							\
-		CompName* comp = static_cast<CompName*>(ptr);											\
-		CompName* init = static_cast<CompName*>(args);											\
-		if(init) (*comp) = (*init);																\
-	}																							\
+	inline ecs_id_t CompName##Id;																								\
 	struct CompName : public Component<CompName>
 
 /*
