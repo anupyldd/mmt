@@ -2,25 +2,17 @@
 //
 
 #include "utility/Log.h"
-//#include "core/App.h"
-//#include "core/map/Components.h"
-//#include "utility/StringUtil.h"
-
-#include "core/ConfigStructs.h"
-
-#include "rfl.hpp"
-#include <rfl/json.hpp>
+#include "core/App.h"
+#include "core/map/Components.h"
+#include "utility/StringUtil.h"
 
 int main()
 {
-	mmt::core::MapConfig mc{ .lastHeight = 123 };
+	using namespace mmt;
+	using namespace core;
 	
-	std::cout << rfl::json::write(mc);
-	//using namespace mmt;
-	//using namespace core;
-	//
-	//core::App app;
-	//app.Run();
+	core::App app;
+	app.Run();
 	//Config::GetInstance().Load("data/config.json");
 
 	/*

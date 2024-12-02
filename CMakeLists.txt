@@ -119,6 +119,7 @@ set(PICO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
 file(COPY ${picoheaders_SOURCE_DIR}/pico_ecs.h DESTINATION ${PICO_DIR})
 file(COPY ${picoecscpp_SOURCE_DIR}/src/PicoEcsCpp.h DESTINATION ${PICO_DIR})
 
+# for some reason there's no yyjson header in the sources
 message("Copying yyjson.h")
 file(
 	COPY 

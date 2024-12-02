@@ -1,32 +1,25 @@
 {
-  "app": {
-    "flags": [
-      "FLAG_WINDOW_RESIZABLE"
-    ],
-    "fps": 60,
-    "height": 700,
-    "language": "en",
-    "posX": 318,
-    "posY": 215,
-    "title": "MMT WTF",
-    "version": "0.0",
-    "width": 700
-  },
-  "gui": {
-    "font": "FiraCode",
-    "fontSize": 32,
-    "scale": 1,
-    "theme": "default"
-  },
-  "map": {
-    "lastHeight": 300,
-    "lastWidth": 500
-  },
-  "meta": {
-    "available_languages": [
-      "en",
-      "ru"
-    ],
-    "resourceRelPath": "data\/resources\/packs"
-  }
+  "appWidth": 1000,
+  "appHeight": 850,
+  "appPosX": 100,
+  "appPosY": 100,
+  "appFPS": 60,
+  "appFlags": [
+    "FLAG_WINDOW_RESIZABLE"
+  ],
+  "appTitle": "MMT",
+  "appVersion": "v0.0",
+  "appLanguage": "en",
+
+  "guiFont": "default",
+  "guiTheme": "default",
+  "guiScale": 1,
+
+  "metaLanguages": [
+    "en",
+    "ru"
+  ],
+
+  "mapLastWidth": 150,
+  "mapLastHeight": 100
 }

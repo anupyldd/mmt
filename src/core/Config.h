@@ -22,6 +22,35 @@ namespace mmt
 {
     namespace core
     {
+        struct Settings
+        {
+            // app
+            int appWidth = 800, appHeight = 600,
+                appPosX = 100, appPosY = 100,
+                appFPS = 60;
+
+            std::vector<std::string> appFlags;
+
+            std::string appTitle = "MMT",
+                        appVersion = "v0.0",
+                        appLanguage = "en";
+
+            // gui
+            std::string guiFont,
+                        guiTheme;
+
+            float       guiScale = 1.0f;
+
+            // meta
+            std::vector<std::string> metaLanguages;
+
+            // map
+            int mapLastWidth = 1000,
+                mapLastHeight = 1000;
+        };
+
+        // ---------------------------
+
         class Config
         {
             MMT_SINGLETON(Config);
@@ -30,24 +59,10 @@ namespace mmt
             bool Load(const std::filesystem::path& relPath);
             void Save(const std::filesystem::path& relPath);
 
+            unsigned int GetWindowFlags() const;
+
         public:
-            std::unique_ptr<AppConfig>     app;
-            std::unique_ptr<GuiConfig>     gui;
-            std::unique_ptr<MetaConfig>    meta;
-            std::unique_ptr<MapConfig>     map;
-
-        private:
-            void LoadAppConfig(const picojson::value::object& obj);
-            void SaveAppConfig(picojson::value::object& obj);
-
-            void LoadMetaConfig(const picojson::value::object& obj);
-            void SaveMetaConfig(picojson::value::object& obj);
-
-            void LoadGuiConfig(const picojson::value::object& obj);
-            void SaveGuiConfig(picojson::value::object& obj);
-
-            void LoadMapConfig(const picojson::value::object& obj);
-            void SaveMapConfig(picojson::value::object& obj);
+            std::unique_ptr<Settings> settings;
 
         private:
             unsigned int WindowFlagFromStr(const std::string& str) const;
