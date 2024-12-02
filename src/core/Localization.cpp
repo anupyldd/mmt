@@ -12,7 +12,7 @@ namespace mmt
         }
         const std::string& MultiStr::operator()() const
         {
-            return langMap.at(Config::GetInstance().app->language);
+            return langMap.at(Config::GetInstance().settings->appLanguage);
         }
         const std::string& MultiStr::operator()(const std::string& lang) const
         {
@@ -61,7 +61,7 @@ namespace mmt
         {
             try
             {
-                const auto& langs = Config::GetInstance().meta->languages;
+                const auto& langs = Config::GetInstance().settings->metaLanguages;
                 for (const auto& lang : langs)
                 {
                     for (const auto& entry : obj)

@@ -14,7 +14,7 @@ namespace mmt
 		{
 			try
 			{
-				SetResourcePath(std::filesystem::path(Config::GetInstance().meta->resourceRelPath));
+				SetResourcePath(std::filesystem::path("data/resources/packs"));
 				LoadDefault();
 
 				for (const auto& entry : std::filesystem::directory_iterator(resPath))

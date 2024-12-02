@@ -25,10 +25,10 @@ namespace mmt
 		{
 			auto& conf = Config::GetInstance();
 
-			conf.app->width = GetScreenWidth();
-			conf.app->height = GetScreenHeight();
-			conf.app->posX = GetWindowPosition().x;
-			conf.app->posY = GetWindowPosition().y;
+			conf.settings->appWidth = GetScreenWidth();
+			conf.settings->appHeight = GetScreenHeight();
+			conf.settings->appPosX = GetWindowPosition().x;
+			conf.settings->appPosY = GetWindowPosition().y;
 		}
 
 		void App::OnNotify(const Event& evt)
@@ -62,21 +62,19 @@ namespace mmt
 
 			Localization::GetInstance().Load("data/loc.json");
 
-			SetConfigFlags(conf.app->flags);
+			SetConfigFlags(conf.GetWindowFlags());
 			SetTraceLogLevel(LOG_WARNING);
 
-			std::string title = conf.app->title;
-			title += " - " + conf.app->version;
+			std::string title = conf.settings->appTitle;
+			title += " - " + conf.settings->appVersion;
 
 		#if _DEBUG
 			title += " [DEBUG]";
-			InitWindow(conf.app->width, conf.app->height, title.c_str());
-		#else
-			InitWindow(conf.app->width, conf.app->height, title.c_str());
 		#endif
+			InitWindow(conf.settings->appWidth, conf.settings->appHeight, title.c_str());
 
-			SetWindowPosition(conf.app->posX, conf.app->posY);
-			SetTargetFPS(conf.app->fps);
+			SetWindowPosition(conf.settings->appPosX, conf.settings->appPosY);
+			SetTargetFPS(conf.settings->appFPS);
 			SetExitKey(KEY_NULL);
 			rlImGuiSetup(true);
 
