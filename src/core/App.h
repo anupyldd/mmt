@@ -9,7 +9,6 @@
 #include "../utility/Observer.h"
 #include "ResourceManager.h"
 //#include "map/EcsManager.h"
-#include "map/EcsInstance.h"
 
 #include <exception>
 

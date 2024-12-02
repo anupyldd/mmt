@@ -9,50 +9,11 @@
 
 #include "picojson.h"
 #include "raylib.h"
+#include "PicoEcsCpp.h"
 
 #include "../../utility/StringUtil.h"
 #include "../../utility/Defines.h"
 #include "../../utility/Serialization.h"
-#include "EcsTypes.h"
-
-/*
-defines a component constructor that takes in an instance of the component object as argument,
-then copies it into the actual component. Final constructor has a name "<Component>Constructor"
-*/
-#define MTT_COMPONENT_CONSTRUCTOR(CompName)												\
-	inline void CompName##Constructor (ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)	\
-	{																							\
-		CompName* comp = static_cast<CompName*>(ptr);											\
-		CompName* init = static_cast<CompName*>(args);											\
-		if(init) (*comp) = (*init);																\
-	}
-
-/*
-use for non-marker components
-defines a component and id.
-body of the component is still needed.
-component name is preserved.
-component id is component name + Id.
-*/
-#define MTT_COMPONENT(CompName)															\
-	inline ecs_id_t CompName##Id;																								\
-	struct CompName : public Component<CompName>
-
-/*
-generates marker component with default structure
-serialize outputs null object
-deserialize does nothing
-name is preserved
-*/
-#define MTT_MARKER_COMPONENT(CompName)						\
-	struct CompName : public Component<CompName>					\
-	{																\
-		virtual void Serialize(JsonValObj& valObj) override final	\
-		{															\
-			valObj[#CompName] = picojson::value();					\
-		}															\
-		virtual void Deserialize(JsonObj& obj) override final { }	\
-	}
 
 
 namespace mmt
@@ -90,21 +51,9 @@ namespace mmt
 			// ------------------------------------------------------------------------
 			// ------------------------------------------------------------------------
 			// ------------------------------------------------------------------------
-
+			/*
 			MTT_COMPONENT(Atlas)
 			{
-				/*
-				~Asc: earliest first (date), A-Z (alpha)
-				~Desc: latest first (date), Z-A (alpha)
-				
-					0 = CREATED_ASC,
-					1 = CREATED_DESC,
-					2 = LAST_EDIT_ASC,
-					3 = LAST_EDIT_DESC,
-					4 = ALPHA_ASC,
-					5 = ALPHA_DESC
-				
-				*/
 				int sortBy = 2;
 				std::string name = "Unnamed Atlas";
 				uint32_t id = 0;
@@ -303,6 +252,7 @@ namespace mmt
 			// can be active object, tool, map, whatever
 			MTT_MARKER_COMPONENT(Active);
 			MTT_MARKER_COMPONENT(Culled);
+			*/
 		}
 		
 	}
