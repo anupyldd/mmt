@@ -44,10 +44,16 @@ namespace mmt
 		{
 			for (size_t i = 0; i < entity_count; i++)
 			{
-				
 				Transform* transform = MMT_GET_ENTITY_COMPONENT_PTR(Transform);
 				Sprite* sprite = MMT_GET_ENTITY_COMPONENT_PTR(Sprite);
 				//DrawCircle(transform->x, transform->y, 5, RED);
+
+				if (transform) transform->x += 0.01;
+
+				MMT_LOG_DEBUG(std::format("entity data: tr [{}:{}], sp [{}]",
+					transform->x, transform->y, sprite->name));
+
+				return 0;
 			}
 		}
 		

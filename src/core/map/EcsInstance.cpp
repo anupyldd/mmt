@@ -28,20 +28,23 @@ namespace mmt
 		}
 		void EcsInstance::RegisterCommon()
 		{
-			MMT_LOG_DEBUG("TODO: RegisterCommon()");
+			MMT_LOG_DEBUG("TODO: Finish RegisterCommon()");
 
 			using namespace components;
 
 			ComponentRegister<Transform>(STR(Transform), TransformConstructor);
 			ComponentRegister<Sprite>(STR(Sprite), SpriteConstructor);
+			ComponentRegister<Culled>(STR(Culled), nullptr);
 
-			//SystemRegister(STR(RenderSpriteSystem), RenderSpriteSystem,
-			//	{ STR(Transform), STR(Sprite) });
+			SystemRegister(STR(RenderSpriteSystem), RenderSpriteSystem,
+				{ STR(Transform), STR(Sprite) },
+				{ STR(Culled) });
 		}
 		void EcsInstance::Update(double dt)
 		{
 			// some systems will probably be updated manually? like saving maybe?
-			ecs_update_systems(ecs, dt);
+			//ecs_update_systems(ecs, dt);
+			ecs_update_system(ecs, systems["RenderSpriteSystem"], 0.0f);
 		}
 
 		void EcsInstance::Save(const std::filesystem::path& path)
@@ -50,6 +53,11 @@ namespace mmt
 
 		void EcsInstance::Load(const std::filesystem::path& path)
 		{
+		}
+
+		Ecs* EcsInstance::GetEcs()
+		{
+			return ecs;
 		}
 		
 		ComponentId EcsInstance::ComponentGetId(const std::string& name) const

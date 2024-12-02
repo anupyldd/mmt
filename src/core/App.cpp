@@ -81,7 +81,7 @@ namespace mmt
 			rlImGuiSetup(true);
 
 			/********************************/
-			ResourceManager::GetInstance().Load();
+			//ResourceManager::GetInstance().Load();
 			/********************************/
 
 		#ifdef IMGUI_HAS_DOCK
@@ -98,11 +98,19 @@ namespace mmt
 		}
 		void App::MainMenu::Execute(App* owner)
 		{
+
+			EcsInstance inst;
+			inst.Init(200);
+			EntityId id = EntityCreate(inst.GetEcs());
+			EntityAddComponents(inst.GetEcs(), id, { TransformId,SpriteId });
+			
+
 			while (!WindowShouldClose() && menuOpen)
 			{
 				BeginDrawing();
 				ClearBackground(BLUE);
 
+				inst.Update();
 				owner->appGui.UpdateDraw(GuiState::MainMenu);
 				owner->UpdateConfig();
 

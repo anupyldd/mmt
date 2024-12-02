@@ -45,6 +45,8 @@ namespace mmt
 			void Save(const std::filesystem::path& path);
 			void Load(const std::filesystem::path& path);
 
+			Ecs* GetEcs();
+
 		public: 
 
 			template<class CompType>
