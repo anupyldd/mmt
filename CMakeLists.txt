@@ -66,6 +66,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(rres)
 
+message("Fetching pico-ecs-cpp...")
+FetchContent_Declare(
+  picoecscpp
+  GIT_REPOSITORY https://github.com/anupyldd/pico-ecs-cpp.git
+  GIT_TAG 1faa26021e179ad74e92a7a1f6f479c76bb80cb4
+)
+FetchContent_MakeAvailable(picoecscpp)
+
 ####################################################
 
 message("Working with third-party stuff...")
@@ -101,6 +109,7 @@ message("Copying pico_headers")
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
 set(PICO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
 file(COPY ${picoheaders_SOURCE_DIR}/pico_ecs.h DESTINATION ${PICO_DIR})
+file(COPY ${picoecscpp_SOURCE_DIR}/src/PicoEcsCpp.h DESTINATION ${PICO_DIR})
 
 ####################################################
 ####################################################
@@ -134,12 +143,6 @@ src/core/map/Atlas.h
 src/core/map/Atlas.cpp
 src/core/map/Map.h
 src/core/map/Map.cpp
-src/core/map/EcsInstance.h
-src/core/map/EcsInstance.cpp
-src/core/map/EcsManager.h
-src/core/map/EcsManager.cpp
-src/core/map/Ecs.h
-src/core/map/EcsTypes.h
 src/core/map/Components.h
 src/core/map/Systems.h
 src/core/map/MapUtil.h

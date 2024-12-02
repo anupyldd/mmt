@@ -81,7 +81,7 @@ namespace mmt
 			rlImGuiSetup(true);
 
 			/********************************/
-			ResourceManager::GetInstance().Load();
+			//ResourceManager::GetInstance().Load();
 			/********************************/
 
 		#ifdef IMGUI_HAS_DOCK
@@ -98,16 +98,12 @@ namespace mmt
 		}
 		void App::MainMenu::Execute(App* owner)
 		{
-			// -------------
-			//EcsMgr().CreateInstance("atlas1", "map1", 5000);
-			// -------------
 
 			while (!WindowShouldClose() && menuOpen)
 			{
 				BeginDrawing();
 				ClearBackground(BLUE);
 
-				//EcsMgr().UpdateActive();
 				owner->appGui.UpdateDraw(GuiState::MainMenu);
 				owner->UpdateConfig();
 

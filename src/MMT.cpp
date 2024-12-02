@@ -1,18 +1,18 @@
 ﻿// HillsAndDales.cpp : Defines the entry point for the application.
 //
 
-#include "utility/Log.h"
-#include "core/App.h"
-#include "core/map/Components.h"
-#include "utility/StringUtil.h"
-
+//#include "utility/Log.h"
+//#include "core/App.h"
+//#include "core/map/Components.h"
+//#include "utility/StringUtil.h"
+#include "PicoEcsCpp.h"
 int main()
 {
-	using namespace mmt;
-	using namespace core;
-
-	core::App app;
-	app.Run();
+	//using namespace mmt;
+	//using namespace core;
+	//
+	//core::App app;
+	//app.Run();
 	//Config::GetInstance().Load("data/config.json");
 
 	/*
