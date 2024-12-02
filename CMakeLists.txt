@@ -74,6 +74,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(picoecscpp)
 
+message("Fetching reflect-cpp...")
+FetchContent_Declare(
+  reflectcpp
+  GIT_REPOSITORY https://github.com/getml/reflect-cpp.git
+  GIT_TAG e51edb704e6e21d12319b9392c024b6060d37a51
+)
+FetchContent_MakeAvailable(reflectcpp)
+
 ####################################################
 
 message("Working with third-party stuff...")
@@ -111,6 +119,13 @@ set(PICO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
 file(COPY ${picoheaders_SOURCE_DIR}/pico_ecs.h DESTINATION ${PICO_DIR})
 file(COPY ${picoecscpp_SOURCE_DIR}/src/PicoEcsCpp.h DESTINATION ${PICO_DIR})
 
+message("Copying yyjson.h")
+file(
+	COPY 
+	${reflectcpp_SOURCE_DIR}/include/rfl/thirdparty/yyjson.h 
+	DESTINATION 
+	${reflectcpp_SOURCE_DIR}/src)
+
 ####################################################
 ####################################################
 ####################################################
@@ -144,6 +159,8 @@ src/core/map/Atlas.cpp
 src/core/map/Map.h
 src/core/map/Map.cpp
 src/core/map/Components.h
+src/core/map/ComponentSerializer.h
+src/core/map/ComponentSerializer.cpp
 src/core/map/Systems.h
 src/core/map/MapUtil.h
 src/core/map/ResourcePack.h
@@ -156,6 +173,10 @@ src/gui/MainMenu.h
 src/gui/MainMenu.cpp
 
 ####################################################
+
+${reflectcpp_SOURCE_DIR}/src/reflectcpp.cpp
+${reflectcpp_SOURCE_DIR}/src/reflectcpp_json.cpp
+${reflectcpp_SOURCE_DIR}/src/yyjson.c
 
 vendor/imgui/imgui.cpp
 vendor/imgui/imgui_demo.cpp
@@ -190,6 +211,7 @@ target_include_directories(
 	${raylib_SOURCE_DIR}/src/external/glfw/include 
 	${picojson_SOURCE_DIR}
 	${rres_SOURCE_DIR}/src
+	${reflectcpp_SOURCE_DIR}/include
 	${IMGUI_DIR}
 	${PICO_DIR}
 	${VENDOR_DIR}

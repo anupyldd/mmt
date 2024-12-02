@@ -11,6 +11,7 @@
 #include <format>
 
 #include "raylib.h"
+#include "PicoEcsCpp.h"
 
 #include "../../utility/Log.h"
 #include "../../utility/StringUtil.h"
@@ -48,6 +49,8 @@ namespace mmt
 
 		//----------------------------
 
+		using namespace pico_ecs_cpp;
+
 		class Map
 		{
 		public:
@@ -63,6 +66,9 @@ namespace mmt
 		private:
 			MapParams params;
 			MapData* data = nullptr;
+
+		private:
+			EcsInstance ecs;
 		};
 		
 	}

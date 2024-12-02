@@ -1,13 +1,21 @@
 ﻿// HillsAndDales.cpp : Defines the entry point for the application.
 //
 
-//#include "utility/Log.h"
+#include "utility/Log.h"
 //#include "core/App.h"
 //#include "core/map/Components.h"
 //#include "utility/StringUtil.h"
-#include "PicoEcsCpp.h"
+
+#include "core/ConfigStructs.h"
+
+#include "rfl.hpp"
+#include <rfl/json.hpp>
+
 int main()
 {
+	mmt::core::MapConfig mc{ .lastHeight = 123 };
+	
+	std::cout << rfl::json::write(mc);
 	//using namespace mmt;
 	//using namespace core;
 	//
