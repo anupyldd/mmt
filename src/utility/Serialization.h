@@ -11,14 +11,13 @@
 #include <initializer_list>
 
 #include "picojson.h"
+#include "rfl.hpp"
+#include "rfl/json.hpp"
 
 namespace mmt
 {
 	namespace util
 	{
-
-		
-
 		template<class... Nums>
 		inline void NumbersToJson(picojson::value::object& obj, const std::pair<Nums, const char *>&... nums)
 		{
@@ -167,5 +166,18 @@ namespace mmt
 		}
 
 		// -------------------------------------------------------
+		// -------------------------------------------------------
+
+		template<class CompType>
+		inline std::string ComponentToJson(const CompType& comp)
+		{
+			return rfl::json::write(comp);
+		}
+
+		template<class CompType>
+		inline CompType ComponentFromJson(const std::string& str)
+		{
+			return rfl::json::read<CompType>(str).value();
+		}
 	}
 }

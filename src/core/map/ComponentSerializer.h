@@ -6,13 +6,13 @@
 #include <functional>
 #include <typeindex>
 #include <typeinfo>
+#include <string>
 #include <any>
 
 namespace mmt
 {
 	namespace core
 	{
-
 		
 	}
 }

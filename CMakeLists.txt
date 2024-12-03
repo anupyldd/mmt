@@ -70,7 +70,7 @@ message("Fetching pico-ecs-cpp...")
 FetchContent_Declare(
   picoecscpp
   GIT_REPOSITORY https://github.com/anupyldd/pico-ecs-cpp.git
-  GIT_TAG 1faa26021e179ad74e92a7a1f6f479c76bb80cb4
+  GIT_TAG 2588b4a77147c443a7f7f3ba781e96ee633b7041
 )
 FetchContent_MakeAvailable(picoecscpp)
 
@@ -81,6 +81,14 @@ FetchContent_Declare(
   GIT_TAG e51edb704e6e21d12319b9392c024b6060d37a51
 )
 FetchContent_MakeAvailable(reflectcpp)
+
+#message("Fetching rapidjson...")
+#FetchContent_Declare(
+#	rapidjson
+#	GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
+#	GIT_TAG f54b0e47a08782a6131cc3d60f94d038fa6e0a51
+#)
+#FetchContent_MakeAvailable(rapidjson)
 
 ####################################################
 
@@ -149,7 +157,6 @@ src/core/App.h
 src/core/App.cpp
 src/core/Config.h
 src/core/Config.cpp
-src/core/ConfigStructs.h
 src/core/Localization.h
 src/core/Localization.cpp
 src/core/ResourceManager.h
