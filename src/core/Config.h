@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "ConfigStructs.h"
 #include "../utility/Defines.h"
 #include "../utility/Log.h"
 #include "../utility/Serialization.h"
