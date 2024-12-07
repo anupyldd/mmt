@@ -24,27 +24,14 @@ namespace mmt
 
 		struct MapData
 		{
-			std::unique_ptr<Map> map;
-			std::string name;
-			uint64_t id = 0;	// hashed name
-			std::chrono::time_point<std::chrono::system_clock> creationTime;
-			std::chrono::time_point<std::chrono::system_clock> lastEditTime;
+			std::string name = "Undefined Name",
+						description = "Undefined Description",
+						creationTime = "Undefined Creation Time",
+						lastEditTime = "Undefined Last Edit Time";
 
-		public:
-			MapData(const std::string& name);
-
-		public:
-			std::string CreationTimeAsString();
-			std::string LastEditTimeAsString();
-
-			void SetPreview(Image newPreview);
-		private:
-			std::string TimeAsString(std::chrono::time_point<std::chrono::system_clock> timePoint);
-		};
-
-		struct MapParams
-		{
-			int width = 0, height = 0;
+			int width = 100,
+				height = 100,
+				entityCount = 1000;
 		};
 
 		//----------------------------
@@ -56,16 +43,14 @@ namespace mmt
 		public:
 			Map() = default;
 
-			Map& Create(MapParams par);
-			Map& SetData(MapData* newData);
+			void Create(int width, int height, const std::string& name);
 
 			void Update();
 
 			bool CreateLayer(const std::string& name);
 
 		private:
-			MapParams params;
-			MapData* data = nullptr;
+			std::unique_ptr<MapData> data;
 
 		private:
 			EcsInstance ecs;

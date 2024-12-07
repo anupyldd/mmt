@@ -7,6 +7,7 @@ int main()
 {
 	using namespace mmt;
 	using namespace core;
+	using namespace util;
 	
 	//core::App app;
 	//app.Run();
