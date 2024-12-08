@@ -9,7 +9,7 @@
 #include "../../utility/Log.h"
 
 #include "raylib.h"
-#include "PicoEcsCpp.h"
+#include "ecs/PicoEcsCpp.h"
 
 
 namespace mmt

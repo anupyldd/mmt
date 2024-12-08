@@ -4,7 +4,7 @@
 #include "../utility/Defines.h"
 #include "Config.h"
 
-#include "picojson.h"
+#include "json/picojson.h"
 
 #include <unordered_map>
 #include <string>

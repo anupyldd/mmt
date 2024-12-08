@@ -8,9 +8,9 @@
 #include <chrono>
 #include <vector>
 
-#include "picojson.h"
+#include "json/picojson.h"
+#include "ecs/PicoEcsCpp.h"
 #include "raylib.h"
-#include "PicoEcsCpp.h"
 
 #include "../../utility/StringUtil.h"
 #include "../../utility/Defines.h"

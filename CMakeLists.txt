@@ -26,14 +26,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
-message("Fetching picojson...")
-FetchContent_Declare(
-  picojson
-  GIT_REPOSITORY https://github.com/kazuho/picojson.git
-  GIT_TAG 25fc213cca61ea22b3c2e4db8def9927562ba5f7
-)
-FetchContent_MakeAvailable(picojson)
-
 message("Fetching rlImGui...")
 FetchContent_Declare(
   rlImGui
@@ -50,14 +42,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
-message("Fetching pico_headers...")
-FetchContent_Declare(
-  picoheaders
-  GIT_REPOSITORY https://github.com/empyreanx/pico_headers.git
-  GIT_TAG 080269a444fc4e4577ac40d929d1134a475f0f0e
-)
-FetchContent_MakeAvailable(picoheaders)
-
 message("Fetching rres...")
 FetchContent_Declare(
   rres
@@ -65,14 +49,6 @@ FetchContent_Declare(
   GIT_TAG 536eb301e05e2fafd631e766baeb92d76e6c8f81
 )
 FetchContent_MakeAvailable(rres)
-
-message("Fetching pico-ecs-cpp...")
-FetchContent_Declare(
-  picoecscpp
-  GIT_REPOSITORY https://github.com/anupyldd/pico-ecs-cpp.git
-  GIT_TAG 2588b4a77147c443a7f7f3ba781e96ee633b7041
-)
-FetchContent_MakeAvailable(picoecscpp)
 
 message("Fetching reflect-cpp...")
 FetchContent_Declare(
@@ -91,16 +67,6 @@ FetchContent_MakeAvailable(reflectcpp)
 #FetchContent_MakeAvailable(rapidjson)
 
 ####################################################
-
-message("Working with third-party stuff...")
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/vendor)
-set(VENDOR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor)
-
-message("Copying pico_headers")
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
-set(PICO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
-file(COPY ${picoheaders_SOURCE_DIR}/pico_ecs.h DESTINATION ${PICO_DIR})
-file(COPY ${picoecscpp_SOURCE_DIR}/src/PicoEcsCpp.h DESTINATION ${PICO_DIR})
 
 # for some reason there's no yyjson header in the sources
 message("Copying yyjson.h")
@@ -193,13 +159,11 @@ target_include_directories(
 	${raylib_SOURCE_DIR}/src 
 	${raylib_SOURCE_DIR}/src/external 
 	${raylib_SOURCE_DIR}/src/external/glfw/include 
-	${picojson_SOURCE_DIR}
 	${imgui_SOURCE_DIR}
 	${rlimgui_SOURCE_DIR}
 	${rres_SOURCE_DIR}/src
 	${reflectcpp_SOURCE_DIR}/include
-	${PICO_DIR}
-	${VENDOR_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}/vendor
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "raylib.h"
-#include "picojson.h"
+#include "json/picojson.h"
 
 #include "../utility/Log.h"
 #include "../utility/Defines.h"

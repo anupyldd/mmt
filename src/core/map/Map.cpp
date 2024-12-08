@@ -1,5 +1,3 @@
-#define PICO_ECS_IMPLEMENTATION
-
 #include "Map.h"
 
 namespace mmt
