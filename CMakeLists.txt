@@ -143,9 +143,9 @@ src/core/map/Atlas.cpp
 src/core/map/Map.h
 src/core/map/Map.cpp
 src/core/map/Components.h
-src/core/map/ComponentSerializer.h
-src/core/map/ComponentSerializer.cpp
+src/core/map/ComponentRegistry.h
 src/core/map/Systems.h
+src/core/map/Systems.cpp
 src/core/map/MapUtil.h
 src/core/map/ResourcePack.h
 
