@@ -96,31 +96,6 @@ message("Working with third-party stuff...")
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/vendor)
 set(VENDOR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor)
 
-message("Copying rlImGui files...")
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
-set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
-
-file(COPY ${rlimgui_SOURCE_DIR}/extras DESTINATION ${IMGUI_DIR})
-file(COPY ${rlimgui_SOURCE_DIR}/imgui_impl_raylib.h DESTINATION ${IMGUI_DIR})
-file(COPY ${rlimgui_SOURCE_DIR}/rlImGui.h DESTINATION ${IMGUI_DIR})
-file(COPY ${rlimgui_SOURCE_DIR}/rlImGuiColors.h DESTINATION ${IMGUI_DIR})
-file(COPY ${rlimgui_SOURCE_DIR}/rlImGui.cpp DESTINATION ${IMGUI_DIR})
-
-message("Copying imgui files...")
-file(COPY ${imgui_SOURCE_DIR}/backends DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/misc DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imconfig.h DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imgui.cpp DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imgui.h DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imgui_demo.cpp DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imgui_draw.cpp DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imgui_internal.h DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imgui_tables.cpp DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imgui_widgets.cpp DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imstb_rectpack.h DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imstb_textedit.h DESTINATION ${IMGUI_DIR})
-file(COPY ${imgui_SOURCE_DIR}/imstb_truetype.h DESTINATION ${IMGUI_DIR})
-
 message("Copying pico_headers")
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
 set(PICO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/pico)
@@ -152,6 +127,7 @@ src/utility/Observer.h
 src/utility/Serialization.h
 src/utility/RresImpl.c
 src/utility/RresImpl.h
+src/utility/Json.h
 
 src/core/App.h
 src/core/App.cpp
@@ -186,12 +162,12 @@ ${reflectcpp_SOURCE_DIR}/src/reflectcpp.cpp
 ${reflectcpp_SOURCE_DIR}/src/reflectcpp_json.cpp
 ${reflectcpp_SOURCE_DIR}/src/yyjson.c
 
-vendor/imgui/imgui.cpp
-vendor/imgui/imgui_demo.cpp
-vendor/imgui/imgui_draw.cpp
-vendor/imgui/imgui_tables.cpp
-vendor/imgui/imgui_widgets.cpp
-vendor/imgui/rlImGui.cpp
+${imgui_SOURCE_DIR}/imgui.cpp
+${imgui_SOURCE_DIR}/imgui_demo.cpp
+${imgui_SOURCE_DIR}/imgui_draw.cpp
+${imgui_SOURCE_DIR}/imgui_tables.cpp
+${imgui_SOURCE_DIR}/imgui_widgets.cpp
+${rlimgui_SOURCE_DIR}/rlImGui.cpp
 
 ####################################################
 
@@ -218,9 +194,10 @@ target_include_directories(
 	${raylib_SOURCE_DIR}/src/external 
 	${raylib_SOURCE_DIR}/src/external/glfw/include 
 	${picojson_SOURCE_DIR}
+	${imgui_SOURCE_DIR}
+	${rlimgui_SOURCE_DIR}
 	${rres_SOURCE_DIR}/src
 	${reflectcpp_SOURCE_DIR}/include
-	${IMGUI_DIR}
 	${PICO_DIR}
 	${VENDOR_DIR}
 )
