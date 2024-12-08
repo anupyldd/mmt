@@ -11,7 +11,7 @@
 #include <format>
 
 #include "raylib.h"
-#include "PicoEcsCpp.h"
+#include "ecs/PicoEcsCpp.h"
 
 #include "../../utility/Log.h"
 #include "../../utility/StringUtil.h"

@@ -8,14 +8,13 @@
 #include <chrono>
 #include <vector>
 
-#include "picojson.h"
+#include "json/picojson.h"
+#include "ecs/PicoEcsCpp.h"
 #include "raylib.h"
-#include "PicoEcsCpp.h"
 
 #include "../../utility/StringUtil.h"
 #include "../../utility/Defines.h"
 #include "../../utility/Serialization.h"
-
 
 namespace mmt
 {
@@ -24,8 +23,6 @@ namespace mmt
 		// ecs components
 		namespace comps
 		{
-			using namespace util;
-
 			struct Transform
 			{
 				float x = 0.0f, y = 0.0f; // coord
@@ -35,7 +32,7 @@ namespace mmt
 
 			struct Object
 			{
-				uint32_t h; // handle
+				uint32_t h = 0; // handle
 			};
 
 			struct Active
@@ -46,14 +43,14 @@ namespace mmt
 			{
 			};
 
-			struct Texture		// from file
+			struct Texture // from file
 			{
-				uint32_t h;		// handle
+				uint32_t h = 0; // handle
 			};
 
-			struct Canvas		// texture to draw on
+			struct Canvas // texture to draw on
 			{
-				uint32_t h;		// handle
+				uint32_t h = 0; // handle
 			};
 
 			struct Name
@@ -76,8 +73,24 @@ namespace mmt
 				int l;	// layer
 			};
 
+			struct Brush
+			{
+
+			};
+
+			struct Script
+			{
+				uint32_t h = 0;	// handle
+			};
+
 			struct Serializeable
 			{
+			};
+
+			struct Text
+			{
+				std::string t; // text
+				uint32_t f = 0; // font
 			};
 		}
 	}

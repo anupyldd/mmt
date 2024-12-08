@@ -8,7 +8,7 @@
 #include "../utility/StringUtil.h"
 
 #include "raylib.h"
-#include "picojson.h"
+#include "json/picojson.h"
 
 #include <fstream>
 #include <sstream>

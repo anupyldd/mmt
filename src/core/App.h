@@ -8,7 +8,6 @@
 #include "../utility/StateMachine.h"
 #include "../utility/Observer.h"
 #include "ResourceManager.h"
-//#include "map/EcsManager.h"
 
 #include <exception>
 
