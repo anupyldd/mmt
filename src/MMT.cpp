@@ -10,9 +10,8 @@ int main()
 	using namespace util;
 
 
-
-	core::App app;
-	app.Run();
+	//core::App app;
+	//app.Run();
 	//Config::GetInstance().Load("data/config.json");
 
 	/*

@@ -15,7 +15,7 @@ namespace mmt
 			try
 			{
 				SetResourcePath(std::filesystem::path("data/resources/packs"));
-				LoadDefault();
+				LoadApp();
 
 				for (const auto& entry : std::filesystem::directory_iterator(resPath))
 				{
@@ -61,9 +61,9 @@ namespace mmt
 				MMT_LOG_ERROR(std::format("Failed to load resources: {}", e.what()));
 			}
 		}
-		void ResourceManager::LoadDefault()
+		void ResourceManager::LoadApp()
 		{
-			auto path = std::filesystem::current_path() / "data" / "resources" / "default";
+			auto path = std::filesystem::current_path() / "data" / "resources" / "app";
 			MMT_LOG_DEBUG(path.string());
 			for (const auto& entry : std::filesystem::directory_iterator(path))
 			{
