@@ -1,6 +1,7 @@
 ﻿#include "utility/Log.h"
 #include "core/App.h"
 #include "core/map/Components.h"
+#include "core/map/ComponentRegistry.h"
 #include "utility/StringUtil.h"
 
 int main()
@@ -9,6 +10,11 @@ int main()
 	using namespace core;
 	using namespace util;
 
+	ComponentRegistry reg{
+		.tr = comps::Transform{.x = 10,.y = 9 },
+		.lr = comps::Layer{.l = 1 } };
+
+	std::cout << rfl::json::write(reg) << '\n';
 
 	//core::App app;
 	//app.Run();
