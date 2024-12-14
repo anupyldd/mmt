@@ -1,5 +1,7 @@
 #include "Atlas.h"
 
+#include "log/loguru.hpp"
+
 namespace mmt
 {
 	namespace core
@@ -63,7 +65,7 @@ namespace mmt
 			}
 			catch (const std::exception& e)
 			{
-				MMT_LOG_ERROR(std::format("Failed to rename map {}: {}", name, e.what()));
+				LOG_F(ERROR, "Failed to rename map %s: %s", name, e.what());
 				return false;
 			}
 		}
@@ -76,7 +78,7 @@ namespace mmt
 			}
 			catch (const std::exception& e)
 			{
-				MMT_LOG_ERROR(std::format("Failed to update last edit time for map {}: {}", name, e.what()));
+				LOG_F(ERROR, "Failed to update last edit time for map %s: %s", name, e.what());
 				return false;
 			}
 		}

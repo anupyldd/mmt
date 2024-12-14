@@ -2,11 +2,15 @@
 
 #include "Defines.h"
 
-#include <string>
-#include <mutex>
+#include "log/loguru.hpp"
+
 #include <chrono>
 #include <format>
+#include <filesystem>
+#include <iomanip>
+#include <ctime>
 #include <iostream>
+#include <sstream>
 
 namespace mmt
 {
@@ -17,17 +21,7 @@ namespace mmt
             MMT_SINGLETON(Log);
 
         public:
-            void ConsoleDebug(const std::string& msg);
-            void ConsoleInfo(const std::string& msg);
-            void ConsoleError(const std::string& msg);
-
-        private:
-            std::mutex mtx;
+            void InitSession();
         };
     }
-    
-    #define MMT_LOG util::Log::GetInstance()
-    #define MMT_LOG_DEBUG(msg) util::Log::GetInstance().ConsoleDebug(msg)
-    #define MMT_LOG_INFO(msg) util::Log::GetInstance().ConsoleInfo(msg)
-    #define MMT_LOG_ERROR(msg) util::Log::GetInstance().ConsoleError(msg)
 }

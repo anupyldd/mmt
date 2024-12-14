@@ -9,6 +9,8 @@
 #include "Log.h"
 #include "Defines.h"
 
+#include "log/loguru.hpp"
+
 namespace mmt
 {
 	namespace util
@@ -45,7 +47,7 @@ namespace mmt
 			{
 				for (auto& obs : observers)
 					obs->OnNotify(evt);
-				MMT_LOG_DEBUG("Notified with event type " + std::to_string(static_cast<uint16_t>(evt.type)));
+				DLOG_F(INFO, "Notified with event type %s", std::to_string(static_cast<uint16_t>(evt.type)));
 			}
 
 		private:

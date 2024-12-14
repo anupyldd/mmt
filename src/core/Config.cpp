@@ -2,6 +2,7 @@
 
 #include "rfl.hpp"
 #include "rfl/json.hpp"
+#include "log/loguru.hpp"
 
 namespace mmt
 {
@@ -18,7 +19,7 @@ namespace mmt
                 auto cwd = std::filesystem::current_path();
                 std::ifstream file(cwd / relPath);
 
-                MMT_LOG_DEBUG((cwd / relPath).string());
+                DLOG_F(INFO, (cwd / relPath).string().c_str());
 
                 std::stringstream contents;
                 contents << file.rdbuf();
@@ -31,7 +32,7 @@ namespace mmt
             }
             catch (const std::exception& e)
             {
-                MMT_LOG_ERROR("Failed to load config: " + std::string(e.what()));
+                LOG_F(ERROR, "Failed to load config: %s", std::string(e.what()));
             }
         }
 
@@ -46,11 +47,11 @@ namespace mmt
 
                 file << str;
 
-                MMT_LOG_DEBUG("Saved config");
+                DLOG_F(INFO, "Saved config");
             }
             catch (const std::exception& e)
             {
-                MMT_LOG_ERROR("Failed to save config: " + std::string(e.what()));
+                LOG_F(ERROR, "Failed to save config: %s", std::string(e.what()));
             }
         }
 

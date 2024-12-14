@@ -41,7 +41,7 @@ namespace mmt
 			void Load();
 			void Unload();
 
-			void LoadDefault();
+			void LoadApp();
 
 			void LoadPack(const std::string& name);
 			void UnloadPack(const std::string& name);

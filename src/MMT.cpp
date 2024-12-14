@@ -1,15 +1,24 @@
-﻿#include "utility/Log.h"
-#include "core/App.h"
+﻿#include "core/App.h"
+#include "utility/Log.h"
 #include "core/map/Components.h"
+#include "core/map/ComponentRegistry.h"
 #include "utility/StringUtil.h"
 
-int main()
+int main(int argc, char** argv)
 {
 	using namespace mmt;
 	using namespace core;
 	using namespace util;
 
-
+	ComponentRegistry reg
+	{
+		.tr = comps::Transform{.x = 10,.y = 9 },
+		.lr = comps::Layer{.l = 1 } 
+	};
+	//loguru::init(argc, argv);
+	//loguru::add_file("test.log", loguru::FileMode::Truncate, loguru::Verbosity_ERROR);
+	//LOG_F(INFO, rfl::json::write(reg).c_str());
+	//LOG_F(ERROR, "testing %i", 123);
 
 	core::App app;
 	app.Run();

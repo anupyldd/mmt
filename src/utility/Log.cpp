@@ -2,24 +2,17 @@
 
 namespace mmt
 {
-    namespace util
-    {
-        void Log::ConsoleDebug(const std::string& msg)
+	namespace util
+	{
+		void Log::InitSession()
         {
-#if _DEBUG
-            std::unique_lock lock{ mtx };
-            std::cout << std::format("[DEBUG]\t{}\n", msg);
-#endif
+            auto path = std::filesystem::current_path() / "data" / "session";
+            auto t = std::time(nullptr);
+            auto tm = *std::localtime(&t);
+            std::stringstream dtstr;
+            dtstr << std::put_time(&tm, "%Y-%m-%d %H-%M-%S");
+            path = path / (dtstr.str() + ".log");
+            loguru::add_file(path.string().c_str(), loguru::FileMode::Truncate, loguru::Verbosity_MAX);
         }
-        void Log::ConsoleInfo(const std::string& msg)
-        {
-            std::unique_lock lock{ mtx };
-            std::cout << std::format("[INFO]\t{}\n", msg);
-        }
-        void Log::ConsoleError(const std::string& msg)
-        {
-            std::unique_lock lock{ mtx };
-            std::cout << std::format("[ERROR]\t{}\n", msg);
-        }
-    }
+	}
 }

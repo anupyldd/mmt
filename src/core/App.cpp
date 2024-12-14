@@ -1,5 +1,7 @@
 #include "App.h"
 
+#include "log/loguru.hpp"
+
 namespace mmt
 {
 	namespace core
@@ -14,7 +16,7 @@ namespace mmt
 		}
 		void App::Run()
 		{
-			MMT_LOG_DEBUG("App is now running");
+			DLOG_F(INFO, "App is now running");
 
 			appGui.mainMenu.AddObserver(this);
 			fsm.SetCurrentState(&initLoadState);
@@ -39,7 +41,6 @@ namespace mmt
 			{
 			case EventType::GUI_FROM_MAIN_TO_EDIT:
 			{
-				MMT_LOG_DEBUG("handling notification");
 				if(fsm.IsInState(&mainMenuState)) fsm.ChangeState(&mapEditState);
 			}
 			break;
@@ -54,11 +55,13 @@ namespace mmt
 
 		void App::InitLoad::Execute(App* owner)
 		{
+			Log::GetInstance().InitSession();
+
 			if (IsWindowReady()) throw std::runtime_error("Attempting to open window twice");
 
 			auto& conf = Config::GetInstance();
 			if (!conf.Load("data/config.json"))
-				MMT_LOG_ERROR("Error loading config, falling back to default values");
+				LOG_F(ERROR, "Error loading config, falling back to default values");
 
 			Localization::GetInstance().Load("data/loc.json");
 
@@ -92,7 +95,7 @@ namespace mmt
 		void App::MainMenu::Enter(App* owner)
 		{
 			menuOpen = true;
-			MMT_LOG_DEBUG("Main menu is now open");
+			DLOG_F(INFO, "Main menu is now open");
 		}
 		void App::MainMenu::Execute(App* owner)
 		{
@@ -113,13 +116,13 @@ namespace mmt
 		void App::MainMenu::Exit(App* owner)
 		{
 			menuOpen = false;
-			MMT_LOG_DEBUG("Exiting main menu");
+			DLOG_F(INFO, "Exiting main menu");
 		}
 		//-------------------------------------
 		void App::MapEdit::Enter(App* owner)
 		{
 			editOpen = true;
-			MMT_LOG_DEBUG("Map edit is now open");
+			DLOG_F(INFO, "Map edit is now open");
 		}
 		void App::MapEdit::Execute(App* owner)
 		{
@@ -134,7 +137,7 @@ namespace mmt
 				/*********************************************/
 				if (IsKeyPressed(KEY_ESCAPE))
 				{
-					MMT_LOG_DEBUG("Going back to menu");
+					DLOG_F(INFO, "Going back to menu");
 					owner->fsm.ChangeState(&owner->mainMenuState);
 				}
 				/*********************************************/
@@ -147,7 +150,7 @@ namespace mmt
 		void App::MapEdit::Exit(App* owner)
 		{
 			editOpen = false;
-			MMT_LOG_DEBUG("Exiting map editing");
+			DLOG_F(INFO, "Exiting map editing");
 		}
 		//-------------------------------------
 		void App::Close::Execute(App* owner)
