@@ -1,23 +1,27 @@
-﻿#include "utility/Log.h"
-#include "core/App.h"
+﻿#include "core/App.h"
+#include "utility/Log.h"
 #include "core/map/Components.h"
 #include "core/map/ComponentRegistry.h"
 #include "utility/StringUtil.h"
 
-int main()
+int main(int argc, char** argv)
 {
 	using namespace mmt;
 	using namespace core;
 	using namespace util;
 
-	ComponentRegistry reg{
+	ComponentRegistry reg
+	{
 		.tr = comps::Transform{.x = 10,.y = 9 },
-		.lr = comps::Layer{.l = 1 } };
+		.lr = comps::Layer{.l = 1 } 
+	};
+	//loguru::init(argc, argv);
+	//loguru::add_file("test.log", loguru::FileMode::Truncate, loguru::Verbosity_ERROR);
+	//LOG_F(INFO, rfl::json::write(reg).c_str());
+	//LOG_F(ERROR, "testing %i", 123);
 
-	std::cout << rfl::json::write(reg) << '\n';
-
-	//core::App app;
-	//app.Run();
+	core::App app;
+	app.Run();
 	//Config::GetInstance().Load("data/config.json");
 
 	/*

@@ -4,6 +4,8 @@
 
 #include "Systems.h"
 
+#include "log/loguru.hpp"
+
 namespace mmt
 {
 	namespace core
@@ -18,7 +20,7 @@ namespace mmt
 			{
 				for (int i = 0; i < entity_count; ++i)
 				{
-					MMT_LOG_DEBUG(std::format("Serializing entity {}", entities[i]));
+					DLOG_F(INFO, "Serializing entity %i", entities[i]);
 				}
 				return 0;
 			}

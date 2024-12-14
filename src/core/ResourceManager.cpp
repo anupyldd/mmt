@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 
 #include "raylib.h"
+#include "log/loguru.hpp"
 
 namespace mmt
 {
@@ -26,45 +27,45 @@ namespace mmt
 				}
 
 			#if _DEBUG
-				MMT_LOG_DEBUG("Loaded packs: ------------------");
+				DLOG_F(INFO, "Loaded packs: ------------------");
 				for (const auto& p : packs)
 				{
-					MMT_LOG_DEBUG(p.second.name);
-					MMT_LOG_DEBUG(p.second.author);
-					MMT_LOG_DEBUG(p.second.license);
-					MMT_LOG_DEBUG(p.second.version);
-					MMT_LOG_DEBUG(p.second.lastUpdate);
-					MMT_LOG_DEBUG(p.second.description);
-					MMT_LOG_DEBUG("\ttextures:");
+					DLOG_F(INFO, p.second.name.c_str());
+					DLOG_F(INFO, p.second.author.c_str());
+					DLOG_F(INFO, p.second.license.c_str());
+					DLOG_F(INFO, p.second.version.c_str());
+					DLOG_F(INFO, p.second.lastUpdate.c_str());
+					DLOG_F(INFO, p.second.description.c_str());
+					DLOG_F(INFO, "\ttextures:");
 					for (const auto& t : p.second.textures)
 					{
-						MMT_LOG_DEBUG(t.second.name);
-						MMT_LOG_DEBUG(std::to_string(t.second.handle));
+						DLOG_F(INFO, t.second.name.c_str());
+						DLOG_F(INFO, std::to_string(t.second.handle).c_str());
 					}
-					MMT_LOG_DEBUG("\tobjects:");
+					DLOG_F(INFO, "\tobjects:");
 					for (const auto& o : p.second.objects)
 					{
-						MMT_LOG_DEBUG(o.second.name);
-						MMT_LOG_DEBUG(std::to_string(o.second.handle));
+						DLOG_F(INFO,o.second.name.c_str());
+						DLOG_F(INFO,std::to_string(o.second.handle).c_str());
 					}
-					MMT_LOG_DEBUG("\tfonts:");
+					DLOG_F(INFO, "\tfonts:");
 					for (const auto& f : p.second.textures)
 					{
-						MMT_LOG_DEBUG(f.second.name);
-						MMT_LOG_DEBUG(std::to_string(f.second.handle));
+						DLOG_F(INFO, f.second.name.c_str());
+						DLOG_F(INFO, std::to_string(f.second.handle).c_str());
 					}
 				#endif
 				}
 			}
 			catch (const std::exception& e)
 			{
-				MMT_LOG_ERROR(std::format("Failed to load resources: {}", e.what()));
+				LOG_F(ERROR, "Failed to load resources: %s", e.what());
 			}
 		}
 		void ResourceManager::LoadApp()
 		{
 			auto path = std::filesystem::current_path() / "data" / "resources" / "app";
-			MMT_LOG_DEBUG(path.string());
+			DLOG_F(INFO, path.string().c_str());
 			for (const auto& entry : std::filesystem::directory_iterator(path))
 			{
 				if (entry.path().extension().string() == ".ttf")
@@ -76,12 +77,12 @@ namespace mmt
 					appIcon = LoadImage(entry.path().string().c_str());
 				}
 			}
-			if (!IsFontValid(defaultFont)) MMT_LOG_ERROR("Invalid default font");
+			if (!IsFontValid(defaultFont)) LOG_F(ERROR, "Invalid default font");
 			if (IsImageValid(appIcon)) SetWindowIcon(appIcon);
 		}
 		Pack ResourceManager::LoadPack(const std::filesystem::path& path)
 		{
-			MMT_LOG_DEBUG(std::format("Loading pack at {}", path.string()));
+			DLOG_F(INFO, "Loading pack at %s", path.string());
 
 			Pack pack;
 
@@ -121,7 +122,7 @@ namespace mmt
 
 		void ResourceManager::LoadPackMeta(Pack& pack, const std::filesystem::path& path)
 		{
-			MMT_LOG_DEBUG("Loading metadata");
+			DLOG_F(INFO, "Loading metadata");
 
 			std::ifstream file(path);
 			std::stringstream contents;
@@ -131,11 +132,11 @@ namespace mmt
 			picojson::value val;
 
 			std::string err = picojson::parse(val, strCont);
-			if (!err.empty()) MMT_LOG_ERROR(std::format("Failed to parse meta file at {}: {}",
-				path.string(), err));
+			if (!err.empty()) LOG_F(ERROR, "Failed to parse meta file at %s: %s",
+				path.string(), err);
 
-			if (!val.is<picojson::object>()) MMT_LOG_ERROR(std::format("Meta json at {} is not an object",
-				path.string()));
+			if (!val.is<picojson::object>()) LOG_F(ERROR, "Meta json at %s is not an object",
+				path.string());
 
 			const picojson::value::object& obj = val.get<picojson::object>();
 			
@@ -146,8 +147,8 @@ namespace mmt
 			pack.lastUpdate = obj.at("last_update").get<std::string>();
 			pack.description = obj.at("description").get<std::string>();
 
-			MMT_LOG_DEBUG(std::format("Pack metadata:\n{}\n{}\n{}\n{}\n{}\n{}",
-				pack.name, pack.author, pack.license, pack.version, pack.lastUpdate, pack.description));
+			DLOG_F(INFO, "Pack metadata:\n%s\n%s\n%s\n%s\n%s\n%s",
+				pack.name, pack.author, pack.license, pack.version, pack.lastUpdate, pack.description);
 		}
 
 		void ResourceManager::LoadDirectory(Pack& pack, ResourceType type, const std::filesystem::path& path)
@@ -179,7 +180,7 @@ namespace mmt
 								GenerateHandle(pack.name, type, entry.path().filename().string()),
 								std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-						MMT_LOG_DEBUG("Loaded texture " + entry.path().filename().string());
+						DLOG_F(INFO, "Loaded texture: %s", entry.path().filename().string());
 					}
 					else
 					{
@@ -188,7 +189,7 @@ namespace mmt
 								GenerateHandle(pack.name, type, entry.path().filename().string()),
 								std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-						MMT_LOG_DEBUG("Loaded object " + entry.path().filename().string());
+						DLOG_F(INFO, "Loaded object: %s", entry.path().filename().string());
 					}
 
 					UnloadImage(img);
@@ -204,7 +205,7 @@ namespace mmt
 							GenerateHandle(pack.name, type, entry.path().filename().string()),
 							std::make_shared<Font>(LoadFont(entry.path().string().c_str())));
 
-					MMT_LOG_DEBUG("Loaded font " + entry.path().filename().string());
+					DLOG_F(INFO, "Loaded font: %s", entry.path().filename().string());
 				}
 			}
 		}
@@ -235,12 +236,12 @@ namespace mmt
 		void ResourceManager::LoadArchive(Pack& pack, ResourceType type, const std::filesystem::path& path)
 		{
 			using namespace util;
-			MMT_LOG_DEBUG("ARCHIVE: " + path.filename().string());
+			DLOG_F(INFO, "ARCHIVE: %s", path.filename().string());
 
 			std::string spath = path.string();
 
 			rresCentralDir dir = rresLoadCentralDirectory(spath.c_str());
-			if (dir.count == 0) MMT_LOG_DEBUG("ARCHIVE: No central directory");
+			if (dir.count == 0) DLOG_F(INFO, "ARCHIVE: No central directory");
 
 			unsigned int chunkCount = 0;
 			rresResourceChunkInfo* infos = rresLoadResourceChunkInfoAll(spath.c_str(), &chunkCount);
@@ -279,7 +280,7 @@ namespace mmt
 									GenerateHandle(pack.name, type, name),
 									std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-							MMT_LOG_DEBUG("ARCHIVE: loaded texture " + name);
+							DLOG_F(INFO, "ARCHIVE: loaded texture: %s", name);
 						}
 						else
 						{
@@ -289,12 +290,11 @@ namespace mmt
 									GenerateHandle(pack.name, type, name),
 									std::make_shared<Texture2D>(LoadTextureFromImage(img)));
 
-							MMT_LOG_DEBUG("ARCHIVE: loaded object " + name);
+							DLOG_F(INFO, "ARCHIVE: loaded object: %s", name);
 						}
 						UnloadImage(img);
 					}
-					else MMT_LOG_ERROR(
-						std::format("Failed to unpack resource chunk (id:{})", infos[i].id));
+					else LOG_F(ERROR, "Failed to unpack resource chunk");
 
 					rresUnloadResourceChunk(chunk);
 				}
@@ -305,8 +305,7 @@ namespace mmt
 					for (unsigned int i = 0; i < multi.count; i++)
 					{
 						result = UnpackResourceChunk(&multi.chunks[i]);
-						if (result != 0) MMT_LOG_ERROR(
-							std::format("Failed to unpack multi resource chunk (id:{}, i:{})", infos[i].id, i));
+						if (result != 0) LOG_F(ERROR, "Failed to unpack multi resource chunk");
 					}
 					if (result == 0)
 					{
@@ -316,7 +315,7 @@ namespace mmt
 								GenerateHandle(pack.name, type, name),
 								std::make_shared<Font>(LoadFontFromResource(multi)));
 
-						MMT_LOG_DEBUG("ARCHIVE: loaded font " + name);
+						DLOG_F(INFO, "ARCHIVE: loaded font: %s", name);
 					}
 					rresUnloadResourceMulti(multi);
 				}

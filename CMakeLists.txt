@@ -58,17 +58,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(reflectcpp)
 
-#message("Fetching rapidjson...")
-#FetchContent_Declare(
-#	rapidjson
-#	GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
-#	GIT_TAG f54b0e47a08782a6131cc3d60f94d038fa6e0a51
-#)
-#FetchContent_MakeAvailable(rapidjson)
+message("Fetching spdlog...")
+FetchContent_Declare(
+	spdlog
+	GIT_REPOSITORY https://github.com/gabime/spdlog.git
+	GIT_TAG 8e5613379f5140fefb0b60412fbf1f5406e7c7f8
+)
+FetchContent_MakeAvailable(spdlog)
 
 ####################################################
 
-# for some reason there's no yyjson header in the sources
+# for some reason there's no yyjson header in the reflect-cpp sources
 message("Copying yyjson.h")
 file(
 	COPY 
@@ -80,13 +80,14 @@ file(
 ####################################################
 ####################################################
 
+
 set(SRCS
 
 src/MMT.cpp
 
 src/utility/Defines.h
 src/utility/Log.h
-src/utility/Log.cpp 
+src/utility/Log.cpp
 src/utility/StateMachine.h
 src/utility/StringUtil.h
 src/utility/Observer.h
@@ -135,6 +136,9 @@ ${imgui_SOURCE_DIR}/imgui_tables.cpp
 ${imgui_SOURCE_DIR}/imgui_widgets.cpp
 ${rlimgui_SOURCE_DIR}/rlImGui.cpp
 
+${CMAKE_CURRENT_SOURCE_DIR}/vendor/log/loguru.hpp
+${CMAKE_CURRENT_SOURCE_DIR}/vendor/log/loguru.cpp
+
 ####################################################
 
 )
@@ -163,6 +167,7 @@ target_include_directories(
 	${rlimgui_SOURCE_DIR}
 	${rres_SOURCE_DIR}/src
 	${reflectcpp_SOURCE_DIR}/include
+	${spdlog_SOURCE_DIR}/include
 	${CMAKE_CURRENT_SOURCE_DIR}/vendor
 )
 
@@ -172,3 +177,7 @@ endif()
 
 add_compile_options(/utf-8)
 add_compile_options(/permissive)
+
+add_custom_command(TARGET mmt POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/data/ $<TARGET_FILE_DIR:mmt>/data)

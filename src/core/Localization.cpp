@@ -1,5 +1,6 @@
 #include "Localization.h"
-#include "Localization.h"
+
+#include "log/loguru.hpp"
 
 namespace mmt
 {
@@ -25,7 +26,7 @@ namespace mmt
         {
             try
             {
-                MMT_LOG_DEBUG("Loading loc...");
+                DLOG_F(INFO, "Loading loc...");
 
                 auto cwd = std::filesystem::current_path();
                 std::ifstream file(cwd / relPath);
@@ -38,19 +39,19 @@ namespace mmt
                 std::string err = picojson::parse(val, strCont);
                 if (!err.empty()) throw std::runtime_error("Failed to parse localization file: " + err);
 
-                MMT_LOG_DEBUG("Parsed localization file");
+                DLOG_F(INFO, "Parsed localization file");
 
                 if (!val.is<picojson::object>()) throw std::runtime_error("Localization json is not an object");
                 const picojson::value::object& obj = val.get<picojson::object>();
 
                 LoadLocInfo(obj);
 
-                MMT_LOG_DEBUG("Loaded localization");
-                MMT_LOG_DEBUG("Loc map size: " + std::to_string(locMap.size()));
+                DLOG_F(INFO, "Loaded localization");
+                DLOG_F(INFO, "Loc map size: %i", locMap.size());
             }
             catch (const std::exception& e)
             {
-                MMT_LOG_ERROR(std::format("Failed to load localization: {}", e.what()));
+                LOG_F(ERROR, "Failed to load localization: %s", e.what());
             }
         }
         const std::unordered_map<std::string, MultiStr>& Localization::GetMap() const
@@ -72,7 +73,7 @@ namespace mmt
             }
             catch (const std::exception& e)
             {
-                MMT_LOG_ERROR("Failed to load localization info");
+                LOG_F(ERROR, "Failed to load localization info");
             }
         }
         void Localization::LoadEntry(const picojson::value::object& obj, const std::string& id, const std::string& lang)
@@ -85,7 +86,7 @@ namespace mmt
             }
             catch (const std::exception& e)
             {
-                MMT_LOG_ERROR("Failed to load localization entry: " + id);
+                LOG_F(ERROR, "Failed to load localization entry: %s", id);
             }
         }
     }

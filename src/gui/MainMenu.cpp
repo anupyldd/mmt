@@ -22,7 +22,7 @@ namespace mmt
 			
 			if (ImGui::Button(LocC("new_map")))
 			{
-				MMT_LOG_DEBUG("Pressed button");
+				DLOG_F(INFO, "Pressed button");
 				Notify({ .type = EventType::GUI_FROM_MAIN_TO_EDIT });
 			}
 
