@@ -6,7 +6,7 @@ namespace mmt
 	{
 		void Log::InitSession()
         {
-            auto path = std::filesystem::current_path() / "data" / "session";
+            auto path = std::filesystem::current_path() / "data" / "logs";
             auto t = std::time(nullptr);
             auto tm = *std::localtime(&t);
             std::stringstream dtstr;
