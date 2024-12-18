@@ -4,13 +4,7 @@
 #include <exception>
 #include <string>
 
-#define MMT_INVALID_STATE_CHANGE_EXCEPTION_THROW(fsm) {                     \
-std::stringstream msg;                                                  \
-msg << '[' << typeid(fsm).name() << ']' <<                              \
-" Attempting to change to an invalid state.\n Last valid state: " <<    \
-(fsm).currentState;                                                       \
-throw std::runtime_error(msg.str());                                    \
-}
+#include "log/loguru.hpp"
 
 namespace mmt
 {
@@ -57,8 +51,12 @@ namespace mmt
 
             void ChangeState(State<OwnerType>* newState)
             {
-                if (!newState) MMT_INVALID_STATE_CHANGE_EXCEPTION_THROW(*this);
-
+                if (!newState) 
+                {
+                    LOG_F(ERROR, "%s is attempting to switch to an invalid state. Last valid state: %s",
+                        typeid(*this).name(), typeid((*this).currentState).name());
+                }
+                    
                 previousState = currentState;
                 currentState->Exit(owner);
                 currentState = newState;
