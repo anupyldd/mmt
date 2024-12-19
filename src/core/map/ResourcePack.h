@@ -2,54 +2,94 @@
 
 #include <string>
 #include <unordered_map>
+#include <map>
 #include <cstdint>
 
 namespace mmt
 {
 	namespace core
 	{
-		enum class ResourceType { Texture, Object, Font, None };
+		enum class ResourceType { Texture, Object, Font, Script, None };
 
-		using ResourceHandle = uint32_t;
-
-		struct TextureData
+		template<class ResType>
+		struct Resource
 		{
-			TextureData() = default;
-			TextureData(const std::string& name, ResourceHandle handle, std::shared_ptr<Texture2D> tex)
-				: name(name), handle(handle), texture(tex) { }
-
-			std::string name;
-			ResourceHandle handle;
-			std::shared_ptr<Texture2D> texture;
+			Resource() = default;
+			Resource(std::shared_ptr<ResType> res)
+				: res(res) { }
+			
+			std::shared_ptr<ResType> res;
 		};
 
-		struct FontData
-		{
-			FontData() = default;
-			FontData(const std::string& name, ResourceHandle handle, std::shared_ptr<Font> font)
-				: name(name), handle(handle), font(font) { }
+		// ------------------------------------------
 
+		struct Folder
+		{
 			std::string name;
-			ResourceHandle handle;
-			std::shared_ptr<Font> font;
+			std::map<std::string, Folder> subFolders;
+			
+			std::map<std::string, Resource<Texture2D>> textures;
+			std::map<std::string, Resource<Texture2D>> objects;
+			std::map<std::string, Resource<Font>> fonts;
+
+		public:
+
+			void Unload()
+			{
+				textures.clear();
+				objects.clear();
+				fonts.clear();
+
+				for (auto& sf : subFolders)
+				{
+					sf.second.Unload();
+				}
+			}
 		};
+		
+		// ------------------------------------------
 
 		struct Pack
 		{
-			std::string name,
-				author,
-				license,
-				version,
-				description,
-				lastUpdate;
-			//std::unordered_map<ResourceHandle, std::shared_ptr<Texture2D>> textures;
-			//std::unordered_map<ResourceHandle, std::shared_ptr<Texture2D>> objects;
-			//std::unordered_map<ResourceHandle, std::shared_ptr<Font>> fonts;
-			std::unordered_map<std::string, TextureData> textures;
-			std::unordered_map<std::string, TextureData> objects;
-			std::unordered_map<std::string, FontData> fonts;
+			Pack() = default;
+			Pack(const std::string& name, bool shouldLoad)
+				: name(name), shouldLoad(shouldLoad) { };
+
+		public:
+
+			bool shouldLoad = false;
+			bool loaded = false;
+
+			std::string 
+				name			= "Undefined",
+				author			= "Undefined",
+				license			= "Undefined",
+				version			= "Undefined",
+				description		= "Undefined";
+
+			Folder
+				textures,
+				objects,
+				fonts;
+
+		public:
+
+			void Unload()
+			{
+				if (loaded)
+				{
+					textures.Unload();
+					objects.Unload();
+					fonts.Unload();
+
+					loaded = false;
+				}
+			}
 		};
 
-		using PackRegistry = std::unordered_map<std::string, Pack>;
+		struct PackRegistry
+		{
+			std::map<std::string, bool> shouldLoad;
+		};
 	}
 }

@@ -12,6 +12,7 @@ Table of contents
     - Creating
     - Distribution
     - Example
+    - Misc.
     
 
 Overview
@@ -36,11 +37,15 @@ into categories:
 - fonts
 - brushes (brush scripts)
 
+Each category folder can have any number of sub-folders.
+
+The name of the pack is the name of its `.mmtres` archive.
+
 The structure of a resource pack is as follows:
 
     pack.mmtres:
         
-        - metadata.json  (name, author, version, description, last update)
+        - metadata.json  (author, version, description, last update)
         - license.txt    (pack license)
         - notice.txt     (includes all required license notices for 3rd party assets)
         - readme.txt     (additional information about the pack)
@@ -166,10 +171,9 @@ you change anything inside (although, even if you do, you can always download
 the default pack again to restore it to the original state).
 
 
+Misc.
+----
+These are some misc. notes:
 
-
-
-
-
-
-
+- In the `packs` folder you can also find the `pack_registry.json` file. 
+  Do not modify it, it is maintained automatically by the program.

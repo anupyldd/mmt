@@ -26,17 +26,14 @@ namespace mmt
 {
 	namespace core
 	{
-		constexpr unsigned char FOURCC_IMAGE[4] = { 'I','M','G','E' };
-		constexpr unsigned char FOURCC_FONT[4]  = { 'F','N','T','G' };
-
-		// -------------------------------------
-
 		class ResourceManager
 		{
 			MMT_SINGLETON(ResourceManager);
 			
 		public:
-			void SetResourcePath(const std::filesystem::path& path);
+			void View();	// checks all the available packs, but does not load them
+			const std::unordered_map<std::string, Pack>& GetPackMap() const;
+			void SetPackLoad(const std::string& pack, bool load);
 
 			void Load();
 			void Unload();
@@ -53,16 +50,12 @@ namespace mmt
 			void LoadArchive(Pack& pack, ResourceType type, const std::filesystem::path& path);
 			void LoadFile(Pack& pack, const std::filesystem::path& path);
 			
-			ResourceHandle GenerateHandle(const std::string& packName, ResourceType type, const std::string& resName);
-
-			bool SameFourCC(const unsigned char first[4], const unsigned char second[4]) const;
-
 		private:
-			PackRegistry			packs;
-			std::filesystem::path	resPath;
+			std::unordered_map<std::string, Pack> packs;
+			std::filesystem::path packPath = std::filesystem::current_path() / "data" / "res" / "packs";
 
-			Font					defaultFont{ 0 };
-			Image					appIcon{ 0 };
+			Font	defaultFont{ 0 };
+			Image	appIcon{ 0 };
 		};
 	}
 }
