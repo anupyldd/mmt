@@ -26,33 +26,58 @@ namespace mmt
 {
 	namespace core
 	{
+		/*
+		* steps for resource manager:
+		* 1) PreLoad() before main menu to get list of packs and load the registry
+		* 2) Load() when a map is first opened
+		* 3) LoadPack() or UnloadPack() on demand
+		*/
+
+
 		class ResourceManager
 		{
 			MMT_SINGLETON(ResourceManager);
 			
 		public:
-			void View();	// checks all the available packs, but does not load them
+			~ResourceManager();
+
+			// checks all the available packs, but does not load them
+			void PreLoad();	
+
 			const std::unordered_map<std::string, Pack>& GetPackMap() const;
+
+			// sets shouldLoad for a pack
 			void SetPackLoad(const std::string& pack, bool load);
 
+			// general load that is run once on start
 			void Load();
-			void Unload();
 
-			void LoadApp();
+			// general unload that is run once on exit
+			void Unload() {};
 
+			// loads app icon, font
+			void LoadApp();	
+
+			// loads a specific pack, after general Load()
 			void LoadPack(const std::string& name);
+
+			// unloads a specific pack, after general Load()
 			void UnloadPack(const std::string& name);
 
 		private:
-			Pack LoadPack(const std::filesystem::path& path);
+			void LoadPack(const std::filesystem::path& path);
 			void LoadPackMeta(Pack& pack, const std::filesystem::path& path);
 			void LoadDirectory(Pack& pack, ResourceType type, const std::filesystem::path& path);
 			void LoadArchive(Pack& pack, ResourceType type, const std::filesystem::path& path);
 			void LoadFile(Pack& pack, const std::filesystem::path& path);
+
+			void LoadPackRegistry();
+			void SavePackRegistry();
 			
 		private:
 			std::unordered_map<std::string, Pack> packs;
 			std::filesystem::path packPath = std::filesystem::current_path() / "data" / "res" / "packs";
+			std::unique_ptr<PackRegistry> packReg;
 
 			Font	defaultFont{ 0 };
 			Image	appIcon{ 0 };

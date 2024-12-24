@@ -1,5 +1,6 @@
 {
-    "packs":[
-        {"testpack": true}
-    ]
+    "shouldLoad":{
+        "testpack":true,
+        "fakepack":false
+    }
 }

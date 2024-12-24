@@ -22,7 +22,7 @@ namespace mmt
                 DLOG_F(INFO, (cwd / relPath).string().c_str());
 
                 std::stringstream contents;
-                contents << file.rdbuf();
+                contents << file.rdbuf(); 
 
                 std::string strCont = contents.str();
                 

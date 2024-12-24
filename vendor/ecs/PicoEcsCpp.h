@@ -64,40 +64,40 @@ namespace pico_ecs_cpp
     template<typename ... Args>
     inline std::string FormatString(const std::string& format, Args ... args)
     {
-        int size_s = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1; 
+        int size_s = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1;
         if (size_s > 0)
         {
             auto size = static_cast<size_t>(size_s);
             std::unique_ptr<char[]> buf(new char[size]);
             std::snprintf(buf.get(), size, format.c_str(), args ...);
-            return std::string(buf.get(), buf.get() + size - 1); 
+            return std::string(buf.get(), buf.get() + size - 1);
         }
     }
 
     // aliases --------------------------------------------------------------
 
-    using Ecs                       = ecs_t;
-    using ReturnCode                = ecs_ret_t;
-    using EcsDt                     = ecs_dt_t;
-    
-    using EcsId                     = ecs_id_t;
-    using EntityId                  = ecs_id_t;
-    using ComponentId               = ecs_id_t;
-    using SystemId                  = ecs_id_t;
+    using Ecs = ecs_t;
+    using ReturnCode = ecs_ret_t;
+    using EcsDt = ecs_dt_t;
 
-    using ComponentCtor             = ecs_constructor_fn;
-    using ComponentDtor             = ecs_destructor_fn;
-    
-    using SystemFunc                = ecs_system_fn;
-    using SystemAddedCb             = ecs_added_fn;
-    using SystemRemovedCb           = ecs_removed_fn;
+    using EcsId = ecs_id_t;
+    using EntityId = ecs_id_t;
+    using ComponentId = ecs_id_t;
+    using SystemId = ecs_id_t;
+
+    using ComponentCtor = ecs_constructor_fn;
+    using ComponentDtor = ecs_destructor_fn;
+
+    using SystemFunc = ecs_system_fn;
+    using SystemAddedCb = ecs_added_fn;
+    using SystemRemovedCb = ecs_removed_fn;
 }
 
 #if defined(PICO_ECS_CPP_ERROR_USE_EXCEPTIONS)
 
-    #include <exception>
-    #include <sstream>
-    #define	PICO_ECS_CPP_ERROR(code, msg)               \
+#include <exception>
+#include <sstream>
+#define	PICO_ECS_CPP_ERROR(code, msg)               \
             do                                          \
             {                                           \
                 std::stringstream sstr;                 \
@@ -107,9 +107,9 @@ namespace pico_ecs_cpp
             while(0)
 
 #elif defined(PICO_ECS_CPP_ERROR_USE_STD_ERR)
-    
-    #include <iostream>
-    #define	PICO_ECS_CPP_ERROR(code, msg)                                               \
+
+#include <iostream>
+#define	PICO_ECS_CPP_ERROR(code, msg)                                               \
             do                                                                          \
             {                                                                           \
                 std::cerr << "[PICO_ECS_CPP][" << code << "] " << msg << '\n';          \
@@ -118,14 +118,14 @@ namespace pico_ecs_cpp
 
 #elif defined(PICO_ECS_CPP_ERROR_USE_CALLBACK)
 
-    #include <functional>
-    #include <iostream>
-    #include <string>
-    std::function<void(pico_ecs_cpp::StatusCode, const std::string&)> PicoEcsCppErrorHandler =
-        [](pico_ecs_cpp::StatusCode code, const std::string& msg)
-        { std::cerr << "[PICO_ECS_CPP][" << pico_ecs_cpp::GetStatusMessage(code) << "] " << msg << '\n'; };
-                                                                                            
-    #define PICO_ECS_CPP_ERROR(code, msg)                                                       \
+#include <functional>
+#include <iostream>
+#include <string>
+std::function<void(pico_ecs_cpp::StatusCode, const std::string&)> PicoEcsCppErrorHandler =
+[](pico_ecs_cpp::StatusCode code, const std::string& msg)
+    { std::cerr << "[PICO_ECS_CPP][" << pico_ecs_cpp::GetStatusMessage(code) << "] " << msg << '\n'; };
+
+#define PICO_ECS_CPP_ERROR(code, msg)                                                       \
             do                                                                                  \
             {                                                                                   \
                 PicoEcsCppErrorHandler(code, msg);                                              \
@@ -134,7 +134,7 @@ namespace pico_ecs_cpp
 
 #else
 
-    #define	PICO_ECS_CPP_ERROR(code, msg)
+#define	PICO_ECS_CPP_ERROR(code, msg)
 
 #endif 
 
@@ -156,17 +156,17 @@ adds "Destructor" to the name
 #define PICO_ECS_CPP_COMPONENT_DESTRUCTOR(DtorName)								\
     pico_ecs_cpp::ComponentDtor DtorName##Destructor = [](ecs_t* ecs, ecs_id_t entity_id, void* ptr)
 
-/* 
+/*
 creates a constructor that accepts an object of type CompName and
 copies its contents into the component.
 adds "Constructor" to the name
 */
-#define PICO_ECS_CPP_COMPONENT_CONSTRUCTOR_COPY(CtorName)										                    \
-    pico_ecs_cpp::ComponentCtor CtorName##Constructor = [](ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)   \
-    {																							                    \
-        CtorName* comp = static_cast<CtorName*>(ptr);											                    \
-        CtorName* init = static_cast<CtorName*>(args);											                    \
-        if(init) (*comp) = (*init);																                    \
+#define PICO_ECS_CPP_COMPONENT_CONSTRUCTOR_COPY(CtorName)										                           \
+    inline pico_ecs_cpp::ComponentCtor CtorName##Constructor = [](ecs_t* ecs, ecs_id_t entity_id, void* ptr, void* args)   \
+    {																							                           \
+        CtorName* comp = static_cast<CtorName*>(ptr);											                           \
+        CtorName* init = static_cast<CtorName*>(args);											                           \
+        if(init) (*comp) = (*init);																                           \
     }
 
 // does not include function body
@@ -254,8 +254,8 @@ namespace pico_ecs_cpp
         // registers a system with optional added/removed callbacks
         StatusCode SystemRegister(
             const std::string& name,
-            SystemFunc func, 
-            SystemAddedCb add = nullptr, 
+            SystemFunc func,
+            SystemAddedCb add = nullptr,
             SystemRemovedCb rem = nullptr);
 
         // determines which components are available to the specified system
@@ -288,7 +288,7 @@ namespace pico_ecs_cpp
 
     inline EcsInstance::~EcsInstance()
     {
-        if(instance) Destroy();
+        if (instance) Destroy();
     }
 
     inline StatusCode EcsInstance::Init(int entityCount)
@@ -329,7 +329,7 @@ namespace pico_ecs_cpp
     {
         if (ecs_update_systems(instance, dt))
             return StatusCode::Success;
-        else 
+        else
             return StatusCode::SysUpdateFail;
     }
 
@@ -343,7 +343,7 @@ namespace pico_ecs_cpp
     {
         if (components.find(typeid(CompType)) != components.end())
         {
-            PICO_ECS_CPP_ERROR(StatusCode::CompExists, 
+            PICO_ECS_CPP_ERROR(StatusCode::CompExists,
                 FormatString("Component [%s] is already registered", typeid(CompType).name()));
             return StatusCode::CompExists;
         }
@@ -513,7 +513,7 @@ namespace pico_ecs_cpp
         }
 
         ecs_queue_remove(instance, id, components.at(typeid(CompType)));
-        
+
         return StatusCode::Success;
     }
 }
