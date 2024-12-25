@@ -1,4 +1,5 @@
 #include "App.h"
+#include "ResourceManager.h"
 
 #include "log/loguru.hpp"
 

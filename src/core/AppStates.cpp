@@ -2,6 +2,7 @@
 #include "App.h"
 #include "../utility/Log.h"
 #include "Localization.h"
+#include "ResourceManager.h"
 
 #include "raylib.h"
 #include "imgui.h"

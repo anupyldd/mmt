@@ -26,7 +26,8 @@ namespace mmt
 				if (e.is_regular_file() && e.path().extension() == ".mmtres")
 				{
 					std::string stem = e.path().stem().string();
-					packs[stem] = Pack(stem, packReg->shouldLoad.at(stem));
+					//packs[stem] = Pack(stem, packReg->shouldLoad.at(stem));
+					packs.emplace(stem, PackFolder(stem));
 					// save what packs are in the folder
 					existingPacks.push_back(stem);
 
@@ -46,7 +47,7 @@ namespace mmt
 				else ++it;
 			}
 		}
-		const std::unordered_map<std::string, Pack>& ResourceManager::GetPackMap() const
+		const std::unordered_map<std::string, PackFolder>& ResourceManager::GetPackMap() const
 		{
 			return packs;
 		}
@@ -73,7 +74,12 @@ namespace mmt
 					if (packReg->shouldLoad.at(stem))
 					{
 						LOG_F(INFO, "Start loading pack: %s", stem.c_str());
-						LoadPack(e.path());
+						PackFolder& current = packs.at(stem);
+						miniz_cpp::zip_file zip(e.path().string());
+						for (const auto& f : zip.infolist())
+						{
+							current.LoadFile(f.filename, zip);
+						}
 					}
 				}
 			}
@@ -98,6 +104,7 @@ namespace mmt
 			if (!IsFontValid(defaultFont)) LOG_F(ERROR, "Invalid default font");
 			if (IsImageValid(appIcon)) SetWindowIcon(appIcon);
 		}
+		/*
 		void ResourceManager::LoadPack(const std::filesystem::path& path)
 		{
 			miniz_cpp::zip_file file(path.string());
@@ -107,6 +114,7 @@ namespace mmt
 				file.open(i);
 			}
 		}
+		*/
 		void ResourceManager::LoadPackRegistry()
 		{
 			LOG_F(INFO, "Loading pack registry");

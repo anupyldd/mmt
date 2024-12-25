@@ -5,10 +5,10 @@
 
 #include "../utility/Log.h"
 #include "../utility/Defines.h"
-#include "../utility/RresImpl.h"
 #include "../utility/StringUtil.h"
-#include "map/ResourcePack.h"
 #include "Config.h"
+#include "map/Resources.h"
+#include "map/PackFolder.h"
 
 #include <unordered_map>
 #include <memory>
@@ -26,6 +26,9 @@ namespace mmt
 {
 	namespace core
 	{
+		class PackFolder;
+		class PackRegistry;
+
 		/*
 		* steps for resource manager:
 		* 1) PreLoad() before main menu to get list of packs and load the registry
@@ -44,7 +47,7 @@ namespace mmt
 			// checks all the available packs, but does not load them
 			void PreLoad();	
 
-			const std::unordered_map<std::string, Pack>& GetPackMap() const;
+			const std::unordered_map<std::string, PackFolder>& GetPackMap() const;
 
 			// sets shouldLoad for a pack
 			void SetPackLoad(const std::string& pack, bool load);
@@ -65,17 +68,17 @@ namespace mmt
 			void UnloadPack(const std::string& name);
 
 		private:
-			void LoadPack(const std::filesystem::path& path);
-			void LoadPackMeta(Pack& pack, const std::filesystem::path& path);
-			void LoadDirectory(Pack& pack, ResourceType type, const std::filesystem::path& path);
-			void LoadArchive(Pack& pack, ResourceType type, const std::filesystem::path& path);
-			void LoadFile(Pack& pack, const std::filesystem::path& path);
+			//void LoadPack(const std::filesystem::path& path);
+			//void LoadPackMeta(Pack& pack, const std::filesystem::path& path);
+			//void LoadDirectory(Pack& pack, ResourceType type, const std::filesystem::path& path);
+			//void LoadArchive(Pack& pack, ResourceType type, const std::filesystem::path& path);
+			//void LoadFile(Pack& pack, const std::filesystem::path& path);
 
 			void LoadPackRegistry();
 			void SavePackRegistry();
 			
 		private:
-			std::unordered_map<std::string, Pack> packs;
+			std::unordered_map<std::string, PackFolder> packs;
 			std::filesystem::path packPath = std::filesystem::current_path() / "data" / "res" / "packs";
 			std::unique_ptr<PackRegistry> packReg;
 

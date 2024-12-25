@@ -118,7 +118,8 @@ src/core/map/Systems.cpp
 src/core/map/MapUtil.h
 src/core/map/Resources.h
 src/core/map/Resources.cpp
-src/core/map/ResourceFolder.h
+src/core/map/PackFolder.h
+src/core/map/PackFolder.cpp
 
 src/gui/Gui.h
 src/gui/Gui.cpp
