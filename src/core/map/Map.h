@@ -22,6 +22,7 @@ namespace mmt
 	{
 		class Map;
 
+		// serialized
 		struct MapData
 		{
 			std::string name = "Undefined Name",
@@ -44,16 +45,17 @@ namespace mmt
 			Map() = default;
 
 			void Create(int width, int height, const std::string& name);
-
 			void Update();
 
-			bool CreateLayer(const std::string& name);
+		public:
+			void CreateCanvas();
 
 		private:
 			std::unique_ptr<MapData> data;
 
 		private:
 			EcsInstance ecs;
+			Camera2D camera;
 		};
 		
 	}

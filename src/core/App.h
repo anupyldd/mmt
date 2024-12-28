@@ -6,7 +6,6 @@
 #include "Localization.h"
 #include "../gui/Gui.h"
 #include "../utility/Observer.h"
-#include "ResourceManager.h"
 #include "AppStates.h"
 
 #include <exception>
@@ -15,7 +14,11 @@ namespace mmt
 {
 	namespace core
 	{
-		class App;
+		class AppInitLoadState;
+		class AppMainMenuState;
+		class AppMapEditState;
+		class AppCloseState;
+
 		using namespace util;
 		using namespace gui;
 

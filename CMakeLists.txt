@@ -116,7 +116,10 @@ src/core/map/ComponentRegistry.h
 src/core/map/Systems.h
 src/core/map/Systems.cpp
 src/core/map/MapUtil.h
-src/core/map/ResourcePack.h
+src/core/map/Resources.h
+src/core/map/Resources.cpp
+src/core/map/PackFolder.h
+src/core/map/PackFolder.cpp
 
 src/gui/Gui.h
 src/gui/Gui.cpp
@@ -180,6 +183,28 @@ endif()
 add_compile_options(/utf-8)
 add_compile_options(/permissive)
 
-add_custom_command(TARGET mmt POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       ${CMAKE_SOURCE_DIR}/data/ $<TARGET_FILE_DIR:mmt>/data)
+#add_custom_command(TARGET mmt POST_BUILD
+#                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+#                       ${CMAKE_SOURCE_DIR}/data/ $<TARGET_FILE_DIR:mmt>/data)
+
+#add_custom_command(TARGET mmt PRE_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E rm -rf $<TARGET_FILE_DIR:mmt>/data
+#    COMMAND ${CMAKE_COMMAND} -E copy_directory
+#        ${CMAKE_SOURCE_DIR}/data/ $<TARGET_FILE_DIR:mmt>/data)
+
+set(DATA_OUTPUT_DIR ${CMAKE_BINARY_DIR}/data)
+
+file(GLOB_RECURSE DATA_FILES ${CMAKE_SOURCE_DIR}/data/*)
+
+add_custom_target(copy_data ALL
+    COMMAND ${CMAKE_COMMAND} -E rm -rf ${DATA_OUTPUT_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/data ${DATA_OUTPUT_DIR}
+    DEPENDS ${DATA_FILES}
+)
+
+add_custom_command(
+    TARGET mmt POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${DATA_OUTPUT_DIR} $<TARGET_FILE_DIR:mmt>/data
+)

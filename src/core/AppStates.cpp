@@ -2,6 +2,7 @@
 #include "App.h"
 #include "../utility/Log.h"
 #include "Localization.h"
+#include "ResourceManager.h"
 
 #include "raylib.h"
 #include "imgui.h"
@@ -13,7 +14,7 @@ namespace mmt
 	{
 		void AppInitLoadState::Enter(App* owner)
 		{
-			DLOG_F(INFO, "Starting app initialization");
+			LOG_F(INFO, "Starting app initialization");
 		}
 
 		void AppInitLoadState::Execute(App* owner)
@@ -44,9 +45,7 @@ namespace mmt
 			SetExitKey(KEY_NULL);
 			rlImGuiSetup(true);
 
-			/********************************/
-			//ResourceManager::GetInstance().Load();
-			/********************************/
+			ResourceManager::GetInstance().PreLoad();
 
 		#ifdef IMGUI_HAS_DOCK
 			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;

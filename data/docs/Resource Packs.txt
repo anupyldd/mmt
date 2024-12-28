@@ -1,0 +1,179 @@
+
+MMT - RESOURCE PACKS
+====================
+
+
+Table of contents
+-----------------
+    - Overview
+    - Structure
+    - Rules
+    - Editing
+    - Creating
+    - Distribution
+    - Example
+    - Misc.
+    
+
+Overview
+--------
+A resource pack is a zip archive with an `.mmtres` extension that contains textures, 
+object images, fonts, scripts, etc. that can be used when creating a map.
+
+Resource packs are loaded when you open a map for editing for the first time in a session.
+While you are still in the main menu, you can configure, which packs to load
+using the `Resource Pack Manager` window. You can also load and unload packs while
+editing a map.
+
+NOTE: you cannot unload a pack if a resource from it is used in a currently open map.
+
+
+Structure
+---------
+A resource pack includes meta information and several folders that break up content
+into categories:
+- textures
+- objects (e.g., stamps, icons - images that are not textures)
+- fonts
+- brushes (brush scripts)
+
+Each category folder can have any number of sub-folders.
+
+The name of the pack is the name of its `.mmtres` archive.
+
+The structure of a resource pack is as follows:
+
+    pack.mmtres:
+        
+        - metadata.json  (author, version, description, last update)
+        - license.txt    (pack license)
+        - notice.txt     (includes all required license notices for 3rd party assets)
+        - readme.txt     (additional information about the pack)
+    
+        textures:  
+            - texture1.png
+            - texture2.tga
+            - ...
+    
+        objects:
+            - object1.png
+            - object2.jpg
+            - ...
+    
+        fonts:
+            - font1.ttf
+            - font2.ttf
+            - ...
+            
+        brushes:
+            - brush1.lua
+            - brush2.lua
+            - ...
+
+NOTE: `metadata`, `license`, `notice` and `readme` files are optional if you are not 
+planning to distribute the pack or if they are empty (e.g. there's no need for additional
+information, meaning there's no need for an empty readme file).
+
+NOTE: category folders (`textures`, `objects`, etc.) can be left out if there's nothing 
+in them. So a pack can have, for example, only the `objects` folder and still be valid.
+
+
+Rules
+-----
+Resource packs have to adhere to the following rules:
+
+- All files within the same category (textures, objects, etc.) must have unique
+  names, regardless of sub-folder placement. For instance, all textures in the 
+  textures directory must have unique names, even if they are placed in sub-folders
+  of the category. 
+
+- Supported image formats: `.png`, `.jpg`, `.jpeg`, `.bmp`, `.tga`. These apply to both
+  textures and objects
+
+- Supported font formats: `.ttf`, `.otf`.
+    
+
+Editing
+-------
+NOTE: be cautious when editing a pack that is already in use in one of your projects.
+If you delete some resource that is used in a project from the pack, it will cause 
+issues when trying to load this project. To see what resources are used in a project, 
+check the `Map Project Files.txt` file for info on `Resource Registry`.
+
+NOTE: If you need to make a lot of changes to a pack, it might be a good idea
+to create a new one instead. 
+
+You can edit resource packs in different ways:
+
+- Using a program for working with archives (e.g. 7-Zip File Manager):
+
+    1) Open the `.mmtres` archive in your program of choice (there shouldn't 
+       be any issus with this, since `.mmtres` is still a `zip` archive, just
+       with a custom extension)
+       
+    2) Edit the pack
+    
+    3) Save the archive
+    
+    4) If you edit a pack while the program is running, you'll need to
+       reload the edited pack through a `Resource Pack Manager` window.
+       Use the `Load` button for this.
+          
+- Using an in-build pack editor:
+    
+    1) Open the editor from the `Resource Pack Manager` window.
+    
+    2) Edit the pack
+    
+    3) Save the pack, it will be reloaded automatically
+
+
+Creating
+--------
+You can create a pack in several ways.
+
+- Using a program for working with archives (e.g. 7-Zip File Manager):
+
+    1) Create a folder with all the required files
+    
+    2) Pack it into a zip archive using a program of your choice
+    
+    3) Rename it to have a `.mmtres` extension
+    
+    4) Put the archive into the `/data/res/packs` folder
+    
+    5) If you added the pack after all the resource pack had been loaded,
+       you'd need to re-scan the pack folder and load the new pack from
+       the `Resource Pack Manager` window. First, press the `Scan` button,
+       then press the `Load` button next to newly added pack.
+       
+
+Distribution
+------------
+When distributing a resource pack, follow these rules:
+
+- Always credit the authors of 3rd-party assets, even if they distribute
+  their work under CC0 or Public domain.
+      
+- Do not distribute resources that you have no rights to.
+    
+- If an asset comes with a license file, include its text in the `notice.txt`.
+
+- The date in the metadata file should follow the format `YYYY.MM.DD`.
+
+
+Example
+-------
+To see an example of a resource pack, check the `default.mmtres` archive
+in the `/data/res/packs` folder. You can open it with an archive management
+program as described earlier. Consider creating a copy before doing so in case
+you change anything inside (although, even if you do, you can always download
+the default pack again to restore it to the original state).
+
+
+Misc.
+----
+These are some misc. notes:
+
+- In the `packs` folder you can also find the `pack_registry.json` file. 
+  Do not modify it, it is maintained automatically by the program.

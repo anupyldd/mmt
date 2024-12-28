@@ -1,4 +1,5 @@
 #include "App.h"
+#include "ResourceManager.h"
 
 #include "log/loguru.hpp"
 
@@ -49,7 +50,11 @@ namespace mmt
 			{
 			case EventType::GUI_FROM_MAIN_TO_EDIT:
 			{
-				if(fsm.IsInState(&mainMenuState)) fsm.ChangeState(&mapEditState);
+				if (fsm.IsInState(&mainMenuState))
+				{
+					ResourceManager::GetInstance().Load();
+					fsm.ChangeState(&mapEditState);
+				}
 			}
 			break;
 
