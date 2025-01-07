@@ -7,12 +7,10 @@
 #include <optional>
 
 #include "Resources.h"
+#include "../../utility/Zip.h"
 
 #include "log/loguru.hpp"
-#include "zip/zip_file.hpp"
-
-namespace miniz_cpp { class zip_file; }
-
+/*
 namespace mmt
 {
 	namespace core
@@ -25,11 +23,11 @@ namespace mmt
 			PackFolder(const std::string& name) 
 				: name(name) { }
 
-			/*
-			* takes in path like textures/subfolder/tex.png
-			* breaks it into parts by /
-			* iterates over vector of strings to load file into appropriate folder
-			*/
+			//
+			//takes in path like textures/subfolder/tex.png
+			//breaks it into parts by /
+			//iterates over vector of strings to load file into appropriate folder
+			//
 			void LoadFile(const std::string& path, miniz_cpp::zip_file& zip);
 
 			// recursively unloads entire folder
@@ -49,3 +47,4 @@ namespace mmt
 		
 	}
 }
+*/

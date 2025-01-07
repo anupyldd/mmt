@@ -2,6 +2,9 @@
 #include "ResourceManager.h"
 
 #include "log/loguru.hpp"
+#include "physfs.h"
+
+#include <filesystem>
 
 namespace mmt
 {
@@ -11,8 +14,17 @@ namespace mmt
 			: fsm(this)
 		{
 		}
-		void App::Init()
+		App::~App()
 		{
+			//PHYSFS_deinit();
+		}
+		void App::Init(int argc, char** argv)
+		{
+			loguru::init(argc, argv);
+			//PHYSFS_init(argv[0]);
+			//
+			//const std::filesystem::path writeDir = std::filesystem::current_path() / "data" / "maps";
+			//PHYSFS_setWriteDir(writeDir.string().c_str());
 			
 		}
 		void App::Run()
@@ -52,7 +64,7 @@ namespace mmt
 			{
 				if (fsm.IsInState(&mainMenuState))
 				{
-					ResourceManager::GetInstance().Load();
+					//ResourceManager::GetInstance().Load();
 					fsm.ChangeState(&mapEditState);
 				}
 			}

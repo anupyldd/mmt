@@ -45,7 +45,7 @@ namespace mmt
 			SetExitKey(KEY_NULL);
 			rlImGuiSetup(true);
 
-			ResourceManager::GetInstance().PreLoad();
+			//ResourceManager::GetInstance().PreLoad();
 
 		#ifdef IMGUI_HAS_DOCK
 			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
