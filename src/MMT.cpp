@@ -1,9 +1,11 @@
 ﻿#include "core/App.h"
 
+#include "utility/Zip.h"
+
 int main(int argc, char** argv)
 {
-	loguru::init(argc, argv);
-
-	mmt::core::App app;
-	app.Run();
+	
+	//mmt::core::App app;
+	//app.Init(argc, argv);
+	//app.Run();
 }

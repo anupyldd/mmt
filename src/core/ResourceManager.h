@@ -21,7 +21,7 @@
 #include <cctype>
 #include <sstream>
 #include <string.h>
-
+/*
 namespace mmt
 {
 	namespace core
@@ -29,12 +29,12 @@ namespace mmt
 		class PackFolder;
 		class PackRegistry;
 
-		/*
-		* steps for resource manager:
-		* 1) PreLoad() before main menu to get list of packs and load the registry
-		* 2) Load() when a map is first opened
-		* 3) LoadPack() or UnloadPack() on demand
-		*/
+		//
+		//steps for resource manager:
+		//1) PreLoad() before main menu to get list of packs and load the registry
+		//2) Load() when a map is first opened
+		//3) LoadPack() or UnloadPack() on demand
+		//
 
 
 		class ResourceManager
@@ -86,4 +86,4 @@ namespace mmt
 			Image	appIcon{ 0 };
 		};
 	}
-}
+}*/

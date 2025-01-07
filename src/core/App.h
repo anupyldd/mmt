@@ -30,8 +30,9 @@ namespace mmt
 
 		public:
 			App();
+			~App();
 
-			void Init();
+			void Init(int argc, char** argv);
 			void Run();
 
 			util::StateMachine<App>& GetFsm();

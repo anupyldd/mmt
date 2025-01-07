@@ -42,14 +42,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
-message("Fetching rres...")
-FetchContent_Declare(
-  rres
-  GIT_REPOSITORY https://github.com/raysan5/rres.git
-  GIT_TAG 536eb301e05e2fafd631e766baeb92d76e6c8f81
-)
-FetchContent_MakeAvailable(rres)
-
 message("Fetching reflect-cpp...")
 FetchContent_Declare(
   reflectcpp
@@ -58,13 +50,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(reflectcpp)
 
-message("Fetching spdlog...")
+message("Fetching PhysicsFS...")
 FetchContent_Declare(
-	spdlog
-	GIT_REPOSITORY https://github.com/gabime/spdlog.git
-	GIT_TAG 8e5613379f5140fefb0b60412fbf1f5406e7c7f8
+	physfs
+	GIT_REPOSITORY https://github.com/icculus/physfs.git
+	GIT_TAG eb3383b532c5f74bfeb42ec306ba2cf80eed988c
 )
-FetchContent_MakeAvailable(spdlog)
+FetchContent_MakeAvailable(physfs)
 
 ####################################################
 
@@ -92,9 +84,9 @@ src/utility/StateMachine.h
 src/utility/StringUtil.h
 src/utility/Observer.h
 src/utility/Serialization.h
-src/utility/RresImpl.c
-src/utility/RresImpl.h
 src/utility/Json.h
+src/utility/Zip.h
+src/utility/Zip.cpp
 
 src/core/App.h
 src/core/App.cpp
@@ -170,9 +162,9 @@ target_include_directories(
 	${raylib_SOURCE_DIR}/src/external/glfw/include 
 	${imgui_SOURCE_DIR}
 	${rlimgui_SOURCE_DIR}
-	${rres_SOURCE_DIR}/src
 	${reflectcpp_SOURCE_DIR}/include
 	${spdlog_SOURCE_DIR}/include
+	${physfs_SOURCE_DIR}/src
 	${CMAKE_CURRENT_SOURCE_DIR}/vendor
 )
 

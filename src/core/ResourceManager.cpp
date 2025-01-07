@@ -2,8 +2,7 @@
 
 #include "raylib.h"
 #include "log/loguru.hpp"
-#include "zip/zip_file.hpp"
-
+/*
 namespace mmt
 {
 	namespace core
@@ -104,17 +103,17 @@ namespace mmt
 			if (!IsFontValid(defaultFont)) LOG_F(ERROR, "Invalid default font");
 			if (IsImageValid(appIcon)) SetWindowIcon(appIcon);
 		}
-		/*
-		void ResourceManager::LoadPack(const std::filesystem::path& path)
-		{
-			miniz_cpp::zip_file file(path.string());
-			for (const auto& i : file.infolist())
-			{
-
-				file.open(i);
-			}
-		}
-		*/
+		//
+		//void ResourceManager::LoadPack(const std::filesystem::path& path)
+		//{
+		//	miniz_cpp::zip_file file(path.string());
+		//	for (const auto& i : file.infolist())
+		//	{
+		//
+		//		file.open(i);
+		//	}
+		//}
+		
 		void ResourceManager::LoadPackRegistry()
 		{
 			LOG_F(INFO, "Loading pack registry");
@@ -142,4 +141,4 @@ namespace mmt
 			reg << rfl::json::write(*packReg, YYJSON_WRITE_PRETTY);
 		}
 	}
-}
+}*/
