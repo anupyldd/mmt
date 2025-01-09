@@ -33,11 +33,11 @@ namespace mmt
 			std::map<std::string, bool> shouldLoad;
 		};
 
-		bool IsSupportedImageFormat(const std::filesystem::path& path);
+		bool IsSupportedImageFormat(const std::string& ext);
 
-		bool IsSupportedFontFormat(const std::filesystem::path& path);
+		bool IsSupportedFontFormat(const std::string& ext);
 
-		ResourceType GetResourceType(const std::filesystem::path& path);
+		ResourceType GetResourceType(const std::string& ext);
 		
 	}
 }

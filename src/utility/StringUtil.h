@@ -61,5 +61,10 @@ namespace mmt
             }
             return split;
         }
+
+        inline std::string GetExtension(const std::string& str)
+        {
+            return str.substr(str.find_last_of('.'));
+        }
 	}
 }

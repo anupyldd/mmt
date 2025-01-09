@@ -13,11 +13,17 @@ namespace mmt
 		{
 		public:
 			void Load(const std::filesystem::path& path);
+			
+			void PrintLoadedResources() const;
 
 		private:
-			void LoadResource(ResourceType type, util::Zip& zip, const std::vector<std::string>& parts);
+			void LoadResource(ResourceType type, util::Zip& zip, const std::string& name);
+			Texture2D LoadTexture(util::Zip& zip, const std::string& name);
+			Font LoadFont(util::Zip& zip, const std::string& name);
 
 		private:
+			std::string				name;
+
 			PackFolder<Texture2D>	textures;
 			PackFolder<Texture2D>	objects;
 			PackFolder<Font>		fonts;

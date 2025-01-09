@@ -3,6 +3,7 @@
 #include "../utility/Log.h"
 #include "Localization.h"
 #include "ResourceManager.h"
+#include "map/Pack.h"
 
 #include "raylib.h"
 #include "imgui.h"
@@ -45,7 +46,11 @@ namespace mmt
 			SetExitKey(KEY_NULL);
 			rlImGuiSetup(true);
 
-			//ResourceManager::GetInstance().PreLoad();
+			/*************************************/
+			Pack p;
+			p.Load("data/res/packs/testpack.mmtres");
+			p.PrintLoadedResources();
+			/*************************************/
 
 		#ifdef IMGUI_HAS_DOCK
 			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
