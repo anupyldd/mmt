@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <chrono>
 #include <sstream>
+#include <vector>
 
 namespace mmt
 {
@@ -47,6 +48,28 @@ namespace mmt
             std::stringstream ss;
             ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X");
             return ss.str();
+        }
+
+        inline std::vector<std::string> SplitByDelimiter(const std::string& str, const char delim)
+        {
+            std::vector<std::string> split;
+            std::stringstream sstr(str);
+            std::string part;
+            while (std::getline(sstr, part, delim))
+            {
+                split.push_back(part);
+            }
+            return split;
+        }
+
+        inline std::string GetExtension(const std::string& str)
+        {
+            return str.substr(str.find_last_of('.'));
+        }
+
+        inline std::string RemoveExtension(const std::string& str)
+        {
+            return str.substr(0, str.find_last_of('.'));
         }
 	}
 }
