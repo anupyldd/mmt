@@ -1,4 +1,5 @@
 #include "MainMenu.h"
+#include "../core/App.h"
 
 namespace mmt
 {
@@ -7,7 +8,7 @@ namespace mmt
 		MainMenu::MainMenu()
 		{
 		}
-		void MainMenu::Update()
+		void MainMenu::Update(core::App* app)
 		{
 			using namespace util;
 			using namespace core;
@@ -23,7 +24,7 @@ namespace mmt
 			if (ImGui::Button(LocC("new_map")))
 			{
 				DLOG_F(INFO, "Pressed button");
-				Notify({ .type = EventType::GUI_FROM_MAIN_TO_EDIT });
+				app->GetFsm().ChangeState(&app->mapEditState);
 			}
 
 			ImGui::End();

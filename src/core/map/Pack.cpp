@@ -77,8 +77,8 @@ namespace mmt
 					{
 						currentFolder->res[util::RemoveExtension(parts[i])] =
 							std::make_shared<Texture2D>(LoadTexture(zip, name));
-						DLOG_F(WARNING, "Tex folder size: r[%i],sf[%i]",
-							static_cast<int>(textures.res.size()), static_cast<int>(textures.subFolders.size()));
+						//DLOG_F(WARNING, "Tex folder size: r[%i],sf[%i]",
+						//	static_cast<int>(textures.res.size()), static_cast<int>(textures.subFolders.size()));
 					}
 					else
 					{
@@ -111,8 +111,8 @@ namespace mmt
 					{
 						currentFolder->res[util::RemoveExtension(parts[i])] = 
 							std::make_shared<Texture2D>(LoadTexture(zip, name));
-						DLOG_F(WARNING, "Obj folder size: r[%i],sf[%i]", 
-							static_cast<int>(objects.res.size()), static_cast<int>(objects.subFolders.size()));
+						//DLOG_F(WARNING, "Obj folder size: r[%i],sf[%i]", 
+						//	static_cast<int>(objects.res.size()), static_cast<int>(objects.subFolders.size()));
 					}
 					else
 					{
@@ -145,8 +145,8 @@ namespace mmt
 					{
 						currentFolder->res[util::RemoveExtension(parts[i])] =
 							std::make_shared<Font>(LoadFont(zip, name));
-						DLOG_F(WARNING, "Fnt folder size: r[%i],sf[%i]",
-							static_cast<int>(fonts.res.size()), static_cast<int>(fonts.subFolders.size()));
+						//DLOG_F(WARNING, "Fnt folder size: r[%i],sf[%i]",
+						//	static_cast<int>(fonts.res.size()), static_cast<int>(fonts.subFolders.size()));
 					}
 					else
 					{

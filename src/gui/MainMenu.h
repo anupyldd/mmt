@@ -9,6 +9,11 @@
 
 namespace mmt
 {
+	namespace core
+	{
+		class App;
+	}
+
 	namespace gui
 	{
 		using namespace util;
@@ -17,7 +22,7 @@ namespace mmt
 		{
 		public:
 			MainMenu();
-			virtual void Update() override final;
+			virtual void Update(core::App* app) override final;
 		};
 	}
 }

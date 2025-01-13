@@ -5,16 +5,21 @@
 
 namespace mmt
 {
+    namespace core
+    {
+        class App;
+    }
+
     namespace gui
     {
         using namespace util;
 
-        class GuiObject : public Subject
+        class GuiObject
         {
         public:
             virtual ~GuiObject() = default;
 
-            virtual void Update() = 0;
+            virtual void Update(core::App* app) = 0;
             bool IsVisible() const { return visible; }
 
         protected:
