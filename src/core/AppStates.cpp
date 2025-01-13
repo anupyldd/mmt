@@ -21,6 +21,7 @@ namespace mmt
 		void AppInitLoadState::Execute(App* owner)
 		{
 			util::Log::GetInstance().InitSession();
+			owner->GetGui().SetOwner(owner);
 
 			if (IsWindowReady()) throw std::runtime_error("Attempting to open window twice");
 
@@ -47,9 +48,9 @@ namespace mmt
 			rlImGuiSetup(true);
 
 			/*************************************/
-			Pack p;
-			p.Load("data/res/packs/testpack.mmtres");
-			p.PrintLoadedResources();
+			// Pack p;
+			// p.Load("data/res/packs/testpack.mmtres");
+			// p.PrintLoadedResources();
 			/*************************************/
 
 		#ifdef IMGUI_HAS_DOCK

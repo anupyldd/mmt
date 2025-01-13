@@ -1,9 +1,15 @@
 #include "Gui.h"
+#include "../core/App.h"
 
 namespace mmt
 {
     namespace gui
     {
+        void Gui::SetOwner(core::App* own)
+        {
+            if (own) owner = own;
+            else throw std::runtime_error("Failed to set Gui owner");
+        }
         void Gui::UpdateDraw(GuiState state)
         {
 			rlImGuiBegin();
@@ -11,7 +17,7 @@ namespace mmt
             switch (state)
             {
             case GuiState::MainMenu:
-                mainMenu.Update();
+                mainMenu.Update(owner);
                 break;
             case GuiState::Editor:
                 break;

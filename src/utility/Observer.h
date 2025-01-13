@@ -56,7 +56,7 @@ namespace mmt
 
 		enum class EventType : uint16_t
 		{
-			GUI_FROM_MAIN_TO_EDIT
+			
 		};
 	}
 }

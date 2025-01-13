@@ -24,7 +24,7 @@ namespace mmt
 
 		//-------------------------------------
 
-		class App : public Observer
+		class App
 		{
 			friend class Gui;
 
@@ -39,7 +39,6 @@ namespace mmt
 			gui::Gui& GetGui();
 
 			void UpdateConfig() const;
-			virtual void OnNotify(const Event& evt) override final;
 
 		private:
 			gui::Gui appGui;

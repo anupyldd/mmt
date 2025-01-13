@@ -15,6 +15,11 @@
 
 namespace mmt
 {
+    namespace core
+    {
+        class App;
+    }
+
     namespace gui
     {
         class MainMenu;
@@ -29,6 +34,7 @@ namespace mmt
             using GuiObjPtr = std::unique_ptr<GuiObject>;
 
         public:
+            void SetOwner(core::App* own);
             void UpdateDraw(GuiState state);
 
             void Add(GuiObjPtr obj);
@@ -36,6 +42,9 @@ namespace mmt
 
         public:
             MainMenu mainMenu;
+
+        private:
+            core::App* owner;
         };
     }
 }
