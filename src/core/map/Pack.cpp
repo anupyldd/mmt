@@ -64,33 +64,37 @@ namespace mmt
 			{
 			case ResourceType::Texture:
 			{
-				//if (!IsSupportedImageFormat(util::GetExtension(name)))
-				//{
-				//	LOG_F(ERROR, "Failed to load texture [%s]: image format [%s] is not supported",
-				//		name.c_str(), util::GetExtension(name).c_str());
-				//		return;
-				//}
-				//PackFolder<Texture2D>& currentFolder = textures;
-				//for (size_t i = 0; i < parts.size(); ++i)
-				//{
-				//	if (i == parts.size() - 1)
-				//	{
-				//		currentFolder.res[parts[i]] = std::make_shared<Texture2D>(LoadTexture(zip, name));
-				//	}
-				//	else
-				//	{
-				//		if (currentFolder.subFolders.contains(parts[i]))
-				//		{
-				//			currentFolder = *(currentFolder.subFolders.at(parts[i]));
-				//		}
-				//		else
-				//		{
-				//			currentFolder.subFolders[parts[i]] = std::make_shared<PackFolder<Texture2D>>();
-				//			currentFolder = *(currentFolder.subFolders.at(parts[i]));
-				//		}
-				//	}
-				//}
-				//break;
+				if (!IsSupportedImageFormat(util::GetExtension(name)))
+				{
+					LOG_F(ERROR, "Failed to load texture [%s]: image format [%s] is not supported",
+						name.c_str(), util::GetExtension(name).c_str());
+					return;
+				}
+				PackFolder<Texture2D>* currentFolder = &textures;
+				for (size_t i = 0; i < parts.size(); ++i)
+				{
+					if (i == parts.size() - 1)
+					{
+						currentFolder->res[util::RemoveExtension(parts[i])] =
+							std::make_shared<Texture2D>(LoadTexture(zip, name));
+						DLOG_F(WARNING, "Tex folder size: r[%i],sf[%i]",
+							static_cast<int>(textures.res.size()), static_cast<int>(textures.subFolders.size()));
+					}
+					else
+					{
+						if (currentFolder->subFolders.contains(parts[i]))
+						{
+							currentFolder = currentFolder->subFolders.at(parts[i]).get();
+						}
+						else
+						{
+							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<Texture2D>>();
+							auto sfp = currentFolder->subFolders[parts[i]];
+							currentFolder = sfp.get();
+						}
+					}
+				}
+				break;
 			}
 			case ResourceType::Object:
 			{
@@ -107,7 +111,8 @@ namespace mmt
 					{
 						currentFolder->res[util::RemoveExtension(parts[i])] = 
 							std::make_shared<Texture2D>(LoadTexture(zip, name));
-						DLOG_F(WARNING, "Obj folder size: r[%i],sf[%i]", objects.res.size(),objects.subFolders.size());
+						DLOG_F(WARNING, "Obj folder size: r[%i],sf[%i]", 
+							static_cast<int>(objects.res.size()), static_cast<int>(objects.subFolders.size()));
 					}
 					else
 					{
@@ -127,33 +132,37 @@ namespace mmt
 			}
 			case ResourceType::Font:
 			{
-				//if (!IsSupportedFontFormat(util::GetExtension(name)))
-				//{
-				//	LOG_F(ERROR, "Failed to load font [%s]: font format [%s] is not supported",
-				//		name.c_str(), util::GetExtension(name).c_str());
-				//	return;
-				//}
-				//PackFolder<Font>& currentFolder = fonts;
-				//for (size_t i = 0; i < parts.size(); ++i)
-				//{
-				//	if (i == parts.size() - 1)
-				//	{
-				//		currentFolder.res[parts[i]] = std::make_shared<Font>(this->LoadFont(zip, name));
-				//	}
-				//	else
-				//	{
-				//		if (currentFolder.subFolders.contains(parts[i]))
-				//		{
-				//			currentFolder = *(currentFolder.subFolders.at(parts[i]));
-				//		}
-				//		else
-				//		{
-				//			currentFolder.subFolders[parts[i]] = std::make_shared<PackFolder<Font>>();
-				//			currentFolder = *(currentFolder.subFolders.at(parts[i]));
-				//		}
-				//	}
-				//}
-				//break;
+				if (!IsSupportedFontFormat(util::GetExtension(name)))
+				{
+					LOG_F(ERROR, "Failed to load font [%s]: font format [%s] is not supported",
+						name.c_str(), util::GetExtension(name).c_str());
+					return;
+				}
+				PackFolder<Font>* currentFolder = &fonts;
+				for (size_t i = 0; i < parts.size(); ++i)
+				{
+					if (i == parts.size() - 1)
+					{
+						currentFolder->res[util::RemoveExtension(parts[i])] =
+							std::make_shared<Font>(LoadFont(zip, name));
+						DLOG_F(WARNING, "Fnt folder size: r[%i],sf[%i]",
+							static_cast<int>(fonts.res.size()), static_cast<int>(fonts.subFolders.size()));
+					}
+					else
+					{
+						if (currentFolder->subFolders.contains(parts[i]))
+						{
+							currentFolder = currentFolder->subFolders.at(parts[i]).get();
+						}
+						else
+						{
+							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<Font>>();
+							auto sfp = currentFolder->subFolders[parts[i]];
+							currentFolder = sfp.get();
+						}
+					}
+				}
+				break;
 			}
 			case ResourceType::Script:
 			{
