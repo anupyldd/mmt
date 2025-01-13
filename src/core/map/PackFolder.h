@@ -27,9 +27,10 @@ namespace mmt
 			void Print() const
 			{
 				std::cout << "Folder name: " << name << '\n';
+				std::cout << "res count: " << res.size() << '\n' << "sf count: " << subFolders.size() << '\n';
 				for (const auto& r : res)
 				{
-					std::cout << r.first << " - " << r.second.get();
+					std::cout << r.first << " - " << r.second.get() << '\n';
 				}
 				for (const auto& sf : subFolders)
 				{

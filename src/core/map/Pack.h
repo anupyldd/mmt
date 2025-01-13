@@ -5,6 +5,8 @@
 
 #include "raylib.h"
 
+#include <functional>
+
 namespace mmt
 {
 	namespace core
@@ -20,7 +22,7 @@ namespace mmt
 			void LoadResource(ResourceType type, util::Zip& zip, const std::string& name);
 			Texture2D LoadTexture(util::Zip& zip, const std::string& name);
 			Font LoadFont(util::Zip& zip, const std::string& name);
-
+			
 		private:
 			std::string				name;
 

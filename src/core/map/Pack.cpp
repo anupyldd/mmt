@@ -24,7 +24,8 @@ namespace mmt
 				const auto& names = file.NameList();
 				for (const auto& name : names)
 				{
-					if (name.ends_with('/')) continue;	// don't load folder names
+					if (name.ends_with('/') || name.ends_with("txt") || name.ends_with("json")) 
+						continue;	// don't load folder names or non-resource files
 
 					ResourceType type;
 					if (name.starts_with("textures")) type = ResourceType::Texture;
@@ -63,33 +64,33 @@ namespace mmt
 			{
 			case ResourceType::Texture:
 			{
-				if (!IsSupportedImageFormat(util::GetExtension(name)))
-				{
-					LOG_F(ERROR, "Failed to load texture [%s]: image format [%s] is not supported",
-						name.c_str(), util::GetExtension(name).c_str());
-						return;
-				}
-				PackFolder<Texture2D>& currentFolder = textures;
-				for (size_t i = 0; i < parts.size(); ++i)
-				{
-					if (i == parts.size() - 1)
-					{
-						currentFolder.res[parts[i]] = std::make_shared<Texture2D>(LoadTexture(zip, name));
-					}
-					else
-					{
-						if (currentFolder.subFolders.contains(parts[i]))
-						{
-							currentFolder = *(currentFolder.subFolders.at(parts[i]));
-						}
-						else
-						{
-							currentFolder.subFolders[parts[i]] = std::make_shared<PackFolder<Texture2D>>();
-							currentFolder = *(currentFolder.subFolders.at(parts[i]));
-						}
-					}
-				}
-				break;
+				//if (!IsSupportedImageFormat(util::GetExtension(name)))
+				//{
+				//	LOG_F(ERROR, "Failed to load texture [%s]: image format [%s] is not supported",
+				//		name.c_str(), util::GetExtension(name).c_str());
+				//		return;
+				//}
+				//PackFolder<Texture2D>& currentFolder = textures;
+				//for (size_t i = 0; i < parts.size(); ++i)
+				//{
+				//	if (i == parts.size() - 1)
+				//	{
+				//		currentFolder.res[parts[i]] = std::make_shared<Texture2D>(LoadTexture(zip, name));
+				//	}
+				//	else
+				//	{
+				//		if (currentFolder.subFolders.contains(parts[i]))
+				//		{
+				//			currentFolder = *(currentFolder.subFolders.at(parts[i]));
+				//		}
+				//		else
+				//		{
+				//			currentFolder.subFolders[parts[i]] = std::make_shared<PackFolder<Texture2D>>();
+				//			currentFolder = *(currentFolder.subFolders.at(parts[i]));
+				//		}
+				//	}
+				//}
+				//break;
 			}
 			case ResourceType::Object:
 			{
@@ -99,28 +100,26 @@ namespace mmt
 						name.c_str(), util::GetExtension(name).c_str());
 					return;
 				}
-				PackFolder<Texture2D>& currentFolder = objects;
+				PackFolder<Texture2D>* currentFolder = &objects;
 				for (size_t i = 0; i < parts.size(); ++i)
 				{
 					if (i == parts.size() - 1)
 					{
-						if (parts[i] == "Sewers1.png")
-						{
-							DLOG_F(WARNING, "Shit's about to break");
-						}
-						currentFolder.res[parts[i]] = std::make_shared<Texture2D>(LoadTexture(zip, name));
+						currentFolder->res[util::RemoveExtension(parts[i])] = 
+							std::make_shared<Texture2D>(LoadTexture(zip, name));
+						DLOG_F(WARNING, "Obj folder size: r[%i],sf[%i]", objects.res.size(),objects.subFolders.size());
 					}
-					//else currentFolder = *(currentFolder.subFolders[parts[i]]);
 					else
 					{
-						if (currentFolder.subFolders.contains(parts[i]))
+						if (currentFolder->subFolders.contains(parts[i]))
 						{
-							currentFolder = *(currentFolder.subFolders.at(parts[i]));
+							currentFolder = currentFolder->subFolders.at(parts[i]).get();
 						}
 						else
 						{
-							currentFolder.subFolders[parts[i]] = std::make_shared<PackFolder<Texture2D>>();
-							currentFolder = *(currentFolder.subFolders.at(parts[i]));
+							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<Texture2D>>();
+							auto sfp = currentFolder->subFolders[parts[i]];
+							currentFolder = sfp.get();
 						}
 					}
 				}
@@ -128,33 +127,33 @@ namespace mmt
 			}
 			case ResourceType::Font:
 			{
-				if (!IsSupportedFontFormat(util::GetExtension(name)))
-				{
-					LOG_F(ERROR, "Failed to load font [%s]: font format [%s] is not supported",
-						name.c_str(), util::GetExtension(name).c_str());
-					return;
-				}
-				PackFolder<Font>& currentFolder = fonts;
-				for (size_t i = 0; i < parts.size(); ++i)
-				{
-					if (i == parts.size() - 1)
-					{
-						currentFolder.res[parts[i]] = std::make_shared<Font>(this->LoadFont(zip, name));
-					}
-					else
-					{
-						if (currentFolder.subFolders.contains(parts[i]))
-						{
-							currentFolder = *(currentFolder.subFolders.at(parts[i]));
-						}
-						else
-						{
-							currentFolder.subFolders[parts[i]] = std::make_shared<PackFolder<Font>>();
-							currentFolder = *(currentFolder.subFolders.at(parts[i]));
-						}
-					}
-				}
-				break;
+				//if (!IsSupportedFontFormat(util::GetExtension(name)))
+				//{
+				//	LOG_F(ERROR, "Failed to load font [%s]: font format [%s] is not supported",
+				//		name.c_str(), util::GetExtension(name).c_str());
+				//	return;
+				//}
+				//PackFolder<Font>& currentFolder = fonts;
+				//for (size_t i = 0; i < parts.size(); ++i)
+				//{
+				//	if (i == parts.size() - 1)
+				//	{
+				//		currentFolder.res[parts[i]] = std::make_shared<Font>(this->LoadFont(zip, name));
+				//	}
+				//	else
+				//	{
+				//		if (currentFolder.subFolders.contains(parts[i]))
+				//		{
+				//			currentFolder = *(currentFolder.subFolders.at(parts[i]));
+				//		}
+				//		else
+				//		{
+				//			currentFolder.subFolders[parts[i]] = std::make_shared<PackFolder<Font>>();
+				//			currentFolder = *(currentFolder.subFolders.at(parts[i]));
+				//		}
+				//	}
+				//}
+				//break;
 			}
 			case ResourceType::Script:
 			{

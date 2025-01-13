@@ -66,5 +66,10 @@ namespace mmt
         {
             return str.substr(str.find_last_of('.'));
         }
+
+        inline std::string RemoveExtension(const std::string& str)
+        {
+            return str.substr(0, str.find_last_of('.'));
+        }
 	}
 }
