@@ -3,7 +3,7 @@
 #include "../utility/Log.h"
 #include "Localization.h"
 #include "ResourceManager.h"
-#include "map/Pack.h"
+#include "map/PackManager.h"
 
 #include "raylib.h"
 #include "imgui.h"
@@ -48,6 +48,9 @@ namespace mmt
 			rlImGuiSetup(true);
 
 			/*************************************/
+			PackManager::GetInstance().SetSearchPath(
+				std::filesystem::path("data") / "res" / "packs");
+			PackManager::GetInstance().PreLoadAll();
 			// Pack p;
 			// p.Load("data/res/packs/testpack.mmtres");
 			// p.PrintLoadedResources();

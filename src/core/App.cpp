@@ -2,7 +2,6 @@
 #include "ResourceManager.h"
 
 #include "log/loguru.hpp"
-#include "physfs.h"
 
 #include <filesystem>
 
