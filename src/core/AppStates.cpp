@@ -50,7 +50,8 @@ namespace mmt
 			/*************************************/
 			PackManager::GetInstance().SetSearchPath(
 				std::filesystem::path("data") / "res" / "packs");
-			PackManager::GetInstance().PreLoadAll();
+			PackManager::GetInstance().LoadAll();
+			PackManager::GetInstance().ClearAll();
 			// Pack p;
 			// p.Load("data/res/packs/testpack.mmtres");
 			// p.PrintLoadedResources();

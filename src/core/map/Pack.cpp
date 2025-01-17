@@ -92,7 +92,9 @@ namespace mmt
 
 		void Pack::Clear()
 		{
-			LOG_F(WARNING, "TODO: Clear()");
+			textures.Clear();
+			objects.Clear();
+			fonts.Clear();
 		}
 
 		void Pack::LoadResource(ResourceType type, util::Zip& zip, const std::string& name, bool preload)
@@ -125,8 +127,11 @@ namespace mmt
 							currentFolder->res[util::RemoveExtension(parts[i])] =
 							std::make_shared<Texture2D>(LoadTexture(zip, name));
 						else
+						{
 							currentFolder->res[util::RemoveExtension(parts[i])] =
-							std::make_shared<Texture2D>();
+								std::make_shared<Texture2D>();
+							LOG_F(INFO, "Pre-Loaded texture [%s]", name.c_str());
+						}
 					}
 					else
 					{
@@ -161,8 +166,11 @@ namespace mmt
 							currentFolder->res[util::RemoveExtension(parts[i])] =
 							std::make_shared<Texture2D>(LoadTexture(zip, name));
 						else
+						{
 							currentFolder->res[util::RemoveExtension(parts[i])] =
-							std::make_shared<Texture2D>();
+								std::make_shared<Texture2D>();
+							LOG_F(INFO, "Pre-Loaded object [%s]", name.c_str());
+						}
 					}
 					else
 					{
@@ -197,8 +205,11 @@ namespace mmt
 							currentFolder->res[util::RemoveExtension(parts[i])] =
 							std::make_shared<Font>(LoadFont(zip, name));
 						else
+						{
 							currentFolder->res[util::RemoveExtension(parts[i])] =
-							std::make_shared<Font>();
+								std::make_shared<Font>();
+							LOG_F(INFO, "Pre-Loaded font [%s]", name.c_str());
+						}
 					}
 					else
 					{
@@ -247,6 +258,7 @@ namespace mmt
 					LOG_F(ERROR, "Failed to load resource [%s]: LoadTextureFromImage() failure", name.c_str());
 					return Texture2D();
 				}
+				UnloadImage(img);
 				DLOG_F(INFO, "Loaded texture [%s]", name.c_str());
 				return tex;
 			}
@@ -276,6 +288,12 @@ namespace mmt
 			{
 				LOG_F(ERROR, "Exception while loading font [%s]: %s", name.c_str(), e.what());
 			}
+		}
+
+		std::string Pack::GetStats() const
+		{
+			return std::format("tex count [{}], obj count [{}], fnt count [{}]",
+				-1, -1, -1);
 		}
 
 		void Pack::PrintLoadedResources() const

@@ -27,11 +27,13 @@ namespace mmt
 			//std::shared_ptr<Texture2D>	LoadGetObject(const std::string& name);
 			//std::shared_ptr<Font>		LoadGetFont(const std::string& name);
 
-			void PrintLoadedResources() const;
 
 		public:
 			// unloads and clears all loaded resources
 			void Clear();
+
+			std::string GetStats() const;
+			void PrintLoadedResources() const;
 
 		private:
 			void LoadResource(ResourceType type, util::Zip& zip, const std::string& name, bool preload);

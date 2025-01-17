@@ -24,6 +24,26 @@ namespace mmt
 			std::map<std::string, std::shared_ptr<ResType>> res;
 			std::map<std::string, std::shared_ptr<PackFolder<ResType>>> subFolders;
 
+			void Clear()
+			{
+				if constexpr (std::is_same<ResType, Texture2D>::value)
+				{
+					for (auto& tex : res) UnloadTexture(*tex.second);
+				}
+				else if constexpr (std::is_same<ResType, Font>::value)
+				{
+					for (auto& tex : res) UnloadFont(*tex.second);
+				}
+				for (auto& sf : subFolders) sf.second->Clear();
+				res.clear();
+				subFolders.clear();
+			}
+
+			int Count() const
+			{
+				
+			}
+
 			void Print() const
 			{
 				std::cout << "==============================";
