@@ -144,6 +144,7 @@ namespace mmt
 						{
 							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<Texture2D>>();
 							auto sfp = currentFolder->subFolders[parts[i]];
+							sfp->name = parts[i];
 							currentFolder = sfp.get();
 						}
 					}

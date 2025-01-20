@@ -48,9 +48,11 @@ namespace mmt
 			rlImGuiSetup(true);
 
 			/*************************************/
-			PackManager::GetInstance().SetSearchPath(
-				std::filesystem::path("data") / "res" / "packs");
-			PackManager::GetInstance().PreLoadAll();
+			auto& pmgr = PackManager::GetInstance();
+			pmgr.SetSearchPath(std::filesystem::path("data") / "res" / "packs");
+			pmgr.PreLoadAll();
+			//if (pmgr.GetPackList().contains("testpack"))
+			//	PackManager::GetInstance().GetPackList().at("testpack").PrintLoadedResources();
 			//PackManager::GetInstance().ClearAll();
 			// Pack p;
 			// p.Load("data/res/packs/testpack.mmtres");

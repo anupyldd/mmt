@@ -8,7 +8,6 @@ namespace mmt
 	namespace gui
 	{
 		ResourceView::ResourceView()
-			//: select(core::PackManager::GetInstance().GetPackList().size(), false)
 		{
 		}
 
@@ -34,37 +33,6 @@ namespace mmt
 					}
 					ImGui::TreePop();
 				}
-				/*
-				if (ImGui::BeginListBox("Packs", ImGui::GetWindowSize()))
-				{
-
-					for (const auto& pack : packs)
-					{
-						bool isSelected = (selected == iter);
-						//if (ImGui::Selectable(pack.first.c_str(), isSelected, 0, ImGui::GetItemRectSize()))
-						//{
-						//	selected = iter;
-						//}
-
-						// begin pack
-						if (ImGui::BeginListBox(pack.first.c_str(), ImGui::GetItemRectSize()))
-						{
-							const auto& tex = pack.second.GetTextureFolder();
-							const auto& obj = pack.second.GetObjectFolder();
-							const auto& fnt = pack.second.GetFontFolder();
-
-							IteratePackFolder(tex);
-							IteratePackFolder(obj);
-							IteratePackFolder(fnt);
-
-							++iter;
-						}
-						// end pack	
-						ImGui::EndListBox();
-					}
-				}
-				ImGui::EndListBox();
-				*/
 			}
 			ImGui::End();
 		}
