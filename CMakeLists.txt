@@ -50,13 +50,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(reflectcpp)
 
-message("Fetching PhysicsFS...")
-FetchContent_Declare(
-	physfs
-	GIT_REPOSITORY https://github.com/icculus/physfs.git
-	GIT_TAG eb3383b532c5f74bfeb42ec306ba2cf80eed988c
-)
-FetchContent_MakeAvailable(physfs)
+#message("Fetching PhysicsFS...")
+#FetchContent_Declare(
+#	physfs
+#	GIT_REPOSITORY https://github.com/icculus/physfs.git
+#	GIT_TAG eb3383b532c5f74bfeb42ec306ba2cf80eed988c
+#)
+#FetchContent_MakeAvailable(physfs)
 
 ####################################################
 
@@ -114,6 +114,8 @@ src/core/map/PackFolder.h
 src/core/map/PackFolder.cpp
 src/core/map/Pack.h
 src/core/map/Pack.cpp
+src/core/map/PackManager.h
+src/core/map/PackManager.cpp
 
 src/gui/Gui.h
 src/gui/Gui.cpp
@@ -121,6 +123,8 @@ src/gui/GuiObject.h
 src/gui/GuiStates.h
 src/gui/MainMenu.h
 src/gui/MainMenu.cpp
+src/gui/ResourceView.h
+src/gui/ResourceView.cpp
 
 ####################################################
 
