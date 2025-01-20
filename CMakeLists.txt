@@ -123,6 +123,8 @@ src/gui/GuiObject.h
 src/gui/GuiStates.h
 src/gui/MainMenu.h
 src/gui/MainMenu.cpp
+src/gui/ResourceView.h
+src/gui/ResourceView.cpp
 
 ####################################################
 

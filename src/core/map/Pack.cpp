@@ -95,6 +95,7 @@ namespace mmt
 			textures.Clear();
 			objects.Clear();
 			fonts.Clear();
+			if(zip) zip->Reset();
 		}
 
 		void Pack::LoadResource(ResourceType type, util::Zip& zip, const std::string& name, bool preload)
@@ -125,7 +126,7 @@ namespace mmt
 					{
 						if(!preload)
 							currentFolder->res[util::RemoveExtension(parts[i])] =
-							std::make_shared<Texture2D>(LoadTexture(zip, name));
+							std::make_shared<Texture2D>(std::move(LoadTexture(zip, name)));
 						else
 						{
 							currentFolder->res[util::RemoveExtension(parts[i])] =
@@ -164,7 +165,7 @@ namespace mmt
 					{
 						if (!preload)
 							currentFolder->res[util::RemoveExtension(parts[i])] =
-							std::make_shared<Texture2D>(LoadTexture(zip, name));
+							std::make_shared<Texture2D>(std::move(LoadTexture(zip, name)));
 						else
 						{
 							currentFolder->res[util::RemoveExtension(parts[i])] =
@@ -302,6 +303,17 @@ namespace mmt
 			objects.Print();
 			fonts.Print();
 		}
-
+		const PackFolder<Texture2D>& Pack::GetTextureFolder() const
+		{
+			return textures;
+		}
+		const PackFolder<Texture2D>& Pack::GetObjectFolder() const
+		{
+			return objects;
+		}
+		const PackFolder<Font>& Pack::GetFontFolder() const
+		{
+			return fonts;
+		}
 	}
 }

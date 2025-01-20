@@ -35,6 +35,10 @@ namespace mmt
 			std::string GetStats() const;
 			void PrintLoadedResources() const;
 
+			const PackFolder<Texture2D>& GetTextureFolder() const;
+			const PackFolder<Texture2D>& GetObjectFolder() const;
+			const PackFolder<Font>& GetFontFolder() const;
+
 		private:
 			void LoadResource(ResourceType type, util::Zip& zip, const std::string& name, bool preload);
 

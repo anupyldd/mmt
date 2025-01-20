@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GuiObject.h"
+#include "ResourceView.h"
 #include "../utility/Log.h"
 
 #include "raylib.h"
@@ -23,6 +24,9 @@ namespace mmt
 		public:
 			MainMenu();
 			virtual void Update(core::App* app) override final;
+
+		private:
+			ResourceView resV;
 		};
 	}
 }

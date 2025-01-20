@@ -20,7 +20,7 @@ namespace mmt
 		template<class ResType>
 		struct PackFolder
 		{
-			std::string name;
+			std::string name = "Undefined Folder Name";
 			std::map<std::string, std::shared_ptr<ResType>> res;
 			std::map<std::string, std::shared_ptr<PackFolder<ResType>>> subFolders;
 
@@ -34,14 +34,22 @@ namespace mmt
 				{
 					for (auto& tex : res) UnloadFont(*tex.second);
 				}
-				for (auto& sf : subFolders) sf.second->Clear();
+				for (const auto& [name, subFolder] : subFolders)
+				{
+					if (subFolder) subFolder->Clear();
+				}
 				res.clear();
 				subFolders.clear();
 			}
 
-			int Count() const
+			size_t Count() const
 			{
-				
+				size_t count = res.size();
+				for (const auto& [name, subFolder] : subFolders) 
+				{
+					if (subFolder) count += subFolder->Count();
+				}
+				return count;
 			}
 
 			void Print() const

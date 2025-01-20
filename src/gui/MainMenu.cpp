@@ -28,6 +28,8 @@ namespace mmt
 			}
 
 			ImGui::End();
+
+			resV.Update(app);
 		}
 	}
 }
