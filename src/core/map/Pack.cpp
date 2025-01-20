@@ -1,6 +1,7 @@
 #include "Pack.h"
 #include "../../utility/Zip.h"
 #include "../../utility/StringUtil.h"
+#include "../Localization.h"
 
 #include "log/loguru.hpp"
 
@@ -16,9 +17,9 @@ namespace mmt
 				LOG_F(INFO, "Attempting to load pack at [%s]", path.string().c_str());
 
 				name = path.stem().string();
-				textures.name = "Textures";
-				objects.name = "Objects";
-				fonts.name = "Fonts";
+				textures.name = LocC("textures");
+				objects.name = LocC("objects");
+				fonts.name = LocC("fonts");
 
 				util::Zip file;
 				file.Load(path);

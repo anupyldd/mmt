@@ -1,4 +1,5 @@
 #include "ResourceView.h"
+#include "../core/Localization.h"
 
 #include <vector>
 #include <algorithm>
@@ -14,44 +15,46 @@ namespace mmt
 		int selected = -1;
 		void ResourceView::Update(core::App* app)
 		{
+			using namespace core;
+
 			int iter = 0;
 			auto& pmgr = core::PackManager::GetInstance();
 			auto& packs = core::PackManager::GetInstance().GetPackList();
 
-			if (ImGui::Begin("Resources", 0, ImGuiWindowFlags_MenuBar))
+			if (ImGui::Begin(LocC("resources"), 0, ImGuiWindowFlags_MenuBar))
 			{
 				if (ImGui::BeginMenuBar())
 				{
-					if (ImGui::BeginMenu("Manage"))
+					if (ImGui::BeginMenu(LocC("manage")))
 					{
-						if (ImGui::MenuItem("Load All", NULL, false))
+						if (ImGui::MenuItem(LocC("load_all"), NULL, false))
 						{
 							pmgr.LoadAll();
-							LOG_F(INFO, "Loaded loaded resources");
+							LOG_F(INFO, "Loaded resources");
 						}
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						{
-							ImGui::SetTooltip("Uses the most memory but is faster");
+							ImGui::SetTooltip(LocC("load_all_tt"));
 						}
 
-						if (ImGui::MenuItem("Pre-load All", NULL, false))
+						if (ImGui::MenuItem(LocC("scan_all"), NULL, false))
 						{
 							pmgr.PreLoadAll();
-							LOG_F(INFO, "Pre-loaded loaded resources");
+							LOG_F(INFO, "Pre-loaded resources");
 						}
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						{
-							ImGui::SetTooltip("Loads only names and pulls resources when needed. Recommended.");
+							ImGui::SetTooltip(LocC("scan_all_tt"));
 						}
 
-						if (ImGui::MenuItem("Unload All", NULL, false))
+						if (ImGui::MenuItem(LocC("clear_all"), NULL, false))
 						{
 							pmgr.ClearAll();
 							LOG_F(INFO, "Cleared loaded resources");
 						}
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						{
-							ImGui::SetTooltip("Clears all loaded resources");
+							ImGui::SetTooltip(LocC("clear_all_tt"));
 						}
 
 						ImGui::EndMenu();
@@ -60,8 +63,10 @@ namespace mmt
 					ImGui::EndMenuBar();
 				}
 
-				if (ImGui::TreeNode("Packs"))
-				{
+				// -----------------------------------------
+
+				//if (ImGui::TreeNode("Packs"))
+				//{
 					for (const auto& pack : packs)
 					{
 						if (ImGui::TreeNode(pack.first.c_str()))
@@ -72,8 +77,8 @@ namespace mmt
 							ImGui::TreePop();
 						}
 					}
-					ImGui::TreePop();
-				}
+				//	ImGui::TreePop();
+				//}
 			}
 			ImGui::End();
 		}
