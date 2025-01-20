@@ -43,30 +43,6 @@ namespace mmt
 					}
 					ImGui::TreePop();
 				}
-				/*
-				if (ImGui::BeginListBox(fold.name.c_str(), ImGui::GetContentRegionAvail()))
-				{
-					//DLOG_F(WARNING, "Open LB %s", fold.name.c_str());
-
-					for (const auto& r : fold.res)
-					{
-						ImGui::Selectable(r.first.c_str(), false, 0, ImGui::GetItemRectSize());
-						//DLOG_F(WARNING, "Add Item %s", r.first.c_str());
-					}
-					for (const auto& sf : fold.subFolders)
-					{
-						if (ImGui::BeginListBox(sf.first.c_str(), ImGui::GetContentRegionAvail()))
-						{
-							//DLOG_F(WARNING, "Open LB %s", sf.first.c_str());
-							IteratePackFolder(*sf.second);
-							ImGui::EndListBox();
-							//DLOG_F(WARNING, "Close LB %s", sf.first.c_str());
-						}
-					}
-					ImGui::EndListBox();
-					//DLOG_F(WARNING, "Close LB %s", fold.name.c_str());
-				}
-				*/
 			}
 		};
 	}

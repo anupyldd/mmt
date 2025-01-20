@@ -10,6 +10,7 @@ namespace mmt
 		}
 		void PackManager::LoadAll()
 		{
+			ClearAll();
 			for (auto& entry : std::filesystem::directory_iterator(path))
 			{
 				if (entry.path().extension() != ".mmtres") continue;
@@ -19,6 +20,7 @@ namespace mmt
 		}
 		void PackManager::PreLoadAll()
 		{
+			ClearAll();
 			for (auto& entry : std::filesystem::directory_iterator(path))
 			{
 				if (entry.path().extension() != ".mmtres") continue;
@@ -32,6 +34,7 @@ namespace mmt
 			{
 				p.second.Clear();
 			}
+			packs.clear();
 		}
 		const std::map<std::string, Pack>& PackManager::GetPackList() const
 		{

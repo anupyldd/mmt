@@ -111,7 +111,6 @@ src/core/map/MapUtil.h
 src/core/map/Resources.h
 src/core/map/Resources.cpp
 src/core/map/PackFolder.h
-src/core/map/PackFolder.cpp
 src/core/map/Pack.h
 src/core/map/Pack.cpp
 src/core/map/PackManager.h

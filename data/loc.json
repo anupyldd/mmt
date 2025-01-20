@@ -26,5 +26,53 @@
   "recent_projects": {
     "en": "Recent projects",
     "ru": "Недавние проекты"
+  },
+  "resources": {
+    "en": "Resources",
+    "ru": "Ресурсы"
+  },
+  "manage": {
+    "en": "Manage",
+    "ru": "Управлять"
+  },
+  "load_all": {
+    "en": "Load all",
+    "ru": "Загрузить"
+  },
+  "load_all_tt": {
+    "en": "Loads all resources and keeps them in memory. Best performance, but uses most RAM",
+    "ru": "Загружает все ресурсы и держит их в памяти. Лучшая производительность, но потребляет наибольшее кол-во RAM"
+  },
+  "scan_all": {
+    "en": "Scan all",
+    "ru": "Сканировать все"
+  },
+  "scan_all_tt": {
+    "en": "Scans all packs and loads only resource names",
+    "ru": "Сканирует все паки и загружает только имена ресурсов"
+  },
+  "clear_all": {
+    "en": "Clear all",
+    "ru": "Очистить все"
+  },
+  "clear_all_tt": {
+    "en": "Unloads all resources from memory",
+    "ru": "Выгружает все ресурсы из памяти"
+  },
+  "textures": {
+    "en": "Textures",
+    "ru": "Текстуры"
+  },
+  "objects": {
+    "en": "Objects",
+    "ru": "Объекты"
+  },
+  "fonts": {
+    "en": "Fonts",
+    "ru": "Шрифты"
+  },
+  "scripts": {
+    "en": "Scripts",
+    "ru": "Скрипты"
   }
 }

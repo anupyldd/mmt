@@ -1,4 +1,5 @@
 #include "ResourceView.h"
+#include "../core/Localization.h"
 
 #include <vector>
 #include <algorithm>
@@ -8,20 +9,64 @@ namespace mmt
 	namespace gui
 	{
 		ResourceView::ResourceView()
-			//: select(core::PackManager::GetInstance().GetPackList().size(), false)
 		{
 		}
 
 		int selected = -1;
 		void ResourceView::Update(core::App* app)
 		{
+			using namespace core;
+
 			int iter = 0;
+			auto& pmgr = core::PackManager::GetInstance();
 			auto& packs = core::PackManager::GetInstance().GetPackList();
 
-			if (ImGui::Begin("Resources", 0, 0))
+			if (ImGui::Begin(LocC("resources"), 0, ImGuiWindowFlags_MenuBar))
 			{
-				if (ImGui::TreeNode("Packs"))
+				if (ImGui::BeginMenuBar())
 				{
+					if (ImGui::BeginMenu(LocC("manage")))
+					{
+						if (ImGui::MenuItem(LocC("load_all"), NULL, false))
+						{
+							pmgr.LoadAll();
+							LOG_F(INFO, "Loaded resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip(LocC("load_all_tt"));
+						}
+
+						if (ImGui::MenuItem(LocC("scan_all"), NULL, false))
+						{
+							pmgr.PreLoadAll();
+							LOG_F(INFO, "Pre-loaded resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip(LocC("scan_all_tt"));
+						}
+
+						if (ImGui::MenuItem(LocC("clear_all"), NULL, false))
+						{
+							pmgr.ClearAll();
+							LOG_F(INFO, "Cleared loaded resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip(LocC("clear_all_tt"));
+						}
+
+						ImGui::EndMenu();
+					}
+
+					ImGui::EndMenuBar();
+				}
+
+				// -----------------------------------------
+
+				//if (ImGui::TreeNode("Packs"))
+				//{
 					for (const auto& pack : packs)
 					{
 						if (ImGui::TreeNode(pack.first.c_str()))
@@ -32,39 +77,8 @@ namespace mmt
 							ImGui::TreePop();
 						}
 					}
-					ImGui::TreePop();
-				}
-				/*
-				if (ImGui::BeginListBox("Packs", ImGui::GetWindowSize()))
-				{
-
-					for (const auto& pack : packs)
-					{
-						bool isSelected = (selected == iter);
-						//if (ImGui::Selectable(pack.first.c_str(), isSelected, 0, ImGui::GetItemRectSize()))
-						//{
-						//	selected = iter;
-						//}
-
-						// begin pack
-						if (ImGui::BeginListBox(pack.first.c_str(), ImGui::GetItemRectSize()))
-						{
-							const auto& tex = pack.second.GetTextureFolder();
-							const auto& obj = pack.second.GetObjectFolder();
-							const auto& fnt = pack.second.GetFontFolder();
-
-							IteratePackFolder(tex);
-							IteratePackFolder(obj);
-							IteratePackFolder(fnt);
-
-							++iter;
-						}
-						// end pack	
-						ImGui::EndListBox();
-					}
-				}
-				ImGui::EndListBox();
-				*/
+				//	ImGui::TreePop();
+				//}
 			}
 			ImGui::End();
 		}
