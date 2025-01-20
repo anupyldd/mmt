@@ -15,10 +15,51 @@ namespace mmt
 		void ResourceView::Update(core::App* app)
 		{
 			int iter = 0;
+			auto& pmgr = core::PackManager::GetInstance();
 			auto& packs = core::PackManager::GetInstance().GetPackList();
 
-			if (ImGui::Begin("Resources", 0, 0))
+			if (ImGui::Begin("Resources", 0, ImGuiWindowFlags_MenuBar))
 			{
+				if (ImGui::BeginMenuBar())
+				{
+					if (ImGui::BeginMenu("Manage"))
+					{
+						if (ImGui::MenuItem("Load All", NULL, false))
+						{
+							pmgr.LoadAll();
+							LOG_F(INFO, "Loaded loaded resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip("Uses the most memory but is faster");
+						}
+
+						if (ImGui::MenuItem("Pre-load All", NULL, false))
+						{
+							pmgr.PreLoadAll();
+							LOG_F(INFO, "Pre-loaded loaded resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip("Loads only names and pulls resources when needed. Recommended.");
+						}
+
+						if (ImGui::MenuItem("Unload All", NULL, false))
+						{
+							pmgr.ClearAll();
+							LOG_F(INFO, "Cleared loaded resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip("Clears all loaded resources");
+						}
+
+						ImGui::EndMenu();
+					}
+
+					ImGui::EndMenuBar();
+				}
+
 				if (ImGui::TreeNode("Packs"))
 				{
 					for (const auto& pack : packs)
