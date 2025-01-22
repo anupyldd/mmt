@@ -79,11 +79,11 @@ namespace mmt
 			SetWindowIcon(icon);
 			UnloadImage(icon);
 
-			ImGuiIO io = ImGui::GetIO();
-			ImFont* noto = io.Fonts->AddFontFromFileTTF("data/res/app/NotoSans-Medium.ttf", 16,
-				nullptr, io.Fonts->GetGlyphRangesCyrillic());
+			ImGuiIO& io = ImGui::GetIO();
+			io.Fonts->Clear();
+			io.Fonts->AddFontFromFileTTF("data/res/app/NotoSans-Medium.ttf", 32.0f, NULL,
+				ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 			rlImGuiReloadFonts();
-			noto->AddRemapChar(0xC4, 0x0414);
 		}
 
 		// -----------------------------------------------------
