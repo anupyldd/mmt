@@ -58,9 +58,9 @@ namespace mmt
 				LOG_F(INFO, "Attempting to pre-load pack at [%s]", path.string().c_str());
 
 				name = path.stem().string();
-				textures.name = "Textures";
-				objects.name = "Objects";
-				fonts.name = "Fonts";
+				textures.name = LocC("textures");
+				objects.name = LocC("objects");
+				fonts.name = LocC("fonts");
 
 				zip = std::make_unique<util::Zip>();
 				zip->Load(path);
@@ -185,6 +185,7 @@ namespace mmt
 						{
 							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<Texture2D>>();
 							auto sfp = currentFolder->subFolders[parts[i]];
+							sfp->name = parts[i];
 							currentFolder = sfp.get();
 						}
 					}
@@ -224,6 +225,7 @@ namespace mmt
 						{
 							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<Font>>();
 							auto sfp = currentFolder->subFolders[parts[i]];
+							sfp->name = parts[i];
 							currentFolder = sfp.get();
 						}
 					}

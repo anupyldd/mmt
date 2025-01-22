@@ -21,8 +21,7 @@ namespace mmt
 			auto& pmgr = core::PackManager::GetInstance();
 			auto& packs = core::PackManager::GetInstance().GetPackList();
 
-			//if (ImGui::Begin(LocC("resources"), 0, ImGuiWindowFlags_MenuBar))
-			if (ImGui::Begin((const char*)u8"אבגדהִ", 0, ImGuiWindowFlags_MenuBar))
+			if (ImGui::Begin(LocC("resources"), 0, ImGuiWindowFlags_MenuBar))
 			{
 				if (ImGui::BeginMenuBar())
 				{
@@ -66,20 +65,16 @@ namespace mmt
 
 				// -----------------------------------------
 
-				//if (ImGui::TreeNode("Packs"))
-				//{
-					for (const auto& pack : packs)
+				for (const auto& pack : packs)
+				{
+					if (ImGui::TreeNode(pack.first.c_str()))
 					{
-						if (ImGui::TreeNode(pack.first.c_str()))
-						{
-							IteratePackFolder(pack.second.GetTextureFolder());
-							IteratePackFolder(pack.second.GetObjectFolder());
-							IteratePackFolder(pack.second.GetFontFolder());
-							ImGui::TreePop();
-						}
+						IteratePackFolder(pack.second.GetTextureFolder());
+						IteratePackFolder(pack.second.GetObjectFolder());
+						IteratePackFolder(pack.second.GetFontFolder());
+						ImGui::TreePop();
 					}
-				//	ImGui::TreePop();
-				//}
+				}
 			}
 			ImGui::End();
 		}

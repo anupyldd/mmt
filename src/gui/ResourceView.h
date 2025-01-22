@@ -35,11 +35,13 @@ namespace mmt
 					}
 					for (const auto& sf : fold.subFolders)
 					{
-						if (ImGui::TreeNode(sf.first.c_str()))
-						{
-							IteratePackFolder(*sf.second);
-							ImGui::TreePop();
-						}
+						IteratePackFolder(*sf.second);
+						//ImGui::TreePop();
+						//if (ImGui::TreeNode(sf.first.c_str()))
+						//{
+						//	IteratePackFolder(*sf.second);
+						//	ImGui::TreePop();
+						//}
 					}
 					ImGui::TreePop();
 				}
