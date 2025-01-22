@@ -23,6 +23,8 @@ namespace mmt
 			virtual void Update(core::App* app) override final;
 
 		private:
+			void ClearSelected(std::unordered_map<std::string, bool>& sel);
+
 			template<class ResType>
 			void IteratePackFolder(const core::PackFolder<ResType>& fold)
 			{

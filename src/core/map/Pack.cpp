@@ -44,6 +44,7 @@ namespace mmt
 
 					LoadResource(type, file, name, false);
 				}
+				state = PackState::Loaded;
 			}
 			catch (const std::exception& e)
 			{
@@ -84,6 +85,7 @@ namespace mmt
 
 					LoadResource(type, *zip, name, true);
 				}
+				state = PackState::Scanned;
 			}
 			catch (const std::exception& e)
 			{
@@ -97,6 +99,7 @@ namespace mmt
 			objects.Clear();
 			fonts.Clear();
 			if(zip) zip->Reset();
+			state = PackState::Unloaded;
 		}
 
 		void Pack::LoadResource(ResourceType type, util::Zip& zip, const std::string& name, bool preload)
@@ -298,7 +301,12 @@ namespace mmt
 		std::string Pack::GetStats() const
 		{
 			return std::format("tex count [{}], obj count [{}], fnt count [{}]",
-				-1, -1, -1);
+				textures.Count(), objects.Count(), fonts.Count());
+		}
+
+		PackState Pack::GetState() const
+		{
+			return state;
 		}
 
 		void Pack::PrintLoadedResources() const

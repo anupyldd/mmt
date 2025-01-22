@@ -17,9 +17,17 @@ namespace mmt
 
 		public:
 			void SetSearchPath(const std::filesystem::path& rel);
+
 			void LoadAll();
 			void PreLoadAll();
 			void ClearAll();
+
+			void LoadSelected(const std::unordered_map<std::string, bool>& sel);
+			void PreLoadSelected(const std::unordered_map<std::string, bool>& sel);
+			void ClearSelected(const std::unordered_map<std::string, bool>& sel);
+
+			// scans the pack dir and loads pack names
+			void FindAvailable();
 
 			const std::map<std::string, Pack>& GetPackList() const;
 
