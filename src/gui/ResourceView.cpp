@@ -8,6 +8,10 @@ namespace mmt
 {
 	namespace gui
 	{
+		std::unordered_map<std::string, bool> selectedPacks;
+			
+		// -------------------------
+
 		ResourceView::ResourceView()
 		{
 		}
@@ -21,8 +25,7 @@ namespace mmt
 			auto& pmgr = core::PackManager::GetInstance();
 			auto& packs = core::PackManager::GetInstance().GetPackList();
 
-			//if (ImGui::Begin(LocC("resources"), 0, ImGuiWindowFlags_MenuBar))
-			if (ImGui::Begin((const char*)u8"אבגדהִ", 0, ImGuiWindowFlags_MenuBar))
+			if (ImGui::Begin(LocC("resources"), 0, ImGuiWindowFlags_MenuBar))
 			{
 				if (ImGui::BeginMenuBar())
 				{
@@ -51,11 +54,47 @@ namespace mmt
 						if (ImGui::MenuItem(LocC("clear_all"), NULL, false))
 						{
 							pmgr.ClearAll();
+							pmgr.FindAvailable();
 							LOG_F(INFO, "Cleared loaded resources");
 						}
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						{
 							ImGui::SetTooltip(LocC("clear_all_tt"));
+						}
+
+						ImGui::Separator();	// ---------------------------------------
+
+						if (ImGui::MenuItem(LocC("load_sel"), NULL, false))
+						{
+							pmgr.LoadSelected(selectedPacks);
+							ClearSelected(selectedPacks);
+							LOG_F(INFO, "Loaded selected resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip(LocC("load_sel_tt"));
+						}
+
+						if (ImGui::MenuItem(LocC("scan_sel"), NULL, false))
+						{
+							pmgr.PreLoadSelected(selectedPacks);
+							ClearSelected(selectedPacks);
+							LOG_F(INFO, "Scanned selected resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip(LocC("scan_sel_tt"));
+						}
+
+						if (ImGui::MenuItem(LocC("clear_sel"), NULL, false))
+						{
+							pmgr.ClearSelected(selectedPacks);
+							ClearSelected(selectedPacks);
+							LOG_F(INFO, "Cleared selected resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip(LocC("clear_sel_tt"));
 						}
 
 						ImGui::EndMenu();
@@ -66,22 +105,40 @@ namespace mmt
 
 				// -----------------------------------------
 
-				//if (ImGui::TreeNode("Packs"))
-				//{
-					for (const auto& pack : packs)
+				for (const auto& pack : packs)
+				{
+					if (pack.second.GetState() != PackState::Unloaded)
 					{
 						if (ImGui::TreeNode(pack.first.c_str()))
 						{
+
 							IteratePackFolder(pack.second.GetTextureFolder());
 							IteratePackFolder(pack.second.GetObjectFolder());
 							IteratePackFolder(pack.second.GetFontFolder());
+
 							ImGui::TreePop();
 						}
 					}
-				//	ImGui::TreePop();
-				//}
+					else
+					{
+						if (!selectedPacks.contains(pack.first)) 
+							selectedPacks[pack.first] = false;
+
+						if (ImGui::Checkbox(pack.first.c_str(), &selectedPacks.at(pack.first)))
+						{
+
+						}
+					}
+				}
 			}
 			ImGui::End();
+		}
+		void ResourceView::ClearSelected(std::unordered_map<std::string, bool>& sel)
+		{
+			for (auto& [f, s] : sel)
+			{
+				if (s) s = false;
+			}
 		}
 	}
 }

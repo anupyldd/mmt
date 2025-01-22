@@ -14,6 +14,11 @@ namespace mmt
 {
 	namespace core
 	{
+		enum class PackState
+		{
+			Unloaded, Scanned, Loaded
+		};
+
 		class Pack
 		{
 		public:
@@ -33,6 +38,7 @@ namespace mmt
 			void Clear();
 
 			std::string GetStats() const;
+			PackState GetState() const;
 			void PrintLoadedResources() const;
 
 			const PackFolder<Texture2D>& GetTextureFolder() const;
@@ -51,6 +57,7 @@ namespace mmt
 		private:
 			std::string	name;
 			std::unique_ptr<util::Zip> zip;
+			PackState state = PackState::Unloaded;
 
 			PackFolder<Texture2D>	textures;
 			PackFolder<Texture2D>	objects;

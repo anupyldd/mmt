@@ -44,6 +44,7 @@ namespace mmt
 
 					LoadResource(type, file, name, false);
 				}
+				state = PackState::Loaded;
 			}
 			catch (const std::exception& e)
 			{
@@ -58,9 +59,9 @@ namespace mmt
 				LOG_F(INFO, "Attempting to pre-load pack at [%s]", path.string().c_str());
 
 				name = path.stem().string();
-				textures.name = "Textures";
-				objects.name = "Objects";
-				fonts.name = "Fonts";
+				textures.name = LocC("textures");
+				objects.name = LocC("objects");
+				fonts.name = LocC("fonts");
 
 				zip = std::make_unique<util::Zip>();
 				zip->Load(path);
@@ -84,6 +85,7 @@ namespace mmt
 
 					LoadResource(type, *zip, name, true);
 				}
+				state = PackState::Scanned;
 			}
 			catch (const std::exception& e)
 			{
@@ -97,6 +99,7 @@ namespace mmt
 			objects.Clear();
 			fonts.Clear();
 			if(zip) zip->Reset();
+			state = PackState::Unloaded;
 		}
 
 		void Pack::LoadResource(ResourceType type, util::Zip& zip, const std::string& name, bool preload)
@@ -185,6 +188,7 @@ namespace mmt
 						{
 							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<Texture2D>>();
 							auto sfp = currentFolder->subFolders[parts[i]];
+							sfp->name = parts[i];
 							currentFolder = sfp.get();
 						}
 					}
@@ -224,6 +228,7 @@ namespace mmt
 						{
 							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<Font>>();
 							auto sfp = currentFolder->subFolders[parts[i]];
+							sfp->name = parts[i];
 							currentFolder = sfp.get();
 						}
 					}
@@ -296,7 +301,12 @@ namespace mmt
 		std::string Pack::GetStats() const
 		{
 			return std::format("tex count [{}], obj count [{}], fnt count [{}]",
-				-1, -1, -1);
+				textures.Count(), objects.Count(), fonts.Count());
+		}
+
+		PackState Pack::GetState() const
+		{
+			return state;
 		}
 
 		void Pack::PrintLoadedResources() const

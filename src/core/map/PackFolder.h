@@ -20,6 +20,11 @@ namespace mmt
 		template<class ResType>
 		struct PackFolder
 		{
+			PackFolder()
+			{
+				LOG_F(WARNING, "Created pack folder");
+			}
+
 			std::string name = "Undefined Folder Name";
 			std::map<std::string, std::shared_ptr<ResType>> res;
 			std::map<std::string, std::shared_ptr<PackFolder<ResType>>> subFolders;
@@ -54,7 +59,7 @@ namespace mmt
 
 			void Print() const
 			{
-				std::cout << "==============================";
+				std::cout << "==============================\n";
 				std::cout << "Folder name: " << name << '\n';
 				std::cout << "res count: " << res.size() << '\n' << "sf count: " << subFolders.size() << '\n';
 				for (const auto& r : res)

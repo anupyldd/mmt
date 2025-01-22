@@ -23,6 +23,8 @@ namespace mmt
 			virtual void Update(core::App* app) override final;
 
 		private:
+			void ClearSelected(std::unordered_map<std::string, bool>& sel);
+
 			template<class ResType>
 			void IteratePackFolder(const core::PackFolder<ResType>& fold)
 			{
@@ -35,11 +37,13 @@ namespace mmt
 					}
 					for (const auto& sf : fold.subFolders)
 					{
-						if (ImGui::TreeNode(sf.first.c_str()))
-						{
-							IteratePackFolder(*sf.second);
-							ImGui::TreePop();
-						}
+						IteratePackFolder(*sf.second);
+						//ImGui::TreePop();
+						//if (ImGui::TreeNode(sf.first.c_str()))
+						//{
+						//	IteratePackFolder(*sf.second);
+						//	ImGui::TreePop();
+						//}
 					}
 					ImGui::TreePop();
 				}

@@ -51,6 +51,7 @@ namespace mmt
 			/*************************************/
 			auto& pmgr = PackManager::GetInstance();
 			pmgr.SetSearchPath(std::filesystem::path("data") / "res" / "packs");
+			pmgr.FindAvailable();
 			//pmgr.PreLoadAll();
 			
 			//if (pmgr.GetPackList().contains("testpack"))
