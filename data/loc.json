@@ -37,7 +37,7 @@
   },
   "load_all": {
     "en": "Load all",
-    "ru": "Загрузить"
+    "ru": "Загрузить все"
   },
   "load_all_tt": {
     "en": "Loads all resources and keeps them in memory. Best performance, but uses most RAM",

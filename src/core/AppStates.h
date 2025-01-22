@@ -22,6 +22,8 @@ namespace mmt
 			virtual void Enter(App* owner) override final;
 			virtual void Execute(App* owner) override final;
 			virtual void Exit(App* owner) override final;
+
+			void LoadRes();
 		};
 
 		class AppMainMenuState : public AppState

@@ -21,7 +21,8 @@ namespace mmt
 			auto& pmgr = core::PackManager::GetInstance();
 			auto& packs = core::PackManager::GetInstance().GetPackList();
 
-			if (ImGui::Begin(LocC("resources"), 0, ImGuiWindowFlags_MenuBar))
+			//if (ImGui::Begin(LocC("resources"), 0, ImGuiWindowFlags_MenuBar))
+			if (ImGui::Begin((const char*)u8"אבגדהִ", 0, ImGuiWindowFlags_MenuBar))
 			{
 				if (ImGui::BeginMenuBar())
 				{

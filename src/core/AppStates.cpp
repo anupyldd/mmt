@@ -46,6 +46,7 @@ namespace mmt
 			SetTargetFPS(conf.settings->appFPS);
 			SetExitKey(KEY_NULL);
 			rlImGuiSetup(true);
+			LoadRes();
 
 			/*************************************/
 			auto& pmgr = PackManager::GetInstance();
@@ -70,6 +71,19 @@ namespace mmt
 		void AppInitLoadState::Exit(App* owner)
 		{
 			LOG_F(INFO, "Finishing app initialization");
+		}
+
+		void AppInitLoadState::LoadRes()
+		{
+			Image icon = LoadImage("data/res/app/icon.png");
+			SetWindowIcon(icon);
+			UnloadImage(icon);
+
+			ImGuiIO& io = ImGui::GetIO();
+			io.Fonts->Clear();
+			io.Fonts->AddFontFromFileTTF("data/res/app/NotoSans-Medium.ttf", 32.0f, NULL,
+				ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+			rlImGuiReloadFonts();
 		}
 
 		// -----------------------------------------------------

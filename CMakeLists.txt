@@ -178,6 +178,7 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 add_compile_options(/utf-8)
+add_compile_options(/Zc:char8_t)
 add_compile_options(/permissive)
 
 #add_custom_command(TARGET mmt POST_BUILD
