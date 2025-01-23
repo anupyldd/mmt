@@ -31,19 +31,11 @@ namespace mmt
 
 			void Clear()
 			{
-				if constexpr (std::is_same<ResType, Texture2D>::value)
-				{
-					for (auto& tex : res) UnloadTexture(*tex.second);
-				}
-				else if constexpr (std::is_same<ResType, Font>::value)
-				{
-					for (auto& tex : res) UnloadFont(*tex.second);
-				}
-				for (const auto& [name, subFolder] : subFolders)
-				{
-					if (subFolder) subFolder->Clear();
-				}
 				res.clear();
+				for (auto& [n, sf] : subFolders)
+				{
+					sf->Clear();
+				}
 				subFolders.clear();
 			}
 

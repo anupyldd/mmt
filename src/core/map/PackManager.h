@@ -28,9 +28,9 @@ namespace mmt
 			type - resource type
 			path - list of folder names that finishes with resource name
 			*/
-			template<class ResType>
-			std::shared_ptr<ResType> GetResource(const std::string& pack, ResourceType type, 
-				const std::initializer_list<std::string>& path);
+			//template<class ResType>
+			//std::shared_ptr<ResType> GetResource(const std::string& pack, ResourceType type, 
+			//	const std::initializer_list<std::string>& path);
 
 			void LoadSelected(const std::unordered_map<std::string, bool>& sel);
 			void PreLoadSelected(const std::unordered_map<std::string, bool>& sel);
@@ -47,11 +47,11 @@ namespace mmt
 		};
 
 		// --------------------------------
-		template<class ResType>
-		std::shared_ptr<ResType> GetResource(const std::string& pack, ResourceType type,
-			const std::initializer_list<std::string>& path)
-		{
-
-		}
+		//template<class ResType>
+		//std::shared_ptr<ResType> GetResource(const std::string& pack, ResourceType type,
+		//	const std::initializer_list<std::string>& path)
+		//{
+		//
+		//}
 	}
 }
