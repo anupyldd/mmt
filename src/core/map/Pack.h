@@ -27,11 +27,9 @@ namespace mmt
 			// loads only names
 			void PreLoad(const std::filesystem::path& path);
 			
-			// load specific resource
-			//std::shared_ptr<Texture2D>	LoadGetTexture(const std::string& name);
-			//std::shared_ptr<Texture2D>	LoadGetObject(const std::string& name);
-			//std::shared_ptr<Font>		LoadGetFont(const std::string& name);
-
+			// get specific resource
+			template<class ResType>
+			std::shared_ptr<ResType> GetResource(const std::initializer_list<std::string>& path);
 
 		public:
 			// unloads and clears all loaded resources
@@ -55,6 +53,15 @@ namespace mmt
 			//Font LoadFont(const std::string& name);
 			
 		private:
+			// when state is scanned
+			template<class ResType>
+			std::shared_ptr<ResType> LoadGetResource(const std::initializer_list<std::string>& path);
+
+			// when state is loaded
+			template<class ResType>
+			std::shared_ptr<ResType> FetchResource(const std::initializer_list<std::string>& path);
+
+		private:
 			std::string	name;
 			std::unique_ptr<util::Zip> zip;
 			PackState state = PackState::Unloaded;
@@ -63,5 +70,43 @@ namespace mmt
 			PackFolder<Texture2D>	objects;
 			PackFolder<Font>		fonts;
 		};
+
+		// -------------------------------------
+
+		template<class ResType>
+		std::shared_ptr<ResType> Pack::GetResource(const std::initializer_list<std::string>& path)
+		{
+			switch (state)
+			{
+			case PackState::Unloaded:
+			default:
+			{
+				LOG_F(ERROR, "Attempting to get resource [%s] from unloaded pack [%s]",
+					path.end()->c_str(), name);
+				return nullptr;
+			}
+			case PackState::Scanned:
+			{
+				return LoadGetResource<ResType>(path);
+			}
+			case PackState::Loaded:
+			{
+				return FetchResource<ResType>(path);
+			}
+			}
+		}
+
+		template<class ResType>
+		std::shared_ptr<ResType> Pack::LoadGetResource(const std::initializer_list<std::string>& path)
+		{
+			
+		}
+
+		template<class ResType>
+		std::shared_ptr<ResType> Pack::FetchResource(const std::initializer_list<std::string>& path)
+		{
+			if constexpr (std::is_same<ResType, )
+		}
+
 	}
 }

@@ -33,17 +33,18 @@ namespace mmt
 					for (const auto& r : fold.res)
 					{
 						if (ImGui::TreeNodeEx(r.first.c_str(), ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet))
+						{
+							if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							{
+								Image img = GenImageColor(100, 100, RED);
+								DrawTexture(LoadTextureFromImage(img), 0, 0, WHITE);
+							}
 							ImGui::TreePop();
+						}
 					}
 					for (const auto& sf : fold.subFolders)
 					{
 						IteratePackFolder(*sf.second);
-						//ImGui::TreePop();
-						//if (ImGui::TreeNode(sf.first.c_str()))
-						//{
-						//	IteratePackFolder(*sf.second);
-						//	ImGui::TreePop();
-						//}
 					}
 					ImGui::TreePop();
 				}

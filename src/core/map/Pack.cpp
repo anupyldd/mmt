@@ -93,6 +93,33 @@ namespace mmt
 			}
 		}
 
+		std::shared_ptr<Texture2D> Pack::GetTexture(const std::initializer_list<std::string>& path)
+		{
+			switch (state)
+			{
+			case PackState::Unloaded:
+			{
+				LOG_F(ERROR, "Trying to get texture [%s] from unloaded pack", path.end()->c_str());
+				return std::shared_ptr<Texture2D>();
+			}
+			case PackState::Scanned:
+			{
+				break;
+			}
+			case PackState::Loaded:
+			{
+				auto& currentFolder = 
+				for (const auto& p : path)
+				{
+
+				}
+				break;
+			}
+			default: 
+				return std::shared_ptr<Texture2D>();
+			}			
+		}
+
 		void Pack::Clear()
 		{
 			textures.Clear();
