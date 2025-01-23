@@ -86,16 +86,18 @@ namespace mmt
 							ImGui::SetTooltip(LocC("scan_sel_tt"));
 						}
 
-						if (ImGui::MenuItem(LocC("clear_sel"), NULL, false))
-						{
-							pmgr.ClearSelected(selectedPacks);
-							ClearSelected(selectedPacks);
-							LOG_F(INFO, "Cleared selected resources");
-						}
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						{
-							ImGui::SetTooltip(LocC("clear_sel_tt"));
-						}
+						// doesn't really work with current setup
+						// since loaded packs cannot be selected
+						//if (ImGui::MenuItem(LocC("clear_sel"), NULL, false))
+						//{
+						//	pmgr.ClearSelected(selectedPacks);
+						//	ClearSelected(selectedPacks);
+						//	LOG_F(INFO, "Cleared selected resources");
+						//}
+						//if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						//{
+						//	ImGui::SetTooltip(LocC("clear_sel_tt"));
+						//}
 
 						ImGui::EndMenu();
 					}

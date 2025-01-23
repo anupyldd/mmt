@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <map>
 #include <vector>
+#include <initializer_list>
 
 namespace mmt
 {
@@ -22,6 +23,15 @@ namespace mmt
 			void PreLoadAll();
 			void ClearAll();
 
+			/*
+			pack - pack name
+			type - resource type
+			path - list of folder names that finishes with resource name
+			*/
+			//template<class ResType>
+			//std::shared_ptr<ResType> GetResource(const std::string& pack, ResourceType type, 
+			//	const std::initializer_list<std::string>& path);
+
 			void LoadSelected(const std::unordered_map<std::string, bool>& sel);
 			void PreLoadSelected(const std::unordered_map<std::string, bool>& sel);
 			void ClearSelected(const std::unordered_map<std::string, bool>& sel);
@@ -35,5 +45,13 @@ namespace mmt
 			std::filesystem::path path;
 			std::map<std::string, Pack> packs;
 		};
+
+		// --------------------------------
+		//template<class ResType>
+		//std::shared_ptr<ResType> GetResource(const std::string& pack, ResourceType type,
+		//	const std::initializer_list<std::string>& path)
+		//{
+		//
+		//}
 	}
 }
