@@ -55,12 +55,12 @@ namespace mmt
 			
 		private:
 			// when state is scanned
-			//template<class ResType>
-			//std::shared_ptr<ResType> LoadGetResource(const std::initializer_list<std::string>& path);
-			//
-			//// when state is loaded
-			//template<class ResType>
-			//std::shared_ptr<ResType> FetchResource(const std::initializer_list<std::string>& path);
+			template<class ResType>
+			std::shared_ptr<ResType> LoadGetResource(const std::initializer_list<std::string>& path);
+			
+			// when state is loaded
+			template<class ResType>
+			std::shared_ptr<ResType> FetchResource(const std::initializer_list<std::string>& path);
 
 		private:
 			std::string	name;
@@ -96,11 +96,30 @@ namespace mmt
 			}
 			}
 		}
-		/*
+		
 		template<class ResType>
 		std::shared_ptr<ResType> Pack::LoadGetResource(const std::initializer_list<std::string>& path)
 		{
-			
+			PackFolder<ResType>* currentFolder = nullptr;
+			if constexpr (std::is_same<ResType, MmtTexture>::value)
+			{
+				currentFolder = &textures;
+			}
+			else if constexpr (std::is_same<ResType, MmtObject>::value)
+			{
+				currentFolder = &objects;
+			}
+			else if constexpr (std::is_same<ResType, MmtFont>::value)
+			{
+				currentFolder = &fonts;
+			}
+			for (size_t i = 0; i < path.size(); ++i)
+			{
+				if (i == path.size() - 1)
+				{
+					//currentFolder->res.at()
+				}
+			}
 		}
 
 		template<class ResType>
@@ -108,6 +127,6 @@ namespace mmt
 		{
 			
 		}
-		*/
+		
 	}
 }

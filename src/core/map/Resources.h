@@ -9,6 +9,7 @@
 #include <variant>
 
 #include "raylib.h"
+#include "log/loguru.hpp"
 
 namespace mmt
 {
@@ -68,11 +69,8 @@ namespace mmt
 			MmtFont() = default;
 			MmtFont(const MmtFont& src) { fnt = src.fnt; }
 			MmtFont(const Font& src) { fnt = src; }
-			MmtFont(const std::string& path)
-			{
-				fnt = LoadFont(path.c_str());
-			}
-			~MmtFont() { UnloadFont(fnt); }
+			MmtFont(const std::string& path) { fnt = LoadFont(path.c_str()); }
+			~MmtFont() { if (fnt.baseSize != 0) { UnloadFont(fnt); fnt.baseSize = 0; } }
 			bool IsValid() const { return IsFontValid(fnt); }
 		};
 

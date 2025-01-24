@@ -208,9 +208,12 @@ namespace mmt
 				{
 					if (i == parts.size() - 1)
 					{
-						if(!preload)
+						if (!preload)
+						{
+							MmtFont fnt = LoadFont(zip, name);
 							currentFolder->res[util::RemoveExtension(parts[i])] =
-							std::make_shared<MmtFont>(LoadFont(zip, name));
+								std::make_shared<MmtFont>(std::move(fnt));
+						}
 						else
 						{
 							currentFolder->res[util::RemoveExtension(parts[i])] =
