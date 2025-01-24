@@ -28,6 +28,10 @@ namespace mmt
 
 			while(true) fsm.Update();
 		}
+		raylib::Window& App::GetWin()
+		{
+			return window;
+		}
 		util::StateMachine<App>& App::GetFsm()
 		{
 			return fsm;

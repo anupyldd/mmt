@@ -50,13 +50,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(reflectcpp)
 
-#message("Fetching PhysicsFS...")
-#FetchContent_Declare(
-#	physfs
-#	GIT_REPOSITORY https://github.com/icculus/physfs.git
-#	GIT_TAG eb3383b532c5f74bfeb42ec306ba2cf80eed988c
-#)
-#FetchContent_MakeAvailable(physfs)
+message("Fetching raylib-cpp...")
+FetchContent_Declare(
+	raylibcpp
+	GIT_REPOSITORY https://github.com/RobLoach/raylib-cpp.git
+	GIT_TAG 6d9d02cd242e8a4f78b6f971afcf992fb7a417dd
+)
+FetchContent_MakeAvailable(raylibcpp)
 
 ####################################################
 
@@ -169,7 +169,7 @@ target_include_directories(
 	${rlimgui_SOURCE_DIR}
 	${reflectcpp_SOURCE_DIR}/include
 	${spdlog_SOURCE_DIR}/include
-	${physfs_SOURCE_DIR}/src
+	${raylibcpp_SOURCE_DIR}/include
 	${CMAKE_CURRENT_SOURCE_DIR}/vendor
 )
 

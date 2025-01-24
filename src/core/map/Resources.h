@@ -8,7 +8,10 @@
 #include <cstdint>
 #include <variant>
 
-#include "raylib.h"
+#include "../../utility/Zip.h"
+
+#include "raylib-cpp.hpp"
+#include "log/loguru.hpp"
 
 namespace mmt
 {
@@ -16,78 +19,66 @@ namespace mmt
 	{
 		enum class ResourceType { Texture, Object, Font, Script, None };
 
-		template<class ResType>
-		struct Resource
+		struct MmtResource
 		{
-			Resource() = default;
-			Resource(std::shared_ptr<ResType> res)
-				: res(res) { }
+			virtual ~MmtResource() = default;
 
-			std::shared_ptr<ResType> res;
+			virtual void Load(util::Zip& zip, const std::string& name) = 0;
 		};
 
-		struct MmtTexture
+		struct MmtTexture : public MmtResource
 		{
-			Texture2D tex = { 0 };
-
+			raylib::Texture2D tex;
+			
 			MmtTexture() = default;
-			MmtTexture(const MmtTexture& src) { tex = src.tex; }
 			MmtTexture(const Texture2D& src) { tex = src; }
 			MmtTexture(const std::string& path)
 			{
-				Image img = LoadImage(path.c_str());
-				tex = LoadTextureFromImage(img);
-				UnloadImage(img);
+				raylib::Image img(path);
+				tex.Load(img);
 			}
-			~MmtTexture() { UnloadTexture(tex); }
-			bool IsValid() const { return IsTextureValid(tex); }
+			bool IsValid() const { return tex.IsValid(); }
+
+			virtual void Load(util::Zip& zip, const std::string& name) override final;
 		};
 
-		struct MmtObject 
+		struct MmtObject : public MmtResource
 		{
-			Texture2D obj = { 0 };
+			raylib::Texture2D obj;
 
 			MmtObject() = default;
-			MmtObject(MmtObject&& src) = default;
-			MmtObject(const MmtObject& src) = default;
-			explicit MmtObject(const Texture2D& src) { obj = src; }
-			explicit MmtObject(const std::string& path)
+			MmtObject(const Texture2D& src) { obj = src; }
+			MmtObject(const std::string& path)
 			{
-				Image img = LoadImage(path.c_str());
-				obj = LoadTextureFromImage(img);
-				UnloadImage(img);
+				raylib::Image img(path);
+				obj.Load(img);
 			}
-			~MmtObject() { UnloadTexture(obj); }
-			bool IsValid() const { return IsTextureValid(obj); }
+			bool IsValid() const { return obj.IsValid(); }
+
+			virtual void Load(util::Zip& zip, const std::string& name) override final;
 		};
 
-		struct MmtFont
+		struct MmtFont : public MmtResource
 		{
-			Font fnt;
+			raylib::Font fnt;
 
 			MmtFont() = default;
-			MmtFont(const MmtFont& src) { fnt = src.fnt; }
 			MmtFont(const Font& src) { fnt = src; }
-			MmtFont(const std::string& path)
-			{
-				fnt = LoadFont(path.c_str());
-			}
-			~MmtFont() { UnloadFont(fnt); }
-			bool IsValid() const { return IsFontValid(fnt); }
+			MmtFont(const std::string& path) { fnt.Load(path); }
+			bool IsValid() const { return fnt.IsValid(); }
+		
+			virtual void Load(util::Zip& zip, const std::string& name) override final;
 		};
 
-		struct MmtScript
+		struct MmtScript : public MmtResource
 		{
-			// TODO
+			virtual void Load(util::Zip& zip, const std::string& name) override final { }
 		};
 
 		// ------------------------------------------
 
 		bool IsSupportedImageFormat(const std::string& ext);
 
-		bool IsSupportedFontFormat(const std::string& ext);
-
-		ResourceType GetResourceType(const std::string& ext);
-		
+		bool IsSupportedFontFormat(const std::string& ext);		
 	}
 }

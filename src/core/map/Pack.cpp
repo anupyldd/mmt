@@ -30,19 +30,16 @@ namespace mmt
 					if (name.ends_with('/') || name.ends_with("txt") || name.ends_with("json")) 
 						continue;	// don't load folder names or non-resource files
 
-					ResourceType type;
-					if (name.starts_with("textures")) type = ResourceType::Texture;
-					else if (name.starts_with("objects")) type = ResourceType::Object;
-					else if (name.starts_with("fonts")) type = ResourceType::Font;
-					else if (name.starts_with("scripts")) type = ResourceType::Script;
+					if (name.starts_with("textures")) LoadResource<MmtTexture>(file, name, false);
+					else if (name.starts_with("objects")) LoadResource<MmtObject>(file, name, false);
+					else if (name.starts_with("fonts")) LoadResource<MmtFont>(file, name, false);
+					else if (name.starts_with("scripts")) LoadResource<MmtScript>(file, name, false);
 					else
 					{
 						LOG_F(ERROR, "Failed to load resource [%s] from pack [%s]: cannot determine type of resource",
 							name.c_str(), path.filename().string().c_str());
 						continue;
 					}
-
-					LoadResource(type, file, name, false);
 				}
 				state = PackState::Loaded;
 			}
@@ -71,19 +68,16 @@ namespace mmt
 					if (name.ends_with('/') || name.ends_with("txt") || name.ends_with("json"))
 						continue;	// don't preload folder names or non-resource files
 
-					ResourceType type;
-					if (name.starts_with("textures")) type = ResourceType::Texture;
-					else if (name.starts_with("objects")) type = ResourceType::Object;
-					else if (name.starts_with("fonts")) type = ResourceType::Font;
-					else if (name.starts_with("scripts")) type = ResourceType::Script;
+					if (name.starts_with("textures")) LoadResource<MmtTexture>(*zip, name, true);
+					else if (name.starts_with("objects")) LoadResource<MmtObject>(*zip, name, true);
+					else if (name.starts_with("fonts")) LoadResource<MmtFont>(*zip, name, true);
+					else if (name.starts_with("scripts")) LoadResource<MmtScript>(*zip, name, true);
 					else
 					{
-						LOG_F(ERROR, "Failed to preload resource [%s] from pack [%s]: cannot determine type of resource",
+						LOG_F(ERROR, "Failed to load resource [%s] from pack [%s]: cannot determine type of resource",
 							name.c_str(), path.filename().string().c_str());
 						continue;
 					}
-
-					LoadResource(type, *zip, name, true);
 				}
 				state = PackState::Scanned;
 			}
@@ -101,7 +95,7 @@ namespace mmt
 			if(zip) zip->Reset();
 			state = PackState::Unloaded;
 		}
-
+		/*
 		void Pack::LoadResource(ResourceType type, util::Zip& zip, const std::string& name, bool preload)
 		{
 			auto parts = util::SplitByDelimiter(name, '/');
@@ -128,9 +122,13 @@ namespace mmt
 				{
 					if (i == parts.size() - 1)
 					{
-						if(!preload)
-							currentFolder->res[util::RemoveExtension(parts[i])] =
-							std::make_shared<MmtTexture>(std::move(LoadTexture(zip, name)));
+						if (!preload)
+						{
+							std::string name = util::RemoveExtension(parts[i]);
+							currentFolder->res[name] = std::make_shared<MmtTexture>();
+							currentFolder->res.at(name)->Load(zip, name);
+								//std::make_shared<MmtTexture>(std::move(LoadTexture(zip, name)));
+						}
 						else
 						{
 							currentFolder->res[util::RemoveExtension(parts[i])] =
@@ -169,8 +167,13 @@ namespace mmt
 					if (i == parts.size() - 1)
 					{
 						if (!preload)
-							currentFolder->res[util::RemoveExtension(parts[i])] =
-							std::make_shared<MmtObject>(std::move(LoadObject(zip, name)));
+						{
+							//currentFolder->res[util::RemoveExtension(parts[i])] =
+							//	std::make_shared<MmtObject>(std::move(LoadObject(zip, name)));
+							std::string name = util::RemoveExtension(parts[i]);
+							currentFolder->res[name] = std::make_shared<MmtObject>();
+							currentFolder->res.at(name)->Load(zip, name);
+						}
 						else
 						{
 							currentFolder->res[util::RemoveExtension(parts[i])] =
@@ -208,9 +211,12 @@ namespace mmt
 				{
 					if (i == parts.size() - 1)
 					{
-						if(!preload)
-							currentFolder->res[util::RemoveExtension(parts[i])] =
-							std::make_shared<MmtFont>(LoadFont(zip, name));
+						if (!preload)
+						{
+							std::string name = util::RemoveExtension(parts[i]);
+							currentFolder->res[name] = std::make_shared<MmtFont>();
+							currentFolder->res.at(name)->Load(zip, name);
+						}
 						else
 						{
 							currentFolder->res[util::RemoveExtension(parts[i])] =
@@ -244,6 +250,7 @@ namespace mmt
 			default: break;
 			}
 		}
+		*/
 
 		MmtTexture Pack::LoadTexture(util::Zip& zip, const std::string& name)
 		{
