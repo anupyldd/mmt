@@ -1,6 +1,6 @@
 #pragma once
 
-#include "raylib.h"
+#include "raylib-cpp.hpp"
 
 #include "Config.h"
 #include "Localization.h"
@@ -35,12 +35,15 @@ namespace mmt
 			void Init(int argc, char** argv);
 			void Run();
 
+			raylib::Window& GetWin();
+
 			util::StateMachine<App>& GetFsm();
 			gui::Gui& GetGui();
 
 			void UpdateConfig() const;
 
 		private:
+			raylib::Window window;
 			gui::Gui appGui;
 			util::StateMachine<App> fsm;
 

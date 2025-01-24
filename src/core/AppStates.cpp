@@ -5,7 +5,7 @@
 #include "ResourceManager.h"
 #include "map/PackManager.h"
 
-#include "raylib.h"
+#include "raylib-cpp.hpp"
 #include "imgui.h"
 #include "rlImGui.h"
 
@@ -22,45 +22,50 @@ namespace mmt
 		{
 			util::Log::GetInstance().InitSession();
 			owner->GetGui().SetOwner(owner);
-
-			if (IsWindowReady()) throw std::runtime_error("Attempting to open window twice");
+			
+			if (raylib::Window::IsReady()) throw std::runtime_error("Attempting to open window twice");
 
 			auto& conf = Config::GetInstance();
 			if (!conf.Load("data/config.json"))
 				LOG_F(ERROR, "Error loading config, falling back to default values");
 
 			Localization::GetInstance().Load("data/loc.json");
-
-			SetConfigFlags(conf.GetWindowFlags());
-			SetTraceLogLevel(LOG_WARNING);
-
+			
 			std::string title = conf.settings->appTitle;
 			title += " - " + conf.settings->appVersion;
 
 		#if _DEBUG
 			title += " [DEBUG]";
 		#endif
-			InitWindow(conf.settings->appWidth, conf.settings->appHeight, title.c_str());
 
-			SetWindowPosition(conf.settings->appPosX, conf.settings->appPosY);
-			SetTargetFPS(conf.settings->appFPS);
-			SetExitKey(KEY_NULL);
+			owner->GetWin().Init(
+				conf.settings->appWidth,
+				conf.settings->appHeight,
+				title,
+				conf.GetWindowFlags());
+
+			owner->GetWin()
+				.SetPosition(Vector2{ 
+					static_cast<float>(conf.settings->appPosX), 
+					static_cast<float>(conf.settings->appPosY) })
+				.SetTargetFPS(conf.settings->appFPS)
+				.SetExitKey(KEY_NULL);
+
+
+			//InitWindow(conf.settings->appWidth, conf.settings->appHeight, title.c_str());
+			//SetConfigFlags(conf.GetWindowFlags());
+			//SetTraceLogLevel(LOG_TRACE);
+			//SetWindowPosition(conf.settings->appPosX, conf.settings->appPosY);
+			//SetTargetFPS(conf.settings->appFPS);
+			//SetExitKey(KEY_NULL);
+
 			rlImGuiSetup(true);
-			LoadRes();
 
-			/*************************************/
+			LoadRes();
 			auto& pmgr = PackManager::GetInstance();
 			pmgr.SetSearchPath(std::filesystem::path("data") / "res" / "packs");
 			pmgr.FindAvailable();
-			//pmgr.PreLoadAll();
-			
-			//if (pmgr.GetPackList().contains("testpack"))
-			//	PackManager::GetInstance().GetPackList().at("testpack").PrintLoadedResources();
-			//PackManager::GetInstance().ClearAll();
-			// Pack p;
-			// p.Load("data/res/packs/testpack.mmtres");
-			// p.PrintLoadedResources();
-			/*************************************/
+
 
 		#ifdef IMGUI_HAS_DOCK
 			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -76,9 +81,10 @@ namespace mmt
 
 		void AppInitLoadState::LoadRes()
 		{
-			Image icon = LoadImage("data/res/app/icon.png");
+			raylib::Image icon("data/res/app/icon.png");
+			//Image icon = LoadImage("data/res/app/icon.png");
 			SetWindowIcon(icon);
-			UnloadImage(icon);
+			//UnloadImage(icon);
 
 			ImGuiIO& io = ImGui::GetIO();
 			io.Fonts->Clear();
@@ -99,13 +105,13 @@ namespace mmt
 		{
 			while (!WindowShouldClose() && menuOpen)
 			{
-				BeginDrawing();
-				ClearBackground(BLUE);
+				owner->GetWin().BeginDrawing();
+				owner->GetWin().ClearBackground(BLUE);
 
 				owner->GetGui().UpdateDraw(GuiState::MainMenu);
 				owner->UpdateConfig();
 
-				EndDrawing();
+				owner->GetWin().EndDrawing();
 			}
 
 			if (WindowShouldClose()) owner->GetFsm().ChangeState(&owner->closeState);
