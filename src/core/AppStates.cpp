@@ -65,7 +65,7 @@ namespace mmt
 			auto& pmgr = PackManager::GetInstance();
 			pmgr.SetSearchPath(std::filesystem::path("data") / "res" / "packs");
 			pmgr.FindAvailable();
-
+			pmgr.PreLoadAll();
 
 		#ifdef IMGUI_HAS_DOCK
 			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;

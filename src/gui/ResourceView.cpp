@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <sstream>
 
 namespace mmt
 {
@@ -14,6 +15,7 @@ namespace mmt
 
 		ResourceView::ResourceView()
 		{
+			path.reserve(10);
 		}
 
 		int selected = -1;
@@ -51,17 +53,6 @@ namespace mmt
 							ImGui::SetTooltip(LocC("scan_all_tt"));
 						}
 
-						if (ImGui::MenuItem(LocC("clear_all"), NULL, false))
-						{
-							pmgr.ClearAll();
-							pmgr.FindAvailable();
-							LOG_F(INFO, "Cleared loaded resources");
-						}
-						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-						{
-							ImGui::SetTooltip(LocC("clear_all_tt"));
-						}
-
 						ImGui::Separator();	// ---------------------------------------
 
 						if (ImGui::MenuItem(LocC("load_sel"), NULL, false))
@@ -86,8 +77,22 @@ namespace mmt
 							ImGui::SetTooltip(LocC("scan_sel_tt"));
 						}
 
+						ImGui::Separator();	// ---------------------------------------
+
+						if (ImGui::MenuItem(LocC("clear_all"), NULL, false))
+						{
+							pmgr.ClearAll();
+							pmgr.FindAvailable();
+							LOG_F(INFO, "Cleared loaded resources");
+						}
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						{
+							ImGui::SetTooltip(LocC("clear_all_tt"));
+						}
+
 						// doesn't really work with current setup
 						// since loaded packs cannot be selected
+						// TODO
 						//if (ImGui::MenuItem(LocC("clear_sel"), NULL, false))
 						//{
 						//	pmgr.ClearSelected(selectedPacks);
@@ -107,16 +112,23 @@ namespace mmt
 
 				// -----------------------------------------
 
+				path.clear();	
+				folders.clear();
 				for (const auto& pack : packs)
 				{
 					if (pack.second.GetState() != PackState::Unloaded)
 					{
 						if (ImGui::TreeNode(pack.first.c_str()))
 						{
+							if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							path.emplace_back(pack.first);	// first in the path is the name of the pack
 
 							IteratePackFolder(pack.second.GetTextureFolder());
+							folders.clear();
 							IteratePackFolder(pack.second.GetObjectFolder());
+							folders.clear();
 							IteratePackFolder(pack.second.GetFontFolder());
+							folders.clear();
 
 							ImGui::TreePop();
 						}
@@ -131,6 +143,14 @@ namespace mmt
 
 						}
 					}
+				}
+				
+				if (ImGui::BeginMenuBar())
+				{
+					std::stringstream sstr;
+					for (const auto& p : path) sstr << p << '/';
+					ImGui::Text("%s", sstr.str().c_str());
+					ImGui::EndMenuBar();
 				}
 			}
 			ImGui::End();

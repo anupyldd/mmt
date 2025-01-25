@@ -7,7 +7,7 @@
 #include "raylib-cpp.hpp"
 
 #include <functional>
-
+#include <typeindex>
 
 
 namespace mmt
@@ -29,7 +29,7 @@ namespace mmt
 			
 			// get specific resource
 			template<class ResType>
-			std::shared_ptr<ResType> GetResource(const std::initializer_list<std::string>& path);
+			std::shared_ptr<ResType> GetResource(const std::vector<std::string>& path);
 
 		public:
 			// unloads and clears all loaded resources
@@ -58,11 +58,11 @@ namespace mmt
 		private:
 			// when state is scanned
 			template<class ResType>
-			std::shared_ptr<ResType> LoadGetResource(const std::initializer_list<std::string>& path);
+			std::shared_ptr<ResType> LoadGetResource(const std::vector<std::string>& path);
 			
 			// when state is loaded
 			template<class ResType>
-			std::shared_ptr<ResType> FetchResource(const std::initializer_list<std::string>& path);
+			std::shared_ptr<ResType> FetchResource(const std::vector<std::string>& path);
 
 		private:
 			std::string	name;
@@ -166,7 +166,7 @@ namespace mmt
 		}
 
 		template<class ResType>
-		std::shared_ptr<ResType> Pack::GetResource(const std::initializer_list<std::string>& path)
+		std::shared_ptr<ResType> Pack::GetResource(const std::vector<std::string>& path)
 		{
 			switch (state)
 			{
@@ -189,7 +189,7 @@ namespace mmt
 		}
 		
 		template<class ResType>
-		std::shared_ptr<ResType> Pack::LoadGetResource(const std::initializer_list<std::string>& path)
+		std::shared_ptr<ResType> Pack::LoadGetResource(const std::vector<std::string>& path)
 		{
 			PackFolder<ResType>* currentFolder = nullptr;
 			if constexpr (std::is_same<ResType, MmtTexture>::value)
@@ -214,9 +214,23 @@ namespace mmt
 		}
 
 		template<class ResType>
-		std::shared_ptr<ResType> Pack::FetchResource(const std::initializer_list<std::string>& path)
+		std::shared_ptr<ResType> Pack::FetchResource(const std::vector<std::string>& path)
 		{
-			
+			PackFolder<ResType>* currentFolder = nullptr;
+			if constexpr (std::is_same<ResType, MmtTexture>::value) currentFolder = &textures;
+			else if constexpr (std::is_same<ResType, MmtObject>::value) currentFolder = &objects;
+			else if constexpr (std::is_same<ResType, MmtFont>::value) currentFolder = &fonts;
+			else
+			{
+				LOG_F(ERROR, "Attempting to fetch a resource of unknown type [%s]", typeid(ResType).name());
+				return nullptr;
+			}
+			//else if constexpr (std::is_same<ResType, MmtScript>::value) currentFolder = &scripts;
+			for (size_t i = 0; i < path.size() - 1; ++i)
+			{
+				//currentFolder = currentFolder->subFolders.at(path[i]);
+			}
+			return currentFolder->res.at(path.end());
 		}
 		
 	}
