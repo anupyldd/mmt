@@ -87,6 +87,54 @@ namespace mmt
 			}
 		}
 
+		const raylib::Texture2D& Pack::GetPreview(ResourceType type, const std::vector<std::string>& path)
+		{
+			switch (type)
+			{
+			case ResourceType::Texture:
+			{
+				PackFolder<MmtTexture>* cur = &textures;
+				for (size_t i = 2; i < path.size() - 1; ++i)
+				{
+					cur = cur->subFolders.at(path[i]).get();
+				}
+				return cur->res.at(path.back())->GetPreview();
+				break;
+			}
+			case ResourceType::Object:
+			{
+				PackFolder<MmtObject>* cur = &objects;
+				for (size_t i = 2; i < path.size() - 1; ++i)
+				{
+					cur = cur->subFolders.at(path[i]).get();
+				}
+				return cur->res.at(path.back())->GetPreview();
+				break;
+			}
+			case ResourceType::Font:
+			{
+				PackFolder<MmtFont>* cur = &fonts;
+				for (size_t i = 2; i < path.size() - 1; ++i)
+				{
+					cur = cur->subFolders.at(path[i]).get();
+				}
+				return cur->res.at(path.back())->GetPreview();
+				break;
+			}
+			case ResourceType::Script:
+			{
+
+				break;
+			}
+			case ResourceType::None:
+			{
+
+				break;
+			}
+			default: return raylib::Texture2D();
+			}
+		}
+
 		void Pack::Clear()
 		{
 			textures.Clear();
@@ -95,243 +143,7 @@ namespace mmt
 			if(zip) zip->Reset();
 			state = PackState::Unloaded;
 		}
-		/*
-		void Pack::LoadResource(ResourceType type, util::Zip& zip, const std::string& name, bool preload)
-		{
-			auto parts = util::SplitByDelimiter(name, '/');
-			if (parts.size() == 0)
-			{
-				LOG_F(ERROR, "Failed to load resource [%s]: resource path could not be split",
-					name.c_str());
-				return;
-			}
-			parts.erase(parts.begin()); // remove first part since type is already known
-
-			switch (type)
-			{
-			case ResourceType::Texture:
-			{
-				if (!IsSupportedImageFormat(util::GetExtension(name)))
-				{
-					LOG_F(ERROR, "Failed to load texture [%s]: image format [%s] is not supported",
-						name.c_str(), util::GetExtension(name).c_str());
-					return;
-				}
-				PackFolder<MmtTexture>* currentFolder = &textures;
-				for (size_t i = 0; i < parts.size(); ++i)
-				{
-					if (i == parts.size() - 1)
-					{
-						if (!preload)
-						{
-							std::string name = util::RemoveExtension(parts[i]);
-							currentFolder->res[name] = std::make_shared<MmtTexture>();
-							currentFolder->res.at(name)->Load(zip, name);
-								//std::make_shared<MmtTexture>(std::move(LoadTexture(zip, name)));
-						}
-						else
-						{
-							currentFolder->res[util::RemoveExtension(parts[i])] =
-								std::make_shared<MmtTexture>();
-							LOG_F(INFO, "Pre-Loaded texture [%s]", name.c_str());
-						}
-					}
-					else
-					{
-						if (currentFolder->subFolders.contains(parts[i]))
-						{
-							currentFolder = currentFolder->subFolders.at(parts[i]).get();
-						}
-						else
-						{
-							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<MmtTexture>>();
-							auto sfp = currentFolder->subFolders[parts[i]];
-							sfp->name = parts[i];
-							currentFolder = sfp.get();
-						}
-					}
-				}
-				break;
-			}
-			case ResourceType::Object:
-			{
-				if (!IsSupportedImageFormat(util::GetExtension(name)))
-				{
-					LOG_F(ERROR, "Failed to load object [%s]: image format [%s] is not supported",
-						name.c_str(), util::GetExtension(name).c_str());
-					return;
-				}
-				PackFolder<MmtObject>* currentFolder = &objects;
-				for (size_t i = 0; i < parts.size(); ++i)
-				{
-					if (i == parts.size() - 1)
-					{
-						if (!preload)
-						{
-							//currentFolder->res[util::RemoveExtension(parts[i])] =
-							//	std::make_shared<MmtObject>(std::move(LoadObject(zip, name)));
-							std::string name = util::RemoveExtension(parts[i]);
-							currentFolder->res[name] = std::make_shared<MmtObject>();
-							currentFolder->res.at(name)->Load(zip, name);
-						}
-						else
-						{
-							currentFolder->res[util::RemoveExtension(parts[i])] =
-								std::make_shared<MmtObject>();
-							LOG_F(INFO, "Pre-Loaded object [%s]", name.c_str());
-						}
-					}
-					else
-					{
-						if (currentFolder->subFolders.contains(parts[i]))
-						{
-							currentFolder = currentFolder->subFolders.at(parts[i]).get();
-						}
-						else
-						{
-							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<MmtObject>>();
-							auto sfp = currentFolder->subFolders[parts[i]];
-							sfp->name = parts[i];
-							currentFolder = sfp.get();
-						}
-					}
-				}
-				break;
-			}
-			case ResourceType::Font:
-			{
-				if (!IsSupportedFontFormat(util::GetExtension(name)))
-				{
-					LOG_F(ERROR, "Failed to load font [%s]: font format [%s] is not supported",
-						name.c_str(), util::GetExtension(name).c_str());
-					return;
-				}
-				PackFolder<MmtFont>* currentFolder = &fonts;
-				for (size_t i = 0; i < parts.size(); ++i)
-				{
-					if (i == parts.size() - 1)
-					{
-						if (!preload)
-						{
-							std::string name = util::RemoveExtension(parts[i]);
-							currentFolder->res[name] = std::make_shared<MmtFont>();
-							currentFolder->res.at(name)->Load(zip, name);
-						}
-						else
-						{
-							currentFolder->res[util::RemoveExtension(parts[i])] =
-								std::make_shared<MmtFont>();
-							LOG_F(INFO, "Pre-Loaded font [%s]", name.c_str());
-						}
-					}
-					else
-					{
-						if (currentFolder->subFolders.contains(parts[i]))
-						{
-							currentFolder = currentFolder->subFolders.at(parts[i]).get();
-						}
-						else
-						{
-							currentFolder->subFolders[parts[i]] = std::make_shared<PackFolder<MmtFont>>();
-							auto sfp = currentFolder->subFolders[parts[i]];
-							sfp->name = parts[i];
-							currentFolder = sfp.get();
-						}
-					}
-				}
-				break;
-			}
-			case ResourceType::Script:
-			{
-				LOG_F(WARNING, "Scripts are not yet implemented");
-				break;
-			}
-			case ResourceType::None:
-			default: break;
-			}
-		}
-		*/
-
-		MmtTexture Pack::LoadTexture(util::Zip& zip, const std::string& name)
-		{
-			try
-			{
-				std::string data = zip.Read(name);
-				const unsigned char* fileData = reinterpret_cast<const unsigned char*>(data.data());
-				int dataSize = static_cast<int>(data.size());
-				Image img = LoadImageFromMemory(util::GetExtension(name).c_str(), fileData, dataSize);
-				if (!IsImageValid(img))
-				{
-					LOG_F(ERROR, "Failed to load resource [%s]: LoadImageFromMemory() failure", name.c_str());
-					return MmtTexture();
-				}
-				MmtTexture tex(LoadTextureFromImage(img));
-				if (!tex.IsValid())
-				{
-					LOG_F(ERROR, "Failed to load resource [%s]: LoadTextureFromImage() failure", name.c_str());
-					return MmtTexture();
-				}
-				UnloadImage(img);
-				DLOG_F(INFO, "Loaded texture [%s]", name.c_str());
-				return tex;
-			}
-			catch (const std::exception& e)
-			{
-				LOG_F(ERROR, "Exception while loading texture [%s]: %s", name.c_str(), e.what());
-			}
-		}
-
-		MmtObject Pack::LoadObject(util::Zip& zip, const std::string& name)
-		{
-			try
-			{
-				std::string data = zip.Read(name);
-				const unsigned char* fileData = reinterpret_cast<const unsigned char*>(data.data());
-				int dataSize = static_cast<int>(data.size());
-				Image img = LoadImageFromMemory(util::GetExtension(name).c_str(), fileData, dataSize);
-				if (!IsImageValid(img))
-				{
-					LOG_F(ERROR, "Failed to load resource [%s]: LoadImageFromMemory() failure", name.c_str());
-					return MmtObject();
-				}
-				MmtObject obj(LoadTextureFromImage(img));
-				if (!obj.IsValid())
-				{
-					LOG_F(ERROR, "Failed to load resource [%s]: LoadTextureFromImage() failure", name.c_str());
-					return MmtObject();
-				}
-				UnloadImage(img);
-				DLOG_F(INFO, "Loaded texture [%s]", name.c_str());
-				return obj;
-			}
-			catch (const std::exception& e)
-			{
-				LOG_F(ERROR, "Exception while loading texture [%s]: %s", name.c_str(), e.what());
-			}
-		}
-
-		MmtFont Pack::LoadFont(util::Zip& zip, const std::string& name)
-		{
-			try
-			{
-				std::string data = static_cast<std::ostringstream&>(zip.Open(name)).str();
-				const unsigned char* fileData = reinterpret_cast<const unsigned char*>(data.data());
-				int dataSize = static_cast<int>(data.size());
-				MmtFont font(LoadFontFromMemory(util::GetExtension(name).c_str(), fileData, dataSize, 96, nullptr, 0));
-				if (!font.IsValid())
-				{
-					LOG_F(ERROR, "Failed to load resource [%s]: LoadFontFromMemory() failure", name.c_str());
-					return MmtFont();
-				}
-				DLOG_F(INFO, "Loaded font [%s]", name.c_str());
-				return font;
-			}
-			catch (const std::exception& e)
-			{
-				LOG_F(ERROR, "Exception while loading font [%s]: %s", name.c_str(), e.what());
-			}
-		}
-
+		
 		std::string Pack::GetStats() const
 		{
 			return std::format("tex count [{}], obj count [{}], fnt count [{}]",
