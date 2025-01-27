@@ -15,7 +15,7 @@ namespace mmt
 
 		ResourceView::ResourceView()
 		{
-			path.reserve(10);
+			folders.reserve(10);
 		}
 
 		int selected = -1;
@@ -112,16 +112,16 @@ namespace mmt
 
 				// -----------------------------------------
 
-				path.clear();	
+				path.clear();
 				folders.clear();
+
 				for (const auto& pack : packs)
 				{
 					if (pack.second.GetState() != PackState::Unloaded)
 					{
 						if (ImGui::TreeNode(pack.first.c_str()))
 						{
-							if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
-							path.emplace_back(pack.first);	// first in the path is the name of the pack
+							path.emplace_back(pack.first);
 
 							IteratePackFolder(pack.second.GetTextureFolder());
 							folders.clear();
@@ -144,7 +144,8 @@ namespace mmt
 						}
 					}
 				}
-				
+
+				// shows path for debugging
 				if (ImGui::BeginMenuBar())
 				{
 					std::stringstream sstr;

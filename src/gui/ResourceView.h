@@ -2,6 +2,7 @@
 
 #include "GuiObject.h"
 #include "../core/map/PackManager.h"
+#include "../core/Localization.h"
 
 #include "raylib.h"
 #include "rlImGui.h"
@@ -25,7 +26,8 @@ namespace mmt
 			virtual void Update(core::App* app) override final;
 
 		private:
-			std::vector<std::string> path;		// path to resource hovered over, used for res fetching
+			std::string currentPack;			// pack of hovered resource
+			std::vector<std::string> path;	
 			std::vector<std::string> folders;	// temp folder structure
 			core::ResourceType resType;			// type of resource hovere over, deduced from folder
 
@@ -41,6 +43,12 @@ namespace mmt
 					//if (!path.empty() && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) 
 					//	path.pop_back();
 					//path.emplace_back(fold.name);
+					//using namespace core;
+					//if (fold.name == LocC("textures")) folders.emplace_back("textures");
+					//else if (fold.name == LocC("objects")) folders.emplace_back("objects");
+					//else if (fold.name == LocC("fonts")) folders.emplace_back("fonts");
+					//else if (fold.name == LocC("scripts")) folders.emplace_back("scripts");
+					//else folders.emplace_back(fold.name);
 					folders.emplace_back(fold.name);
 
 					for (const auto& r : fold.res)
@@ -51,6 +59,9 @@ namespace mmt
 							{
 								path.insert(path.end(), folders.begin(), folders.end());
 								path.emplace_back(r.first);
+
+								const auto& pr = core::PackManager::GetInstance().GetPreview(path);
+								pr.Draw();
 							}
 							ImGui::TreePop();
 						}

@@ -45,6 +45,10 @@ namespace mmt
 				LOG_F(ERROR, "Exception while loading texture [%s]: %s", name.c_str(), e.what());
 			}
 		}
+		const raylib::Texture2D& MmtTexture::GetPreview()
+		{
+			return tex;
+		}
 		void MmtObject::Load(util::Zip& zip, const std::string& name)
 		{
 			try
@@ -71,6 +75,10 @@ namespace mmt
 				LOG_F(ERROR, "Exception while loading object [%s]: %s", name.c_str(), e.what());
 			}
 		}
+		const raylib::Texture2D& MmtObject::GetPreview()
+		{
+			return obj;
+		}
 		void MmtFont::Load(util::Zip& zip, const std::string& name)
 		{
 			try
@@ -90,6 +98,10 @@ namespace mmt
 			{
 				LOG_F(ERROR, "Exception while loading font [%s]: %s", name.c_str(), e.what());
 			}
+		}
+		const raylib::Texture2D& MmtFont::GetPreview()
+		{
+			return fnt.GetTexture();
 		}
 	}
 }

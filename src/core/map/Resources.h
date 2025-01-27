@@ -24,6 +24,7 @@ namespace mmt
 			virtual ~MmtResource() = default;
 
 			virtual void Load(util::Zip& zip, const std::string& name) = 0;
+			virtual const raylib::Texture2D& GetPreview() = 0;
 		};
 
 		struct MmtTexture : public MmtResource
@@ -40,6 +41,7 @@ namespace mmt
 			bool IsValid() const { return tex.IsValid(); }
 
 			virtual void Load(util::Zip& zip, const std::string& name) override final;
+			virtual const raylib::Texture2D& GetPreview() override final;
 		};
 
 		struct MmtObject : public MmtResource
@@ -56,6 +58,7 @@ namespace mmt
 			bool IsValid() const { return obj.IsValid(); }
 
 			virtual void Load(util::Zip& zip, const std::string& name) override final;
+			virtual const raylib::Texture2D& GetPreview() override final;
 		};
 
 		struct MmtFont : public MmtResource
@@ -68,11 +71,13 @@ namespace mmt
 			bool IsValid() const { return fnt.IsValid(); }
 		
 			virtual void Load(util::Zip& zip, const std::string& name) override final;
+			virtual const raylib::Texture2D& GetPreview() override final;
 		};
 
 		struct MmtScript : public MmtResource
 		{
 			virtual void Load(util::Zip& zip, const std::string& name) override final { }
+			virtual const raylib::Texture2D& GetPreview() override final { return raylib::Texture2D(); }
 		};
 
 		// ------------------------------------------

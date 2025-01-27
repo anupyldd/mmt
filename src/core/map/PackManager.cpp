@@ -1,4 +1,5 @@
 #include "PackManager.h"
+#include "Resources.h"
 
 namespace mmt
 {
@@ -35,6 +36,15 @@ namespace mmt
 				p.second.Clear();
 			}
 			packs.clear();
+		}
+		const raylib::Texture2D& PackManager::GetPreview(const std::vector<std::string>& path)
+		{
+			const auto& pack = path[0];
+			if (path[1] == LocC("textures")) return packs.at(pack).GetPreview(ResourceType::Texture, path);
+			else if (path[1] == LocC("objects")) return packs.at(pack).GetPreview(ResourceType::Object, path);
+			else if (path[1] == LocC("fonts")) return packs.at(pack).GetPreview(ResourceType::Font, path);
+			else if (path[1] == LocC("scripts")) return packs.at(pack).GetPreview(ResourceType::Script, path);
+			else return raylib::Texture2D();
 		}
 		void PackManager::LoadSelected(const std::unordered_map<std::string, bool>& sel)
 		{

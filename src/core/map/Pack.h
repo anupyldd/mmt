@@ -31,6 +31,8 @@ namespace mmt
 			template<class ResType>
 			std::shared_ptr<ResType> GetResource(const std::vector<std::string>& path);
 
+			const raylib::Texture2D& GetPreview(ResourceType type, const std::vector<std::string>& path);
+
 		public:
 			// unloads and clears all loaded resources
 			void Clear();
@@ -226,9 +228,9 @@ namespace mmt
 				return nullptr;
 			}
 			//else if constexpr (std::is_same<ResType, MmtScript>::value) currentFolder = &scripts;
-			for (size_t i = 0; i < path.size() - 1; ++i)
+			for (size_t i = 2; i < path.size() - 1; ++i)
 			{
-				//currentFolder = currentFolder->subFolders.at(path[i]);
+				currentFolder = currentFolder->subFolders.at(path[i]);
 			}
 			return currentFolder->res.at(path.end());
 		}

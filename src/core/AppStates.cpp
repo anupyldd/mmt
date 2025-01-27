@@ -65,7 +65,7 @@ namespace mmt
 			auto& pmgr = PackManager::GetInstance();
 			pmgr.SetSearchPath(std::filesystem::path("data") / "res" / "packs");
 			pmgr.FindAvailable();
-			pmgr.PreLoadAll();
+			pmgr.LoadAll();
 
 		#ifdef IMGUI_HAS_DOCK
 			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -111,6 +111,7 @@ namespace mmt
 				owner->GetGui().UpdateDraw(GuiState::MainMenu);
 				owner->UpdateConfig();
 
+				owner->GetWin().DrawFPS();
 				owner->GetWin().EndDrawing();
 			}
 

@@ -87,6 +87,54 @@ namespace mmt
 			}
 		}
 
+		const raylib::Texture2D& Pack::GetPreview(ResourceType type, const std::vector<std::string>& path)
+		{
+			switch (type)
+			{
+			case ResourceType::Texture:
+			{
+				PackFolder<MmtTexture>* cur = &textures;
+				for (size_t i = 2; i < path.size() - 1; ++i)
+				{
+					cur = cur->subFolders.at(path[i]).get();
+				}
+				return cur->res.at(path.back())->GetPreview();
+				break;
+			}
+			case ResourceType::Object:
+			{
+				PackFolder<MmtObject>* cur = &objects;
+				for (size_t i = 2; i < path.size() - 1; ++i)
+				{
+					cur = cur->subFolders.at(path[i]).get();
+				}
+				return cur->res.at(path.back())->GetPreview();
+				break;
+			}
+			case ResourceType::Font:
+			{
+				PackFolder<MmtFont>* cur = &fonts;
+				for (size_t i = 2; i < path.size() - 1; ++i)
+				{
+					cur = cur->subFolders.at(path[i]).get();
+				}
+				return cur->res.at(path.back())->GetPreview();
+				break;
+			}
+			case ResourceType::Script:
+			{
+
+				break;
+			}
+			case ResourceType::None:
+			{
+
+				break;
+			}
+			default: return raylib::Texture2D();
+			}
+		}
+
 		void Pack::Clear()
 		{
 			textures.Clear();
